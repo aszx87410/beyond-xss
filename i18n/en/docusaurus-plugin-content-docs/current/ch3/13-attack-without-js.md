@@ -4,7 +4,7 @@ sidebar_position: 13
 
 # Who says you have to execute JavaScript directly to attack?
 
-Up to this point, Chapter 2, "Defense and Bypass Techniques for XSS," comes to a close.
+Up to this point, Chapter 2, "Defense and Bypass for XSS," comes to a close.
 
 We have spent a lot of time discussing XSS, including various ways to execute XSS, defense techniques, and bypass methods. In terms of web front-end, the most serious thing that can be done to a web page is essentially executing code.
 
@@ -12,7 +12,7 @@ In the examples of attacks, we basically assume "being able to inject HTML" as a
 
 For example, we briefly mentioned earlier that there is another defense line called WAF, Web Application Firewall, which is a firewall specifically designed for applications. It uses pre-written rules to block "seemingly malicious" payloads.
 
-For instance, Dcard uses Cloudflare's WAF. You can try clicking on this link: [https://www.dcard.tw/?a=%3Cscript%3E](https://www.dcard.tw/?a=%3Cscript%3E)
+For instance, Dcard(a social media platform in Taiwan) uses Cloudflare's WAF. You can try clicking on this link: [https://www.dcard.tw/?a=%3Cscript%3E](https://www.dcard.tw/?a=%3Cscript%3E)
 
 You will see a blocked message:
 
@@ -55,7 +55,7 @@ This rule uses the regular expression `<script[^>]*>[\s\S]*?` to find code conta
 
 There are also other rules corresponding to our favorite `<img src=x onerror=alert()>`, so in practice, we often encounter situations where we think a website is easy to attack, but it turns out to be blocked by WAF. We keep seeing error windows even though the vulnerability exists, but we can't exploit it because of the WAF.
 
-This cat-and-mouse game between hackers and websites is one of the interesting aspects of cybersecurity, and it emphasizes the importance of experience and knowledge. Regarding WAF, many WAF bypass payloads often appear on Twitter. To bypass WAF, the content is usually intentionally "disgusting," like this:
+This cat-and-mouse game between hackers and websites is one of the interesting aspects of cybersecurity, and it emphasizes the importance of experience and knowledge. Regarding WAF, many WAF bypass payloads often appear on Twitter. To bypass WAF, the content is usually intentionally "disgusting," like this (credit to [@bxmbn](https://twitter.com/bxmbn/status/1686415626649145344)):
 
 ``` html
 <details/open=/Open/href=/data=; ontoggle="(alert)(document.domain)
@@ -69,7 +69,7 @@ Even if a website can inject HTML, so what? If the payload that can execute XSS 
 
 This kind of thinking usually stems from a limited understanding of front-end security, where XSS is the only known attack. It is often believed that executing code directly is necessary to achieve an attack. In fact, there are many other "indirect attack" methods, and some attack techniques don't even require executing JavaScript.
 
-As I mentioned at the beginning of this series, front-end security is a vast universe. We have already spent a lot of time exploring XSS, so it's time to enter a new galaxy! Let's take a short break, and in the next post, we will officially enter Chapter 3: "Attack Techniques That Don't Execute JavaScript Directly."
+As I mentioned at the beginning of this series, front-end security is a vast universe. We have already spent a lot of time exploring XSS, so it's time to enter a new galaxy! Let's take a short break, and in the next post, we will officially enter Chapter 3: "Attacks without JavaScript"
 
 In the upcoming content, I will introduce more attack techniques beyond XSS.
 
@@ -77,7 +77,7 @@ Chapter 3 will progress step by step, from "indirectly influencing the execution
 
 Before entering Chapter 3, you can also think about any "attack techniques that don't execute JavaScript directly" that you have heard of. It's very likely that they will be covered in the upcoming content.
 
-Finally, let's have a little quiz. Xiao Ming is implementing a multiplayer drawing game using a two-dimensional array to represent the canvas. Players can draw any color on any grid, and the array is updated using `onmessage`. The implementation is as follows:
+Finally, let's have a little quiz. Bob is implementing a multiplayer drawing game using a two-dimensional array to represent the canvas. Players can draw any color on any grid, and the array is updated using `onmessage`. The implementation is as follows:
 
 ``` js
 onmessage = function(event){

@@ -16,7 +16,7 @@ Let me give you an example. You have probably seen movies like "Mission: Impossi
 
 The reason for having multiple layers of security is simple: to increase safety. Although some designs may seem secure, you can never guarantee that they won't be breached. Therefore, additional layers of protection are needed to ensure that "only when each layer is breached will there be damage," thus increasing the cost for attackers.
 
-The same principle applies to cybersecurity. Even if we thoroughly check the backend code and ensure that every part is properly validated and encoded, we cannot guarantee that the frontend will never be vulnerable to XSS. New developers may make mistakes and write insecure code, and third-party libraries may have 0-day vulnerabilities or be compromised with malicious code. All of these are possibilities.
+The same principle applies to cybersecurity. Even if we thoroughly check the backend code and ensure that every part is properly validated and encoded, we cannot guarantee that the frontend will never be vulnerable to XSS. New developers may make mistakes and write insecure code, and third-party libraries may have 0-day vulnerabilities or be compromised with malicious code. All of these are risks.
 
 That's why we add CSP, which at least ensures that if the first layer is compromised, the second layer can still block the attack, preventing the attacker from loading external resources or sending data out. Of course, the second layer is not foolproof either. In the upcoming chapters, we will see techniques to bypass CSP rules, rendering CSP ineffective.
 
@@ -52,13 +52,13 @@ And in addition to XSS, it also ensures that "even if someone physically accesse
 
 For example, the most secure approach is to require a new SMS for every API call, which is very secure but also provides a poor user experience. Therefore, in practical situations, most operations only require a second verification method for major actions. Other APIs that retrieve data, such as transaction records or user data, do not require additional protection.
 
-## Second Trick: Preventing Token Theft
+## Tactic 2: Preventing Token Theft
 
 As mentioned earlier, the most common way is to steal the token after an attack. Here, the term "token" does not refer to any specific technology. It can be a session ID, a JWT token, or an OAuth token. Just consider it as something that can verify identity.
 
 If the token is stolen, the user can use it to send requests to the backend API without being limited to the browser.
 
-Some people may think, "Does it matter if the token is stolen? Can't it be used to perform actions on behalf of the user?" For example, suppose the token is stored as an HttpOnly cookie, which ensures that JavaScript cannot access the cookie. However, when an attacker uses `fetch('/api/me')`, they can still obtain personal data because the cookie is automatically included in the request.
+Some people may think, "Does it matter if the token is stolen?" For example, suppose the token is stored as an HttpOnly cookie, which ensures that JavaScript cannot access the cookie. However, when an attacker uses `fetch('/api/me')`, they can still obtain personal data because the cookie is automatically included in the request.
 
 This is correct, but although it may not seem different, attackers can still do many things. However, there are some subtle differences.
 
@@ -74,7 +74,7 @@ The second difference is whether there is a "time limit." If they have the token
 
 But if they can only use XSS, it means they can only execute attacks when the user has the webpage open. Once the user closes the webpage or the browser, they cannot execute JavaScript code anymore.
 
-Therefore, if possible, it is best not to directly take away the token, as it limits the attacks that the attacker can launch.
+Therefore, if possible, it is best not to let the attacker get the token, as it limits the attacks that the attacker can launch.
 
 With the current frontend mechanisms, the only way to ensure that JavaScript cannot access the token is to use an HttpOnly cookie (excluding browser vulnerabilities and APIs that directly return tokens). There are no other options.
 
@@ -104,7 +104,7 @@ const API = (function() {
   }
 })()
 
-// 使用的時候
+// Using API
 API.login()
 API.getProfile()
 ```
@@ -124,7 +124,7 @@ Therefore, a more secure method is to prevent XSS from interfering with the exec
 
 ![](./pics/08-02.png)
 
-The approximate code is as follows (just a conceptual example, not actually executed):
+The approximate code is as follows (just a conceptual example):
 
 ``` js
 // worker.js
@@ -135,7 +135,7 @@ async function login({ username, password }) {
     body: JSON.stringify({ username, password })
   }).then(res => res.json())
   .then(data => {
-    // 讓 token 不要回傳
+    // Do not return token
     const { token, ...props } = data
     token = data.token
     return props
@@ -203,7 +203,7 @@ However, this solution obviously increases development costs because many things
 
 Regarding token storage, if you need to access the token in JavaScript and do not need persistence, this option is probably the best solution. Auth0, a company specializing in identity verification, has also written an article discussing token storage, which you can refer to: [Auth0 docs - Token Storage](https://auth0.com/docs/secure/security-guidance/data-security/token-storage)
 
-## Third Measure: Limit API Calls
+## Tactic 3: Limit API Calls
 
 As mentioned earlier, even if the token is not stolen, attackers can still call the API and get a response through XSS, which is true when using cookies to store the token.
 
@@ -213,13 +213,13 @@ Just like the example given above, all API requests must go through Web Workers,
 
 For example, suppose the backend API server has implemented a `/uploadFile` function, but this function is for internal use only, so it is not implemented in the worker. In this case, attackers cannot use this function no matter what, adding an extra layer of protection.
 
-## Fourth Measure: Limit Token Permissions
+## Tactic 4: Limit Token Scopes
 
 Similar to when devising defense strategies against XSS, it is important to minimize the damage in case XSS occurs. Therefore, the last measure is to assume that the token will be exploited and consider what else can be done to reduce the damage.
 
-The most intuitive approach is to limit the permissions of the token, so that it cannot perform too many actions. Of course, backend access control is a must, but the frontend can also do more.
+The most intuitive approach is to limit the scopes of the token, so that it cannot perform too many actions. Of course, backend access control is a must, but the frontend can also do more.
 
-For example, suppose there is a restaurant reservation system, and the backend API is a complete package, whether it is for making reservations or for internal use. They all use the same API server, such as `/users/me` to get one's own data and `/internal/users` to get all user data (with permission checks).
+For example, suppose there is a restaurant reservation system, and the backend API is a complete service, whether it is for making reservations or for internal use. They all use the same API server, such as `/users/me` to get one's own data and `/internal/users` to get all user data (with permission checks).
 
 Suppose XSS occurs on the restaurant reservation website, and the target being attacked is an authorized internal employee. In that case, the attacker can call `/internal/users` to get all user data. The ideal solution would be to separate the internal system from the restaurant reservation system at the backend API level, but this may require too much time and cost.
 

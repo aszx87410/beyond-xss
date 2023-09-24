@@ -446,7 +446,7 @@ The interface will look like this:
 
 We re-rendered a React app in the srcdoc of the iframe, and through DOM clobbering, this React app rendered another page. By using CSS injection, we can steal data and achieve our goal.
 
-This question is from the corCTF 2022 modernblog challenge. For more details, you can refer to my previous detailed explanation in English: [corCTF 2022 writeup - modernblog](https://blog.huli.tw/2022/08/21/en/corctf-2022-modern-blog-writeup/)
+This challenge is from the corCTF 2022 modernblog challenge and created by @strellic. For more details, you can refer to my previous detailed explanation: [corCTF 2022 writeup - modernblog](https://blog.huli.tw/2022/08/21/en/corctf-2022-modern-blog-writeup/)
 
 ## Summary
 

@@ -10,7 +10,7 @@ But do these libraries also have issues? It is possible, and in fact, it has hap
 
 Before understanding mXSS, let's take a look at how sanitizers typically work.
 
-## Basic Operation of Sanitizers
+## Basic Flow of Sanitizers
 
 Based on our previous experience, the input to a sanitizer is a string that contains HTML, and the output is also a string containing HTML. Here's an example of how it is used:
 
@@ -29,9 +29,9 @@ So, how does the sanitizer work internally? In fact, the internal operation is s
 
 This process seems to have no issues, but the devil is in the details. What if "HTML that appears to be safe is actually not safe"? Wait, didn't we already sanitize it? How can it be unsafe? Let's look at an example first.
 
-## Browser's Helpful Service
+## Browser's "Considerate" Feature
 
-The browser is a helpful program that, in order to handle various situations and comply with specifications, may not display the HTML exactly as you see it. For example, consider the following example:
+The browser is a considerate software that, in order to handle various situations and comply with specifications, may not display the HTML exactly as you see it. For example, consider the following example:
 
 ``` html
 <!DOCTYPE html>
@@ -232,7 +232,7 @@ From the experiments above, we can conclude that whether there is an outer `<svg
 
 ## Putting It All Together
 
-We mentioned the browser's mutation at the beginning, which allows us to "make all elements jump out of the `<svg>`". We also mentioned that "whether there is an outer `<svg>` for `<style>` is important". Combining these two concepts, we arrive at the ultimate boss: mXSS.
+We mentioned the browser's mutation at the beginning, which allows us to "make all elements jump out of the `<svg>`". We also mentioned that "whether there is an outer `<svg>` for `<style>` is important". Combining these two concepts, we can have a mXSS.
 
 On September 19, 2019, DOMPurify released version 2.0.1 to fix an mXSS vulnerability that bypassed checks using mutations. The problematic payload at that time was:
 

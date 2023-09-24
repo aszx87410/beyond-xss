@@ -2,7 +2,7 @@
 sidebar_position: 16
 ---
 
-# Client Side Template Injection (CSTI) in Frontend
+# Template Injection in Frontend: CSTI
 
 CSTI, short for Client Side Template Injection, refers to template injection in the frontend. Since there is a frontend version, there is also a corresponding backend version called SSTI, which stands for Server Side Template Injection.
 
@@ -54,12 +54,12 @@ Template injection does not mean "attackers can manipulate data like `post`," bu
 For example, let's say there is a marketing email service. Usually, companies import user data into it and set their own templates, like this:
 
 ``` html
-嗨嗨 {{name}}，我是公司的創辦人 Huli
+Hi, {{name}}
 
-不知道我們目前的產品你用的還習慣嗎？
-如果不習慣的話，隨時可以跟我約個十分鐘的線上會議
+Do you find our product fits for your needs?
+If not, feel free to schedule a brief 10-minute online meeting with me at your convenience.
 
-可以點這個連結預約：<a href="{{link}}?q={{email}}">預約連結</a>
+You can make a reservation <a href="{{link}}?q={{email}}">here</a>
 
 Huli
 ```
@@ -76,12 +76,12 @@ data = {
 }
 
 template_str = """
-嗨嗨 {{name}}，我是公司的創辦人 Huli
+Hi, {{name}}
 
-不知道我們目前的產品你用的還習慣嗎？
-如果不習慣的話，隨時可以跟我約個十分鐘的線上會議
+Do you find our product fits for your needs?
+If not, feel free to schedule a brief 10-minute online meeting with me at your convenience.
 
-可以點這個連結預約：<a href="{{link}}?q={{email}}">預約連結</a>
+You can make a reservation <a href="{{link}}?q={{email}}">here</a>
 
 Huli
 """
@@ -96,12 +96,12 @@ print(rendered_template)
 The final output is:
 
 ``` html
-嗨嗨 Peter，我是公司的創辦人 Huli
+Hi, Peter
 
-不知道我們目前的產品你用的還習慣嗎？
-如果不習慣的話，隨時可以跟我約個十分鐘的線上會議
+Do you find our product fits for your needs?
+If not, feel free to schedule a brief 10-minute online meeting with me at your convenience.
 
-可以點這個連結預約：<a href="https://example.com?q=test@example.com">預約連結</a>
+You can make a reservation <a href="https://example.com?q=test@example.com">here</a>
 
 Huli
 ```
@@ -135,7 +135,7 @@ The output will become: `Output: Darwin`, and Darwin is the result of executing 
 
 In simple terms, you can think of the contents inside `{{}}` as the code that the template engine will execute for you.
 
-Although we used to only write simple `{{name}}`, we can actually do more operations, such as `{{ name + email }}`. In the case above, it starts with `self` and uses Python black magic to read `__import__`, allowing the importing of other modules and achieving command execution.
+Although we used to only write simple `{{name}}`, we can actually do more operations, such as `{{ name + email }}`. In the case above, it starts with `self` and uses Python magic to read `__import__`, allowing the importing of other modules and achieving command execution.
 
 Vulnerabilities that allow attackers to control the template are called template injection. When it occurs on the backend, it is called SSTI, and when it occurs on the frontend, it is called CSTI.
 
@@ -271,7 +271,7 @@ The defense method is the same as SSTI. Never treat user input as part of the te
 
 ## Practical Case of CSTI
 
-Let's take a hot case as an example. Masato Kinugawa, a cybersecurity researcher from Japan, demonstrated an RCE vulnerability in Microsoft's communication software Teams during Pwn2Own 2022. By sending a message to the target, one can execute code on their computer! This vulnerability earned a prize of $150,000 at Pwn2Own, which is approximately 4.8 million New Taiwan Dollars.
+Let's take a hot case as an example. Masato Kinugawa, a cybersecurity researcher from Japan, demonstrated an RCE vulnerability in Microsoft's communication software Teams during Pwn2Own 2022. By sending a message to the target, one can execute code on their computer! This vulnerability earned a prize of $150,000 at Pwn2Own.
 
 Teams' desktop software is built with Electron, so essentially, it is a web page. To achieve RCE, the first step is usually to find XSS, which allows executing JavaScript code on the web page.
 
@@ -312,7 +312,7 @@ Therefore, by combining the class name checking rules mentioned earlier, we can 
 
 The original article also includes a section on how AngularJS parses class names and bypasses the AngularJS sandbox for this version. Transforming XSS into RCE requires some effort, but since these are not related to the CSTI discussed in this article, they are skipped. I highly recommend checking out the original presentation: [How I Hacked Microsoft Teams and got $150,000 in Pwn2Own](https://speakerdeck.com/masatokinugawa/how-i-hacked-microsoft-teams-and-got-150000-dollars-in-pwn2own)
 
-(By the way, Masato is really amazing. Many of his technical articles have impressed me. His understanding of frontend, JavaScript, and AngularJS is top-notch. I had the privilege of working with him for a while and witnessed his excellence up close.)
+(By the way, Masato is really amazing. Many of his technical articles have impressed me. His understanding of frontend, JavaScript, and AngularJS is top-notch.)
 
 ## AngularJS and CSP Bypass
 
@@ -365,7 +365,7 @@ In fact, in the GoogleCTF 2023, there was a challenge to bypass the CSP of `http
 </html>
 ```
 
-If you are interested in AngularJS CSP bypass, you can refer to my previous article: [Automatically Finding Alternatives to prototype.js in AngularJS CSP Bypass](https://blog.huli.tw/2022/09/01/angularjs-csp-bypass-cdnjs/), which introduces another bypass method.
+If you are interested in AngularJS CSP bypass, you can refer to my previous article: [Automatically Finding Alternatives to prototype.js in AngularJS CSP Bypass](https://blog.huli.tw/2022/09/01/en/angularjs-csp-bypass-cdnjs/), which introduces another bypass method.
 
 ## Conclusion
 

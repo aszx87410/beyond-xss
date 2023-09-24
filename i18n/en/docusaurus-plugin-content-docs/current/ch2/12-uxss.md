@@ -2,7 +2,7 @@
 sidebar_position: 12
 ---
 
-# The Strongest XSS: Universal XSS
+# The Most Powerful XSS: Universal XSS
 
 All the XSS vulnerabilities we mentioned earlier are mostly caused by negligence on the part of the website itself, allowing attackers to execute JavaScript code on the website.
 
@@ -33,16 +33,16 @@ In the world of Android, there is something called an "intent," which represents
 If you want to open Chrome and browse a specific page, you can write corresponding code based on this intention:
 
 ``` java
-// 宣告新的 intent
+// Declare a new intent
 Intent intent = new Intent("android.intent.action.VIEW");
 
-// intent 要傳給的對象是 Chrome app
+// The intent is for Chrome app
 intent.setClassName("com.android.chrome", "com.google.android.apps.chrome.Main");
 
-// 設置要開啟的 URL
+// Set the URL
 intent.setData(Uri.parse("https://example.com"));
 
-// 開啟
+// Send the intent
 startActivity(intent);
 ```
 
@@ -158,5 +158,3 @@ UXSS vulnerabilities like these are usually beyond the control of websites becau
 For browsers, this is actually a significant vulnerability. Just think about it, if an attacker successfully exploits UXSS, they can read your Gmail, read your Facebook messages, and take away all your data. It is a very frightening situation.
 
 As users, all we can do is keep our browsers updated to the latest version and hope that vendors promptly fix these vulnerabilities.
-
-UXSS vulnerabilities are relatively severe and there are fewer cases. Most of them are from a long time ago (e.g., ten years ago). You can try to find UXSS vulnerabilities that have occurred in the past (excluding the ones mentioned above) and share them with others in the comments section.

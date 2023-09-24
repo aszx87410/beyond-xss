@@ -70,7 +70,7 @@ All dangerous elements have been removed. The goal of the Sanitizer API is to en
       .querySelector("#content")
       .setHTML(html, { sanitizer });
     /*
-        結果：Hello, this is my channel:
+        result: Hello, this is my channel:
     */
   </script>
 </body>
@@ -79,11 +79,11 @@ All dangerous elements have been removed. The goal of the Sanitizer API is to en
 
 The configuration file states that iframes are allowed, including the `src` attribute. However, in the final result, the iframe is still removed. This is because, as I mentioned earlier, the Sanitizer API guarantees that you can never use dangerous tags. So, regardless of the configuration, iframes are not allowed.
 
-Someone has also raised this issue in the [Allow Embedding #124](https://github.com/WICG/sanitizer-api/issues/124) issue. The biggest problem is that once iframes are allowed and the assumption of "being safe no matter what" is maintained, there are many things to consider.
+Someone has also raised this issue in the [Allow Embedding #124](https://github.com/WICG/sanitizer-api/issues/124). The biggest problem is that once iframes are allowed and the assumption of "being safe no matter what" is maintained, there are many things to consider.
 
 For example, if filtering is applied to the `src` attribute, should the URLs inside it be filtered? Should `data:` URLs be removed? What about `srcdoc`? Should it also be re-filtered? This issue is still open and has been inactive for over a year.
 
-The [specification of the Sanitizer API](https://wicg.github.io/sanitizer-api/#baseline-elements) defines a list of baseline elements and baseline attributes. Since it is quite long, I won't paste it here. If the element or attribute you want to add is not in this list, there is no way to use it "no matter what."
+The [specification of the Sanitizer API](https://wicg.github.io/sanitizer-api/#baseline-elements) defines a list of baseline elements and baseline attributes. Since it is quite long, I won't paste it here. If the element or attribute you want to add is not in this list, there is no way to use it no matter what.
 
 This can be considered both an advantage and a disadvantage of the Sanitizer API. Although it may lack flexibility, the advantage is that no matter how it is used, there won't be any issues. Unlike the third-party packages we introduced before, there is a possibility of issues if the configuration is not properly adjusted.
 
@@ -141,14 +141,14 @@ Once Trusted Types are enforced, you can no longer directly pass a string to `in
 <body>
   <div id=content></div>
   <script>
-    // 新增一個 policy
+    // create a new policy
     const sanitizePolicy = trustedTypes.createPolicy('sanitizePolicy', {
-      // 決定你要怎麼做 sanitize/escape
+      // add sanitize/escape
       createHTML: (string) => string
         .replace(/</g, "&lt;")
         .replace(/>/g, '&gt;')
     });
-    // 回傳的 safeHtml 型態為 TrustedHTML，不是字串
+    // The type of safeHtml is TrustedHTML, not String
     const safeHtml = sanitizePolicy.createHTML('<h1>hello</h1>')
     document.querySelector("#content").innerHTML = safeHtml
   </script>
@@ -158,9 +158,9 @@ Once Trusted Types are enforced, you can no longer directly pass a string to `in
 
 The purpose of Trusted Types is not to "ensure your HTML is problem-free," but rather to "force the use of Trusted Types on potentially problematic DOM APIs and disallow the use of strings." This significantly reduces many risks. When you accidentally forget to handle user input, the browser will throw an error instead of rendering the unprocessed string as HTML.
 
-Therefore, after enabling Trusted Types, you only need to focus on the implementation of `createHTML` and ensure that these implementations are problem-free. Additionally, from the above example, you can see that the content of `createHTML` is determined by us, so it can also be combined with DOMPurify.
+Therefore, after enabling Trusted Types, you only need to focus on the implementation of `createHTML` and ensure that these implementations are secure. Additionally, from the above example, you can see that the content of `createHTML` is determined by us, so it can also be combined with DOMPurify.
 
-What about combining it with the Sanitizer API? It is also possible, but currently, browsers do not support it, and this is also the recommended approach in the [official documentation](https://github.com/WICG/sanitizer-api/blob/main/faq.md#can-i-use-the-sanitizer-api-together-with-trusted-types):
+What about combining it with the Sanitizer API? It is possible, and this is also the recommended approach in the [official documentation](https://github.com/WICG/sanitizer-api/blob/main/faq.md#can-i-use-the-sanitizer-api-together-with-trusted-types):
 
 > Can I use the Sanitizer API together with Trusted Types?
 > 

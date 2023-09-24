@@ -55,9 +55,9 @@ The most common meta tags are:
 ``` html
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="這篇文章裡面會講到只透過 HTML 的攻擊方式">
+<meta name="description" content="Attacking via HTML">
 <meta property="og:type" content="website">
-<meta property="og:title" content="就算只有 HTML 也能攻擊？">
+<meta property="og:title" content="Attacking via HTML">
 <meta property="og:locale" content="zh_TW">
 ```
 
@@ -99,7 +99,7 @@ Similar to reverse tabnabbing, when a website can access the `window` of other p
 
 For iframes, it can be done like this:
 
-```
+``` js
 // top refers to the top-level window
 top.location = 'https://example.com'
 ```
@@ -134,13 +134,13 @@ In our case, enabling `allow-scripts` means that the pages within the iframe can
 
 The ultimate goal is to achieve the same effect as the previous meta example, redirecting the website to a phishing page and increasing the chances of successful phishing.
 
-This vulnerability has been found in [codimd](https://github.com/hackmdio/codimd/issues/1263) and [GitLab](https://ruvlol.medium.com/1000-for-open-redirect-via-unknown-technique-675f5815e38a). The latter even offered a $1000 bounty for this vulnerability, equivalent to about 30,000 TWD.
+This vulnerability has been found in [codimd](https://github.com/hackmdio/codimd/issues/1263) and [GitLab](https://ruvlol.medium.com/1000-for-open-redirect-via-unknown-technique-675f5815e38a). The latter even offered a $1000 bounty for this vulnerability.
 
 As for defense, if the website should not have iframes in the first place, make sure to filter them out. If they must be used, do not allow users to specify the sandbox attribute themselves.
 
-For more practical examples and an introduction to iframes, you can refer to [Preventing XSS is not that easy](https://blog.huli.tw/2021/05/25/prevent-xss-is-not-that-easy/) and [Iframe and window.open black magic](https://blog.huli.tw/2022/04/07/iframe-and-window-open/).
+For more practical examples and an introduction to iframes, you can refer to [Preventing XSS is not that easy](https://blog.huli.tw/2021/05/25/en/prevent-xss-is-not-that-easy/) and [Iframe and window.open black magic](https://blog.huli.tw/2022/04/07/en/iframe-and-window-open/).
 
-## Can attacks be carried out through forms?
+## Attacks carried out through forms
 
 What if a website allows users to insert form-related elements, such as `<form>`?
 
@@ -246,9 +246,9 @@ Compared to the attack techniques mentioned earlier, using HTML alone to attack 
 
 However, despite this, we must admit that these methods still have an impact, and we should not underestimate attacks that target user habits.
 
-For example, in the world of cryptocurrency, you can transfer 0 units of currency from someone else's account to another person. For example, Xiao Ming can transfer 0 units to Xiao Hua, and Xiao Mei can transfer 0 units to Xiao Ming. As long as the amount is 0 units, you can transfer it however you want, and the transaction fee is paid by the person initiating the operation.
+For example, in the world of cryptocurrency, you can transfer 0 units of currency from someone else's account to another person. For example, Alice can transfer 0 units to Bob, and Peter can transfer 0 units to Alice. As long as the amount is 0 units, you can transfer it however you want, and the transaction fee is paid by the person initiating the operation.
 
-According to common sense, although it is strange to help others transfer money, who would do such a thing? Xiao Hua and Xiao Mei's balances will not change, and Xiao Ming will lose 100 units in transaction fees. Why would he do this?
+According to common sense, although it is strange to help others transfer money, who would do such a thing? Bob and Alice's balances will not change, and Alice will lose 100 units in transaction fees. Why would he do this?
 
 But once combined with the user's usual transfer habits, it becomes an interesting attack technique.
 
@@ -266,10 +266,8 @@ Assuming that A's wallet address in the exchange is the above `0xa7B4BAC8f0f9692
 
 With the aforementioned user habit, as long as A copies and pastes from the transaction history, it will be copied to the fake address I created, and the money will be transferred to this fake wallet.
 
-And in reality, there are quite a few people with this habit, and even the world's largest cryptocurrency exchange, Binance, was scammed out of 600 million Taiwanese dollars in August 2023 due to this attack.
+And in reality, there are quite a few people with this habit, and even the world's largest cryptocurrency exchange, Binance, was scammed out of 20M USD in August 2023 due to this attack.
 
 From this case, we can see that some seemingly insignificant issues, when combined with other exploitation methods, can become extremely powerful.
 
-Chapter 3, "Attacks that do not directly execute JavaScript," ends here. The next chapter is "Attacking Other Websites Across Restrictions," which will explore the security restrictions imposed by browsers on communication between web pages and how we can bypass them.
-
-Sure, please paste the Markdown content that you would like me to translate.
+Chapter 3, "Attacks without JavaScript," ends here. The next chapter is "Cross-site attacks" which will explore the security restrictions imposed by browsers on communication between web pages and how we can bypass them.

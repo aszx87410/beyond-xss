@@ -80,7 +80,7 @@ There are many types, right? And this list is subject to change. For example, th
 
 In addition to these, there are actually many more, but I didn't specifically mention the less commonly used ones. If you're interested, you can refer to [MDN: Content-Security-Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy) or [Content Security Policy Reference](https://content-security-policy.com/) for more information.
 
-So, what are the possible rules for each of these? Depending on the instructions, different rules can be used.
+So, what are the possible rules for each of these? Depending on the directives, different rules can be used.
 
 The commonly used rules are as follows:
 
@@ -91,7 +91,7 @@ The commonly used rules are as follows:
 5. `example.com` - Allows specific domains (both HTTP and HTTPS).
 6. `https://example.com` - Allows specific origins (HTTPS only).
 
-For example, `script-src *` is basically equivalent to not setting any rule, while `script-src 'none'` completely blocks the execution of any JavaScript.
+For example, `script-src *` is basically equivalent to not setting any rule(allows all URLs, but it's worth noting that inline script is still blocked), while `script-src 'none'` completely blocks the execution of any JavaScript.
 
 Furthermore, some rules can be combined. In practice, you often see rules like this:
 
@@ -101,7 +101,7 @@ script-src 'self' cdn.example.com www.google-analytics.com *.facebook.net
 
 Sometimes scripts are hosted on the same origin, so `self` is needed. Some scripts are hosted on a CDN, so `cdn.example.com` is required. And because Google Analytics and Facebook SDK are used, `www.google-analytics.com *.facebook.net` is needed to load their JavaScript.
 
-The complete CSP is a combination of these rules, with instructions separated by `;`, like this:
+The complete CSP is a combination of these rules, with directives separated by `;`, like this:
 
 ```
 default-src 'none'; script-src 'self' cdn.example.com www.google-analytics.com *.facebook.net; img-src *;
@@ -132,12 +132,12 @@ Similarly, `setInterval`, `Function`, and others can achieve the same thing, but
 In addition to these, there is also `'nonce-xxx'`, which means generating a random string on the backend, for example, `a2b5zsa19c`. Then, a script tag with `nonce=a2b5zsa19c` can be loaded:
 
 ```html
-<!-- 允許 -->
+<!-- Allowed -->
 <script nonce=a2b5zsa19c>
   alert(1)
 </script>
 
-<!-- 不允許 -->
+<!-- Not allowed -->
 <script>
   alert(1)
 </script>
@@ -152,13 +152,13 @@ There is also a similar `'sha256-abc...'` rule, which allows specific inline scr
   <meta http-equiv="Content-Security-Policy" content="script-src 'sha256-bhHHL3z2vDgxUt0W3dWQOrprscmda2Y5pLsLg4GF+pI='">
 </head>
 <body>
-  <!-- 允許 -->
+  <!-- Allowed -->
   <script>alert(1)</script>
 
-  <!-- 不允許 -->
+  <!-- Not Allowed -->
   <script>alert(2)</script>
 
-  <!-- 多一個空格也不允許，因為 hash 值不同 -->
+  <!-- An extra space is also not allowed because it results in a different hash value-->
   <script>alert(1) </script>
 </body>
 </html>
@@ -391,7 +391,7 @@ Moreover, the barrier to entry is not high. You can start with the "report only"
 
 Finally, let's have a little quiz, which will be answered in future articles.
 
-After reading this article, Xiao Ming looked back at his own project and found that all JavaScript files come from `https://unpkg.com` packages. Therefore, he added the following CSP. What is the problem with the `script-src` part?
+After reading this article, Bob looked back at his own project and found that all JavaScript files come from `https://unpkg.com` packages. Therefore, he added the following CSP. What is the problem with the `script-src` part?
 
 ```
 Content-Security-Policy: script-src https://unpkg.com;

@@ -55,7 +55,7 @@ When configuring CSP, a common practice is to use a nonce to specify which scrip
 </html>
 ```
 
-Opening the console will show an error:
+After opening the console, we can see an error:
 
 > Refused to load the script 'https://example.com/my.js' because it violates the following Content Security Policy directive: "script-src 'nonce-abc123'". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback.
 
