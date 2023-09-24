@@ -15,10 +15,10 @@ There are some subtle differences between this and the previously mentioned "enc
 Before getting into the main topic, let's take a look at the answer to the previous post. At the end of the previous post, I posted a piece of code and asked if anyone had any questions:
 
 ``` js
-// 這是一個可以在 profile 頁面嵌入自己 YouTube 影片的功能
+// This is a feature that users can embed their favorite YouTube videos in their profile page
 const url = 'value from user'
 
-// 確保是 YouTube 網址的開頭
+// Make sure it's YouTube video URL
 if (url.startsWith('https://www.youtube.com/watch')) {
   document.querySelector('iframe').src = url
 }

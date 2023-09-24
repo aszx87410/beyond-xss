@@ -22,7 +22,7 @@ Now let's move on to the main topic of this post: "javascript: pseudo protocol".
 
 ## What is the javascript: pseudo protocol?
 
-The English name for the pseudo protocol is "pseudo protocol," where "pseudo" refers to pseudo code, which is like a virtual code.
+The word "pseudo" refers to pseudo code, which is like a virtual code.
 
 Compared to "real protocols" like HTTP, HTTPS, or FTP, the pseudo protocol is more like a special protocol unrelated to the network. Examples of pseudo protocols include `mailto:` and `tel:`.
 
@@ -74,7 +74,7 @@ The correct approach is to check if the URL is in the format of a YouTube video 
 
 If you think the above feature is not very common, try inputting your own blog or Facebook URL on a profile page and adding a hyperlink to the page. This feature becomes more common, right?
 
-This is an easily overlooked area. I myself discovered this vulnerability in [Hahow](https://zeroday.hitcon.org/vulnerability/ZD-2020-00903):
+This is an easily overlooked area. I myself discovered this vulnerability in [Hahow](https://zeroday.hitcon.org/vulnerability/ZD-2020-00903), an online course platform in Taiwan:
 
 ![](pics/05-01.png)
 
@@ -94,7 +94,7 @@ Therefore, if you write like this in React, it will cause issues:
 import React from 'react';
 
 export function App(props) {
-  // 假設底下的資料是來自於使用者
+  // Assume the following data comes from the user input
   const href = 'javascript:alert(1)'
   return (
     <a href={href}>click me</a>
@@ -127,7 +127,7 @@ const link = ref('javascript:alert(1)')
 </template>
 ```
 
-This will also successfully execute JavaScript. This attack method is mentioned in Vue's documentation, called [URL Injection](https://vuejs.org/guide/best-practices/security.html#potential-dangers). It is recommended that users handle URL validation and processing on the backend rather than waiting until the frontend.
+This will also successfully execute JavaScript. This attack method is mentioned in Vue's documentation, called [URL Injection](https://vuejs.org/guide/best-practices/security.html#potential-dangers). It is recommended that developers handle URL validation and processing on the backend rather than waiting until the frontend.
 
 If you need to handle it on the frontend, it is suggested to use the [sanitize-url](https://github.com/braintree/sanitize-url) library.
 
@@ -154,7 +154,7 @@ I actually discovered this vulnerability on another website called Matters News.
 
 ![](pics/05-02.png)
 
-After clicking the login button, a function called `redirectToTarget` is called, and the code for this function is as follows:
+After clicking the confirm button, a function called `redirectToTarget` is called, and the code for this function is as follows:
 
 ``` js
 /**
@@ -373,13 +373,11 @@ As developers, it is crucial to be constantly aware of these issues and handle t
 Lastly, I leave a small question for everyone: What is the problem with the following code? It doesn't necessarily have to be an XSS vulnerability; any security-related issue counts:
 
 ``` js
-// 這是一個可以在 profile 頁面嵌入自己 YouTube 影片的功能
+// This is a feature that users can embed their favorite YouTube videos in their profile page
 const url = 'value from user'
 
-// 確保是 YouTube 影片網址的開頭
+// Make sure it's YouTube video URL
 if (url.startsWith('https://www.youtube.com/watch')) {
   document.querySelector('iframe').src = url
 }
 ```
-
-References: [Issues to Consider When Implementing Redirect Functionality: Open Redirect](https://blog.huli.tw/2021/09/26/what-is-open-redirect/)

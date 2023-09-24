@@ -11,25 +11,25 @@ The biggest difference in web frontend is that the code runs on the browser. The
 
 For web frontend, its execution environment is the browser.
 
-In the example below, the outermost black circle represents the operating system, and the two green applications run on top of the operating system. The one on the right represents the browser, and the web frontend runs on top of the browser. The deeper the layer, the more restrictions there are:
+In the example below, the outermost black square represents the operating system, and the two green applications run on top of the operating system. The one on the right represents the browser, and the web frontend runs on top of the browser. The deeper the layer, the more restrictions there are:
 
 ![](pics/02-01.png)
 
 It is important to remember this point in order to understand why there are things that web frontend cannot do. It's not that I don't want to do it, but the browser doesn't allow me to do it. For example, the backend server can easily perform file read and write operations, but it may not be achievable in web frontend. Why is that? Because the browser doesn't allow us to do it.
 
-Why can I see others writing about __ (please fill in), but I can't find a way to do it in frontend? It is very likely because the browser does not allow you to do it.
+Why can I see others implementing features about ____ (fill in anything), but I can't find a way to do it in frontend? It is very likely because the browser does not allow you to do it.
 
 In summary:
 
-> If the browser doesn't give it to you, you can't get it. If you can't get it, you can't get it.
+> If the browser doesn't give it to you, you can't get it. You just can't.
 
 So what security restrictions does the browser impose? What does it limit? Here are a few examples.
 
-## Prohibit Active Access to Local Files
+## Prohibit Proactive Access to Local Files
 
 For the backend, its code runs directly on the operating system, which means it is just a regular application. If there are no special permission restrictions, it can basically do whatever it wants. The whole machine is its playground.
 
-But there are many restrictions for frontend. For example, it cannot "actively" read and write files on the computer. Let's talk about what is possible. You can use `<input type=file>` to allow users to select a file, and then use `FileReader` to read the contents of the file, like this:
+But there are many restrictions for frontend. For example, it cannot "proactively" read and write files on the computer. Let's talk about what is possible. You can use `<input type=file>` to allow users to select a file, and then use `FileReader` to read the contents of the file, like this:
 
 ``` html
 <input type="file" onchange="show(this)">
@@ -324,7 +324,7 @@ main();
 </html>
 ```
 
-Since the vulnerability exists within V8, you can see that the code above performs many operations that may seem incomprehensible. These operations are usually designed to satisfy certain conditions that trigger issues in V8. However, providing a detailed explanation is beyond the scope of this translation. If you're interested, you can refer to the detailed analysis written by the GitHub security team: [Chrome in-the-wild bug analysis: CVE-2021-30632](https://securitylab.github.com/research/in_the_wild_chrome_cve_2021_30632/)
+Since the vulnerability exists within V8, you can see that the code above performs many operations that may seem incomprehensible. These operations are usually designed to satisfy certain conditions that trigger issues in V8. However, providing a detailed explanation is beyond the scope of this article. If you're interested, you can refer to the detailed analysis written by the GitHub security team: [Chrome in-the-wild bug analysis: CVE-2021-30632](https://securitylab.github.com/research/in_the_wild_chrome_cve_2021_30632/)
 
 By the way, some engineers who are not familiar with the limitations of JavaScript often try to accomplish things that are fundamentally impossible with JavaScript.
 
