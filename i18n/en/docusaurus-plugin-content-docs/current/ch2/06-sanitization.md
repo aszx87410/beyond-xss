@@ -4,7 +4,7 @@ sidebar_position: 6
 
 # The First Line of Defense Against XSS: Sanitization
 
-After discussing the various basics and attack techniques of XSS, let's talk about defense. Starting from this post, we will officially enter Chapter 2: "Methods of XSS Defense and Bypass Techniques."
+After discussing the various basics and attack techniques of XSS, let's talk about defense. Starting from this post, we will officially enter Chapter 2: "Defense and Bypass for XSS."
 
 As mentioned before when discussing XSS defense, we can encode user input to prevent it from being interpreted as its original meaning, thus avoiding risks.
 
@@ -28,7 +28,7 @@ The problem with this code is that the validation for the URL is not strict enou
 
 But that doesn't sound too bad, right? It's just another YouTube page, and it should still be within YouTube.
 
-In theory, that's correct, unless the website has an [open redirect](https://blog.huli.tw/2021/09/26/what-is-open-redirect/) vulnerability that can redirect to any URL. In that case, the attacker can control the content displayed in the iframe.
+In theory, that's correct, unless the website has an [open redirect](https://blog.huli.tw/2021/09/26/en/what-is-open-redirect/) vulnerability that can redirect to any URL. In that case, the attacker can control the content displayed in the iframe.
 
 For example, if `https://www.youtube.com/redirect?target=https://blog.huli.tw` redirects to `https://blog.huli.tw`, I can use this URL to make the iframe display my blog instead of the expected YouTube video.
 
@@ -356,4 +356,4 @@ Alternatively, you can also think about why we need a second line of defense.
 
 References:
 
-1. [Preventing XSS may be more difficult than you think](https://blog.huli.tw/2021/05/25/prevent-xss-is-not-that-easy/).
+1. [Preventing XSS may be more difficult than you think](https://blog.huli.tw/2021/05/25/en/prevent-xss-is-not-that-easy/).
