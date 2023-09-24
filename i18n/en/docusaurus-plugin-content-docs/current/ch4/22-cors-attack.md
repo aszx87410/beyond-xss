@@ -34,16 +34,16 @@ It has significant issues.
 Let's say I create a website with the URL `https://fake-example.com` and try to get users to click on it. Inside the website, there is a script:
 
 ``` js
-// 用 api 去拿使用者資料，並且帶上 cookie
+// send a request with cookie
 fetch('https://api.example.com/me', {
   credentials: 'include'
 })
   .then(res => res.text())
   .then(res => {
-    // 成功拿到使用者資料，我可以傳送到我自己的 server
+    // got user data, and I can send it to my server
     console.log(res)
 
-    // 把使用者導回真正的網站
+    // redirect back to the real service
     window.location = 'https://example.com'
   })
 ```
@@ -73,7 +73,6 @@ app.use((req, res, next) => {
   res.headers['Access-Control-Allow-Credentials'] = 'true'
   const origin = req.headers['Origin']
 
-  // 偵測是不是 example.com 結尾
   if (/example\.com$/.test(origin)) {
     res.headers['Access-Control-Allow-Origin'] = origin
   }
@@ -92,7 +91,7 @@ However, this approach has a problem because this can also pass:
 
 Vulnerabilities like this are caused by incorrect CORS settings and are therefore called CORS misconfigurations.
 
-The solution is not to use RegExp for checking but to prepare a whitelist in advance. Only origins that appear in the whitelist can pass; otherwise, they will fail. This way, we can ensure that there are no vulnerabilities in the checking process and remember to add the SameSite attribute to cookies.
+The solution is not to use RegExp for checking but to prepare an allow-list in advance. Only origins that appear in the list can pass; otherwise, they will fail. This way, we can ensure that there are no vulnerabilities in the checking process and remember to add the SameSite attribute to cookies.
 
 ``` js
 const allowOrigins = [
@@ -116,7 +115,7 @@ The first example is a vulnerability found by Jordan Milne in JetBrains IDE in 2
 
 When using JetBrains IDE, it runs a local server. When you open a file and click "view in browser," it opens the URL: `http://localhost:63342/<projectname>/<your_file.html>`, which is handled by the local server behind the scenes.
 
-And this server is not well implemented. Its `Access-Control-Allow-Origin` header is just like the error example I mentioned earlier, directly using the origin header from the request. Therefore, any website can read the response.
+And this server is not well implemented. Its `Access-Control-Allow-Origin` header is just like the wrong example I mentioned earlier, directly using the origin header from the request. Therefore, any website can read the response.
 
 Furthermore, the author discovered a path traversal vulnerability, which allows accessing any file through this API. Therefore, when combined, it means that an attacker can read files on the system through the JetBrains local server API on their website.
 
@@ -143,7 +142,7 @@ Lastly, let's look at the vulnerability I reported for Asiayo in 2020. The root 
 
 ![](pics/22-01.png)
 
-Original report: [Asiayo Website CORS Misconfiguration Vulnerability](https://zeroday.hitcon.org/vulnerability/ZD-2020-00829)
+Original report(in Mardarin): [Asiayo Website CORS Misconfiguration Vulnerability](https://zeroday.hitcon.org/vulnerability/ZD-2020-00829)
 
 ## Other COXX Series Headers
 
@@ -546,5 +545,3 @@ If we were to summarize these four things in a sentence each, it might be:
 The reason for the extensive length of this article is that, on one hand, there are many details to explain, and on the other hand, it shows the importance of the origin concept to the browser, so important that it requires so many measures to protect and ensure the same-origin policy.
 
 After reading through all these same-origin and cross-origin things, let's switch gears in the next article and take a look at the classic CSRF.
-
-I'm sorry, but you haven't provided the Markdown content that needs to be translated. Please paste the Markdown content here so that I can assist you with the translation.

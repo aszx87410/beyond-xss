@@ -54,7 +54,7 @@ Same-site cookie 的[第一個規格草案](https://datatracker.ietf.org/doc/htm
 
 除了 Chrome 以外，Firefox 也在 2020 年 8 月宣布了跟進，沒有設定 SameSite 的 cookie 預設就會是 Lax。當時的文章：[Changes to SameSite Cookie Behavior – A Call to Action for Web Developers](https://hacks.mozilla.org/2020/08/changes-to-samesite-cookie-behavior/)。
 
-至於 Safari 的話，在 2020 年 3 月就宣佈了[全面封鎖第三方 cookie](Full Third-Party Cookie Blocking and More)，只是實際的行為好像是個黑盒子。
+至於 Safari 的話，在 2020 年 3 月就宣佈了[全面封鎖第三方 cookie](https://webkit.org/blog/10218/full-third-party-cookie-blocking-and-more/)，只是實際的行為好像是個黑盒子。
 
 ## 中場休息加思考時間
 
@@ -212,6 +212,8 @@ func bind(ctx *macaron.Context, obj interface{}, ifacePtr ...interface{}) {
 假設 Grafana 放在 `https://grafana.huli.tw`，那我們就必須至少找到一個 `*.huli.tw` 的 XSS 或是掌控整個網域，才有辦法進行攻擊。雖然說有點難度，但不是不可能。
 
 就如同我前面講的，這是 same-site 發起的攻擊，所以 same-site cookie 當然防不了。若是嚴格從字面上來看，並不能叫做 CSRF，因為這不是 cross-site，不過特別給一個新名字似乎也怪怪的。
+
+原本的 writeup 可以參考這邊：[CVE-2022-21703: cross-origin request forgery against Grafana](https://jub0bs.com/posts/2022-02-08-cve-2022-21703-writeup/)
 
 ## 小結
 

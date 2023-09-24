@@ -54,7 +54,7 @@ However, after the pandemic eased slightly in July, this change was gradually re
 
 In addition to Chrome, Firefox also announced in August 2020 that they would follow suit. Cookies without the SameSite attribute would default to Lax. The article at that time was: [Changes to SameSite Cookie Behavior – A Call to Action for Web Developers](https://hacks.mozilla.org/2020/08/changes-to-samesite-cookie-behavior/).
 
-As for Safari, they announced in March 2020 that they would [completely block third-party cookies](Full Third-Party Cookie Blocking and More), but the actual behavior seems to be a black box.
+As for Safari, they announced in March 2020 that they would [completely block third-party cookies](https://webkit.org/blog/10218/full-third-party-cookie-blocking-and-more/), but the actual behavior seems to be a black box.
 
 ## Mid-Break for Reflection
 
@@ -159,7 +159,7 @@ It is strongly recommended that developers implement the usual defense measures,
 
 So, even with same-site cookies, it doesn't mean that the previous defense measures can be removed. We still need CSRF tokens, combined with same-site cookies, to build a more robust defense wall and prevent various attack scenarios.
 
-## Real-life Example
+## Real-world Example
 
 In 2022, jub0bs and abrahack discovered a CSRF vulnerability in the open-source monitoring system Grafana, with the identifier [CVE-2022-21703](https://github.com/grafana/grafana/security/advisories/GHSA-cmf4-h3xc-jw8w).
 
@@ -213,6 +213,8 @@ Assuming Grafana is hosted at `https://grafana.huli.tw`, we would need to find a
 
 As I mentioned earlier, this is an attack initiated from the same site, so same-site cookies cannot prevent it. Strictly speaking, if we consider the literal meaning, it cannot be called CSRF because it is not cross-site. However, giving it a new name seems odd.
 
+You can find the original writeup here: [CVE-2022-21703: cross-origin request forgery against Grafana](https://jub0bs.com/posts/2022-02-08-cve-2022-21703-writeup/)
+
 ## Conclusion
 
 In this article, we introduced the new measures that major browsers have recently implemented, which is setting cookies to `SameSite=Lax` by default. Although this does increase some security, do not think that using this alone can completely prevent CSRF.
@@ -229,4 +231,3 @@ References:
 4. [SameSite——防御 CSRF & XSSI 新机制](https://rlilyyy.github.io/2016/07/10/SameSite-Cookie%E2%80%94%E2%80%94%E9%98%B2%E5%BE%A1-CSRF-XSSI/)
 5. [Cross-Site Request Forgery is dead!](https://scotthelme.co.uk/csrf-is-dead/)
 
-I'm sorry, but you haven't provided the Markdown content that needs to be translated. Please paste the Markdown content here so that I can assist you with the translation.

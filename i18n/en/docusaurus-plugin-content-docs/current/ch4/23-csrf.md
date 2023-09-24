@@ -10,15 +10,11 @@ Now, let's talk about another similar attack called CSRF, short for Cross-Site R
 
 Let's start by understanding what CSRF is through a simple example!
 
-## Introducing CSRF with a Lazy Delete Feature
+## Introducing CSRF with a Delete Feature
 
-I once created a simple backend page, think of it as a blog. It had features to create, delete, and edit articles. The interface looked something like this:
+I once created a simple backend page, think of it as a blog. It had features to create, delete, and edit articles. 
 
-![](pics/23-01.png)
-
-You can see the delete button, which, when clicked, would delete an article.
-
-There are many ways to implement this feature, such as making an API call or submitting a form. However, I chose a simpler approach to be lazy.
+There are many ways to implement the delete feature, such as making an API call or submitting a form. However, I chose a simpler approach to be lazy.
 
 For the sake of simplicity, I thought if I made this feature a GET request, I could simply use a link to accomplish the deletion without writing much code on the frontend:
 
@@ -34,17 +30,17 @@ Indeed, the permission check was correct, "Only the author can delete their own 
 
 Well, let me show you how it can be done!
 
-Let's assume that Little Black is an evil villain who wants to trick Little Ming into deleting his own article without his knowledge. How can he do it?
+Let's assume that Bob is an evil villain who wants to trick Peter into deleting his own article without his knowledge. How can he do it?
 
-Knowing that Little Ming loves psychological tests, Little Black creates a psychological test website and sends it to Little Ming. However, this test website has a button that looks like this:
+Knowing that Peter loves psychological tests, Bob creates a psychological test website and sends it to Peter. However, this test website has a button that looks like this:
 
 ``` html
 <a href='https://small-min.blog.com/delete?id=3'>Start Test</a>
 ```
 
-Excited, Little Ming clicks on the "Start Test" button. Upon clicking, the browser sends a GET request to `https://small-min.blog.com/delete?id=3` and, due to the browser's mechanism, also includes the cookies from `small-min.blog.com`.
+Excited, Peter clicks on the "Start Test" button. Upon clicking, the browser sends a GET request to `https://small-min.blog.com/delete?id=3` and, due to the browser's mechanism, also includes the cookies from `small-min.blog.com`.
 
-When the server receives the request, it checks the session and finds that it is indeed Little Ming and that the article was written by him. As a result, the server deletes the article.
+When the server receives the request, it checks the session and finds that it is indeed Peter and that the article was written by him. As a result, the server deletes the article.
 
 This is CSRF, Cross-Site Request Forgery.
 
@@ -52,7 +48,7 @@ You are clearly on a psychological test website, let's say `https://test.com`, b
 
 This is why CSRF is also known as a one-click attack. You get compromised with just one click.
 
-Some observant individuals might say, "But doesn't Little Ming realize what happened? He visited the blog, so it doesn't fit the 'without his knowledge' condition!"
+Some observant individuals might say, "But doesn't Peter realize what happened? He visited the blog, so it doesn't fit the 'without his knowledge' condition!"
 
 These are minor issues. What if we change it like this:
 
@@ -61,7 +57,7 @@ These are minor issues. What if we change it like this:
 <a href='/test'>Start Test</a>
 ```
 
-While opening the page, we secretly send a deletion request with an invisible image. This time, Little Ming truly has no idea about it. Now it fits the condition!
+While opening the page, we secretly send a deletion request with an invisible image. This time, Peter truly has no idea about it. Now it fits the condition!
 
 From this simple example, we can clearly see the principles and attack methods of CSRF.
 
@@ -80,13 +76,13 @@ There is one, it's called `<form>`.
 ``` html
 <form action="https://small-min.blog.com/delete" method="POST">
   <input type="hidden" name="id" value="3"/>
-  <input type="submit" value="開始測驗"/>
+  <input type="submit" value="Start test"/>
 </form>
 ```
 
-After Xiao Ming clicked on it, he fell into the trap again and the article was deleted. Last time it was through an invisible image, this time it's through a form.
+After Peter clicked on it, he fell into the trap again and the article was deleted. Last time it was through an invisible image, this time it's through a form.
 
-You might wonder, but wouldn't Xiao Ming know about it? I was also skeptical, so I Googled and found this article: [Example of silently submitting a POST FORM (CSRF)](http://stackoverflow.com/questions/17940811/example-of-silently-submitting-a-post-form-csrf)
+You might wonder, but wouldn't Peter know about it? I was also skeptical, so I Googled and found this article: [Example of silently submitting a POST FORM (CSRF)](http://stackoverflow.com/questions/17940811/example-of-silently-submitting-a-post-form-csrf)
 
 The example provided in the article is as follows, the web world is truly vast and profound:
 
@@ -99,7 +95,7 @@ The example provided in the article is as follows, the web world is truly vast a
 <script>document.getElementById("csrf-form").submit()</script>
 ```
 
-Open an invisible iframe, so that the result after form submission appears inside the iframe, and this form can also be automatically submitted, without any action from Xiao Ming.
+Open an invisible iframe, so that the result after form submission appears inside the iframe, and this form can also be automatically submitted, without any action from Peter.
 
 At this point, you know that changing to POST is useless, CSRF issues still exist.
 
@@ -194,7 +190,7 @@ We add a hidden field called `csrf_token` inside the form. The value of this fie
 <form action="https://small-min.blog.com/delete" method="POST">
   <input type="hidden" name="id" value="3"/>
   <input type="hidden" name="csrf_token" value="fj1iro2jro12ijoi1"/>
-  <input type="submit" value="刪除文章"/>
+  <input type="submit" value="Delete"/>
 </form>
 ```
 
@@ -216,7 +212,7 @@ Set-Cookie: csrf_token=fj1iro2jro12ijoi1
 <form action="https://small-min.blog.com/delete" method="POST">
   <input type="hidden" name="id" value="3"/>
   <input type="hidden" name="csrf_token" value="fj1iro2jro12ijoi1"/>
-  <input type="submit" value="刪除文章"/>
+  <input type="submit" value="Delete"/>
 </form>
 ```
 
@@ -291,11 +287,11 @@ But what if there are issues with the CORS configuration? Then it won't be able 
 
 ## Real-life Examples
 
-The first case to introduce is the CSRF vulnerability in Google Cloud Shell in 2022. There was an API for file uploads without any CSRF protection, allowing attackers to exploit this vulnerability to upload files like `~/.bash_profile`, which would execute the uploaded commands every time the user runs bash.
+The first case to introduce is the CSRF vulnerability in Google Cloud Shell in 2022 found by Obmi. There was an API for file uploads without any CSRF protection, allowing attackers to exploit this vulnerability to upload files like `~/.bash_profile`, which would execute the uploaded commands every time the user runs bash.
 
 You can refer to the full article: [[ GCP 2022 ] Few bugs in the google cloud shell](https://obmiblog.blogspot.com/2022/12/gcp-2022-few-bugs-in-google-cloud-shell.html)
 
-The second case is a vulnerability discovered by a cybersecurity company called Ermetic in 2023 on Azure web service. The process is quite interesting.
+The second case is a vulnerability discovered by a cybersecurity company called Ermetic in 2023 on Azure web service. This is a quite interesting one.
 
 Azure web service is similar to Heroku, where you can deploy a web application once you have prepared the code. These servers also have a Kudu SCM installed by default, which allows you to view environment variables, settings, download logs, etc., but requires authentication to access.
 
@@ -362,4 +358,3 @@ References:
 5. [Spring Security Reference](http://docs.spring.io/spring-security/site/docs/3.2.5.RELEASE/reference/htmlsingle/#csrf)
 6. [CSRF 攻击的应对之道](https://www.ibm.com/developerworks/cn/web/1102_niugang_csrf/)
 
-I'm sorry, but you haven't provided the Markdown content that needs to be translated. Please paste the Markdown content here so that I can assist you with the translation.

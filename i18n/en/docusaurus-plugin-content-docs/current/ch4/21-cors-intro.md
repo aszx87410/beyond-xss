@@ -52,7 +52,7 @@ During development, many people run a server on their own computer with URLs lik
 If the browser didn't block cross-origin APIs, I could write code like this:
 
 ``` js
-// 發出 request 得到資料
+// send request and get response
 function sendRequest(url, callback) {
   const request = new XMLHttpRequest();
   request.open('GET', url, true);
@@ -62,10 +62,10 @@ function sendRequest(url, callback) {
   request.send();
 }
 
-// 嘗試針對每一個 port 拿資料，拿到就送回去我的 server
+// try every port
 for (let port = 80; port < 10000; port++) {
   sendRequest('http://localhost:' + port, data => {
-    // 把資料送回我的 server
+    // send data back to my server
   })
 }
 ```
@@ -76,40 +76,29 @@ Furthermore, if you think the above two examples are not feasible, let's make an
 
 So, if I send a request to `https://www.facebook.com/messages/t`, I could see your chat messages. If I send a request to `https://mail.google.com/mail/u/0/`, I could see your private emails.
 
-When it comes to this point, we can understand why cross-origin AJAX requests are blocked, in three words: "security".
-
+When it comes to this point, we can understand why cross-origin AJAX requests are blocked, in one word: "security".
 
 In the browser, if you want to retrieve the complete content of a website (able to fully read it), you can basically only do it through `XMLHttpRequest` or `fetch`. If these cross-origin AJAX requests are not restricted, it would be possible to use the user's browser to retrieve the content of "any website", including various websites that may contain sensitive information.
 
-
 Therefore, it is reasonable for browsers to block cross-origin AJAX requests for the sake of security.
-
 
 At this point, some people may have a question: "Why are images, CSS, or scripts not blocked?"
 
-
 This is because these are more like "part of the web resources". For example, if I want to use someone else's image, I use `<img>` to import it, and if I want to use CSS, I use `<link href="...">`. The resources that can be obtained through these tags are limited. Furthermore, once I load an image, it is just an image. Only the browser knows the content of the image, I don't know it, and I cannot read it with a program. This is important.
-
 
 After I load an image, it is really just an image. I cannot read its content with a program, so I cannot send the obtained result to another place. Therefore, there is less risk of data leakage.
 
-
 To correctly understand cross-origin requests, the first step is to understand "why browsers block them", and the second step is to have a correct understanding of "how they are blocked". Below, I have prepared a quiz for you to try to answer.
-
 
 ## In-class Quiz
 
 John is working on a project that needs to integrate an API. In the company, there is an API for deleting posts. You can delete a post by sending a POST request to `https://lidemy.com/deletePost` with the post ID as `application/x-www-form-urlencoded` content type.
 
-
 For example, sending a POST request to `https://lidemy.com/deletePost` with `id=13` will delete the post with ID 13 (the backend does not perform any permission checks).
-
 
 The frontend and backend domains are different, and the backend does not add the CORS header. Therefore, John believes that the frontend cannot make the AJAX call to delete the post because it will be restricted by the same-origin policy, and the request cannot be sent.
 
-
 After making the call, the console indeed shows the error message: "request has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource".
-
 
 So John believes that the frontend cannot use AJAX to call this API and delete the post. He thinks the post cannot be deleted.
 
@@ -154,7 +143,7 @@ But the results are always the same, marked as "won't fix" because it is a compl
 
 Let me clarify a concept that many people are confused about.
 
-Earlier, I mentioned that blocking CORS is for security purposes. If it is not blocked, attackers can use AJAX to retrieve internal non-public data, resulting in the leakage of company secrets. And here I also mentioned that "there is no CORS issue outside the browser," which means that even if CORS is blocked, can I still send requests to the same website and retrieve data? Does this mean there is no security issue?
+Earlier, I mentioned that blocking CORS is for security purposes. If it is not blocked, attackers can use AJAX to retrieve internal non-public data, resulting in the leakage of company secrets. And here I also mentioned that "there is no CORS issue outside the browser," which means that even if CORS is blocked, can I still send requests to the same website and retrieve data? Isn't that a security issue?
 
 For example, if I use curl or Postman or any other tool, shouldn't I be able to bypass CORS restrictions?
 
@@ -239,4 +228,3 @@ For "simple requests," only the third condition needs to be met. For "non-simple
 
 In this article, we have learned the basic principles of CORS and "why browsers block cross-origin requests." Ultimately, it is all about security, which is why this restriction exists. In addition, we have learned how to set CORS headers. One section mentions that `Access-Control-Allow-Origin` does not support multiple values, so if many origins require this header, it must be dynamically set. What if it is not set correctly? That would be a security vulnerability, which we will discuss in our next article.
 
-This article is adapted from: [CORS 完全手冊（一）：為什麼會發生 CORS 錯誤？](https://blog.huli.tw/2021/02/19/cors-guide-1) and [CORS 完全手冊（三）：CORS 詳解](https://blog.huli.tw/2021/02/19/cors-guide-3/)
