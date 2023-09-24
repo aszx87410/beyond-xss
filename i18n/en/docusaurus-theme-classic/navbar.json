@@ -1,15 +1,11 @@
 {
   "title": {
-    "message": "My Site",
+    "message": "Beyond XSS：Explore the Front-end Universe",
     "description": "The title in the navbar"
   },
   "logo.alt": {
-    "message": "My Site Logo",
+    "message": "logo",
     "description": "The alt text of navbar logo"
-  },
-  "item.label.Home": {
-    "message": "Home",
-    "description": "Navbar item with label Home"
   },
   "item.label.GitHub": {
     "message": "GitHub",

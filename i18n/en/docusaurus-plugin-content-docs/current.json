@@ -3,12 +3,24 @@
     "message": "Next",
     "description": "The label for version current"
   },
-  "sidebar.tutorialSidebar.category.第一章：從重新認識 JavaScript 開始": {
-    "message": "First chapeter",
-    "description": "The label for category 第一章：從重新認識 JavaScript 開始 in sidebar tutorialSidebar"
+  "sidebar.tutorialSidebar.category.第一章：從 XSS 開始談前端資安": {
+    "message": "Chapter 1: Starting with XSS",
+    "description": "The label for category 第一章：從 XSS 開始談前端資安 in sidebar tutorialSidebar"
   },
-  "sidebar.tutorialSidebar.category.第二章": {
-    "message": "第二章",
-    "description": "The label for category 第二章 in sidebar tutorialSidebar"
+  "sidebar.tutorialSidebar.category.第二章：XSS 的防禦方式以及繞過手法": {
+    "message": "Chapter 2: Defense and bypass for XSS ",
+    "description": "The label for category 第二章：XSS 的防禦方式以及繞過手法 in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.第三章：不直接執行 JavaScript 的攻擊手法": {
+    "message": "Chapter 3: Attacks without JavaScript  ",
+    "description": "The label for category 第三章：不直接執行 JavaScript 的攻擊手法 in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.第四章：跨越限制攻擊其他網站": {
+    "message": "Chapter 4: Cross-site attacks ",
+    "description": "The label for category 第四章：跨越限制攻擊其他網站 in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.第五章：其他有趣的前端資安主題": {
+    "message": "Chapter 5: Other interesting topics  ",
+    "description": "The label for category 第五章：其他有趣的前端資安主題 in sidebar tutorialSidebar"
   }
 }
