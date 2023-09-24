@@ -4,7 +4,7 @@ sidebar_position: 20
 
 # The Essence: Same-origin Policy and Site
 
-In previous articles, we have mentioned "same-origin" or "同源" several times. It is an extremely important term in both the frontend and cybersecurity worlds. The same-origin policy of browsers is crucial in development and also when dealing with attacks.
+In previous articles, we have mentioned "same-origin" several times. It is an extremely important term in both the frontend and cybersecurity worlds. The same-origin policy of browsers is crucial in development and also when dealing with attacks.
 
 Additionally, there are a few terms that are often confused, such as host and site. For example, XS in XSS stands for cross-site, and CS in CSRF also means cross-site. So, what is the difference between origin and site? How are they different from host?
 
@@ -53,9 +53,6 @@ In the HTML specification's [7.5 Origin](https://html.spec.whatwg.org/multipage/
 
 > Origins are the fundamental currency of the web's security model. Two actors in the web platform that share an origin are assumed to trust each other and to have the same authority. Actors with differing origins are considered potentially hostile versus each other, and are isolated from each other to varying degrees.
 
-Here is the translated Markdown content:
-
-```
 The content here is very clear. It starts by explaining that if two websites have the same origin, it means that these two websites trust each other. However, if they have different origins, they will be isolated and restricted.
 
 Next, the specification divides origins into two types: "An opaque origin" and "A tuple origin".
@@ -107,9 +104,6 @@ Therefore, when determining whether two origins, A and B, are the same site, the
 > 
 > * A and B are schemelessly same site
 > * A and B are either both opaque origins, or both tuple origins with the same scheme
-```
-
-Please note that I have only translated the content and have not made any changes to the Markdown structure, code blocks, or URLs.
 
 If A and B are the same site, either they are both opaque origins or they have the same scheme and are schemelessly same site.
 
@@ -119,17 +113,17 @@ There is a bit of history here. When same site was first introduced, it did not 
 
 In the 2016 RFC: Same-site Cookies, you can see that the determination of same site did not include the scheme. So at that time, `https://huli.tw` and `http://huli.tw` were considered the same site.
 
-It wasn't until June 2019 that the discussion started on whether to include the scheme in the consideration. For more details, refer to: Treat http://foo.com -> https://foo.com requests as Sec-Fetch-Site: cross-site. #34.
+It wasn't until June 2019 that the discussion started on whether to include the scheme in the consideration. For more details, refer to: https://github.com/w3c/webappsec-fetch-metadata/issues/34
 
-At that time, the same site specification was not defined in the HTML specification we see today, but in another URL specification. So the discussion was moved there: Consider introducing a "same-site" concept that includes scheme. #448. Then in September 2019, there was this PR: Tighten 'same site' checks to include 'scheme'. #449, which officially included the scheme in the specification. Same site was defined as "considering the scheme", and a new term was introduced for not considering the scheme: schemelessly same site.
+At that time, the same site specification was not defined in the HTML specification we see today, but in another URL specification. So the discussion was moved there: [Consider introducing a "same-site" concept that includes scheme. #448](https://github.com/whatwg/url/issues/448). Then in September 2019, there was this PR: [Tighten 'same site' checks to include 'scheme'. #449](https://github.com/whatwg/url/pull/449), which officially included the scheme in the specification. Same site was defined as "considering the scheme", and a new term was introduced for not considering the scheme: schemelessly same site.
 
-Then, after two months, the relevant specification was moved from URL to HTML. You can refer to these two PRs: Let HTML handle the "same site" definition #457, Define (schemelessly) same site for origins #5076.
+Then, after two months, the relevant specification was moved from URL to HTML. You can refer to these two PRs: [Let HTML handle the "same site" definition #457](https://github.com/whatwg/url/pull/457), [Define (schemelessly) same site for origins #5076](https://github.com/whatwg/html/pull/5076).
 
 Specifications are one thing, but sometimes browsers don't immediately catch up with the changes. So what is the current implementation in browsers?
 
-In November 2020, Chrome wrote an article: Schemeful Same-Site, indicating that at that time, different schemes were still considered the same site. But from Chrome platform status: Feature: Schemeful same-site, we can see that Chrome started considering the scheme from version 89.
+In November 2020, Chrome wrote an article: [Schemeful Same-Site](https://web.dev/schemeful-samesite/), indicating that at that time, different schemes were still considered the same site. But from [Chrome platform status: Feature: Schemeful same-site](https://chromestatus.com/feature/5096179480133632), we can see that Chrome started considering the scheme from version 89.
 
-As for Firefox, from the status of this issue: [meta] Enable cookie sameSite schemeful, it seems that this behavior is not yet the default. If not specifically configured, different schemes are still considered the same site.
+As for Firefox, from the status of this issue: [[meta] Enable cookie sameSite schemeful](https://bugzilla.mozilla.org/show_bug.cgi?id=1651119), it seems that this behavior is not yet the default. If not specifically configured, different schemes are still considered the same site.
 
 After going through the history, let's take a look at how schemelessly same site is determined:
 
@@ -298,7 +292,7 @@ Next, both Alice and Bob click on "update domain" on their respective pages, and
 
 ![success](pics/20-05.png)
 
-This time, you will see that we have successfully obtained the data from Bob's page, and changed `http://alice.example.com:5555` and `http://bob.example.com:5555` from cross-origin to same origin. This is the art of ninjutsu, transforming same site into same origin!
+This time, you will see that we have successfully obtained the data from Bob's page, and changed `http://alice.example.com:5555` and `http://bob.example.com:5555` from cross-origin to same origin.
 
 This technique cannot be used by any two web pages. Basically, only websites on the same site can use it, and there are also many checks during the setup:
 
@@ -367,13 +361,9 @@ The same-origin policy is a browser protection mechanism that ensures only web p
 
 After introducing the important concepts of origin and site, we will gradually encounter two related terms: CSRF (Cross-site request forgery) and CORS (Cross-origin resource sharing).
 
-This article is adapted from: [忍術！把 same site 變 same origin 之術！](https://blog.huli.tw/2022/01/16/same-site-to-same-origin-document-domain/)
-
 References:
 
 1. [HTML spec](https://html.spec.whatwg.org/multipage/origin.html#origin)
 2. [URL spec](https://url.spec.whatwg.org/#host-registrable-domain)
 3. [如何判斷兩個網域的擁有者是否相同？](https://blog.kalan.dev/2021-11-09-url-and-samesite/)
 4. [Chrome will disable modifying document.domain to relax the same-origin policy](https://developer.chrome.com/blog/immutable-document-domain/)
-
-I'm sorry, but you haven't provided the Markdown content for translation. Please paste the Markdown content that you would like me to translate into English.

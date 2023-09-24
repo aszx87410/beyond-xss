@@ -4,7 +4,7 @@ sidebar_position: 10
 
 # Conclusion
 
-The above is all the content of "Beyond XSS: Exploring the Frontend Security Universe". We started by discussing frontend security with XSS, introducing various types of XSS and attack methods. We then discussed defense techniques, including sanitization, CSP, and the latest Trusted Types and Sanitizer API.
+The above is all the content of "Beyond XSS: Exploring the Web Front-end Security Universe". We started by discussing frontend security with XSS, introducing various types of XSS and attack methods. We then discussed defense techniques, including sanitization, CSP, and the latest Trusted Types and Sanitizer API.
 
 Next, we introduced some techniques that can attack without directly executing JavaScript, such as prototype pollution caused by JavaScript language features, DOM clobbering using HTML to affect JavaScript, and CSS injection that doesn't require JavaScript. We want everyone to realize that attacks are not limited to JavaScript.
 
@@ -34,7 +34,7 @@ If you want to stay updated with the latest frontend security knowledge, I also 
 4. [@albinowax](https://twitter.com/albinowax): Chief researcher at PortSwigger, who presents new web attack techniques every year.
 5. [@garethheyes](https://twitter.com/garethheyes): Also a security researcher at PortSwigger, who has discovered many frontend vulnerabilities related to browsers. He is knowledgeable in frontend security and JavaScript.
 6. [@filedescriptor](https://twitter.com/filedescriptor): Mentioned in the previous posts when discussing cookie tossing and cookie bomb.
-7. [@SecurityMB](https://twitter.com/SecurityMB): Known for discovering the classic Gmail DOM clobbering and bypassing DOMPurify using mutation XSS. He seems to be working at Google now.
+7. [@SecurityMB](https://twitter.com/SecurityMB): Known for discovering the classic Gmail DOM clobbering and bypassing DOMPurify using mutation XSS. He is also working at Google now.
 
 There are other well-known experts in the front-end security community that were mentioned less frequently in previous articles (not mentioning them doesn't mean they are not experts, it may just be that I forgot at the moment, and Twitter will automatically recommend other experts to you after following these people): [@lbherrera_](https://twitter.com/lbherrera_), [@RenwaX23](https://twitter.com/RenwaX23), [@po6ix](https://twitter.com/po6ix), [@Black2Fan](https://twitter.com/black2fan), [@shhnjk](https://twitter.com/shhnjk), and [@S1r1u5_](https://twitter.com/S1r1u5_).
 
