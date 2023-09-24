@@ -1,0 +1,14 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.tutorialSidebar.category.第一章：從重新認識 JavaScript 開始": {
+    "message": "First chapeter",
+    "description": "The label for category 第一章：從重新認識 JavaScript 開始 in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.第二章": {
+    "message": "第二章",
+    "description": "The label for category 第二章 in sidebar tutorialSidebar"
+  }
+}
