@@ -2,9 +2,9 @@
 sidebar_position: 27
 ---
 
-# Your Screen is Not Your Screen: Clickjacking
+# What You See Is Not What You Get: Clickjacking
 
-This is the beginning of Chapter 5, "Other Interesting Frontend Security Topics." In this final chapter, we will explore some security topics that are more difficult to categorize and cover a wider range of content.
+This is the beginning of Chapter 5, "Other Interesting Topics". In this final chapter, we will explore some security topics that are more difficult to categorize and cover a wider range of content.
 
 First, let's take a look at clickjacking. Clickjacking is when you think you are clicking on something from Website A, but in reality, you are clicking on something from Website B. Your click is "hijacked" from Website A to Website B.
 
@@ -26,7 +26,7 @@ I find it most interesting and straightforward to understand clickjacking throug
 
 ![](pics/27-01.gif)
 
-I thought I clicked "Confirm Cancellation," but in reality, I clicked "Delete Account." This is clickjacking. If you want to experience it yourself, you can try it on this webpage: [clickjacking example](https://aszx87410.github.io/demo/clickjacking/).
+I thought I clicked Yes and unsubscribe the email, but in reality, I clicked "Delete Account." This is clickjacking. If you want to experience it yourself, you can try it on this webpage: [clickjacking example](https://aszx87410.github.io/demo/clickjacking-en/).
 
 Some people may find this example too simple, and in actual applications, such simple attacks that only require one button click may be rare. Perhaps more websites will be more complex, requiring the user to enter some information first?
 
@@ -36,7 +36,7 @@ It appears to be a webpage for entering email subscription information, but afte
 
 ![](pics/27-02.gif)
 
-A webpage version that you can interact with is also available: [Advanced clickjacking example](https://aszx87410.github.io/demo/clickjacking/adv.html).
+A webpage version that you can interact with is also available: [Advanced clickjacking example](https://aszx87410.github.io/demo/clickjacking-en/adv.html).
 
 The process of clickjacking attack can be summarized as follows:
 
@@ -84,7 +84,7 @@ The green and yellow represent two web pages loaded in iframes, which are two di
 
 Therefore, by checking `if (top !== self)`, you can determine if the web page is being placed inside an iframe. If it is, you can change `top.location` to redirect the top-level web page elsewhere.
 
-This sounds great and seems to have no issues, but it can be bypassed by the `sandbox` attribute of iframes. We mentioned this attribute in the article "Can HTML-only Attacks Exist?" and let's review it briefly.
+This sounds great and seems to have no issues, but it can be bypassed by the `sandbox` attribute of iframes. 
 
 An iframe has an attribute called `sandbox`, which restricts the functionality of the iframe. If you want to remove the restrictions, you must explicitly specify them. There are many possible values, but I'll list a few:
 
@@ -163,13 +163,13 @@ CSP has a directive called `frame-ancestors`, which can be set as follows:
 
 These three options correspond to the previous `X-Frame-Options` directives: `DENY`, `SAMEORIGIN`, and `ALLOW-FROM` (with support for multiple origins this time).
 
-Let's clarify a potential confusion: the behavior restricted by `frame-ancestors` is the same as that of `X-Frame-Options`, which is "which web pages can embed me using an iframe." On the other hand, the CSP rule `frame-src` determines "which sources can load iframes on my web page."
+Let's clarify a potential confusion: the behavior restricted by `frame-ancestors` is the same as that of `X-Frame-Options`, which is "which web pages can embed me using an iframe." On the other hand, the CSP rule `frame-src` determines "which sources can be loaded on my web page."
 
 For example, if I set `frame-src: 'none'` in index.html, any web page loaded within an iframe in index.html will be blocked, regardless of its own settings.
 
 Another example: if my index.html is set to `frame-src: https://example.com`, but example.com has `frame-ancestors: 'none'` set, index.html still cannot load example.com within an iframe because it is rejected by the other side.
 
-In summary, `frame-src` is about "getting along with me," while `frame-ancestors` is the response to that request. I can set `frame-ancestors: 'none'` to reject any advances. For an iframe to be successfully displayed, both parties must agree; if either party disagrees, it will fail.
+In summary, for an iframe to be successfully displayed, both parties must agree; if either party disagrees, it will fail.
 
 Additionally, it is worth noting that `frame-ancestors` is a rule supported only in CSP level 2, gradually adopted by mainstream browsers starting from the end of 2014.
 
@@ -200,7 +200,7 @@ Finally, there is another defense mechanism that browsers have already implement
 
 It is the default `SameSite=Lax` cookie! With this, web pages embedded within iframes will not send cookies to the server, thus not meeting the prerequisite for clickjacking attacks, which is "the user must be logged in." From this perspective, in addition to CSRF mentioned earlier, same-site cookies also address many other security issues.
 
-## Real-life Examples
+## Real-world Examples
 
 ### Yelp
 
@@ -214,8 +214,6 @@ What are the consequences if the user unknowingly clicks the reservation button?
 2. To cancel a reservation, a cancellation fee must be paid. The attacker can collect the money.
 
 Even without registering a restaurant, it is still possible to attack. For example, if I dislike a certain restaurant, I can intentionally share their reservation page and create many fake reservations, making it difficult for the restaurant to distinguish between genuine and fake bookings.
-
-Because these are actual records of users making reservations, they are unaware that they have made a reservation.
 
 ### Twitter
 
@@ -266,9 +264,9 @@ The information obtained inside may currently only reduce user experience a bit 
 
 Alternatively, I speculate that this behavior may also depend on the source of the website. For example, on more reputable websites, this popup may not appear.
 
-I have created a simple demo webpage: [https://aszx87410.github.io/demo/clickjacking/like.html](https://aszx87410.github.io/demo/clickjacking/like.html)
+I have created a simple demo webpage: [https://aszx87410.github.io/demo/clickjacking/like.html](https://aszx87410.github.io/demo/clickjacking-en/like.html)
 
-If likejacking is successful, clicking the button will like the Facebook Developer Plugin's page (I have successfully tested it myself). You can try it out and then click "View Original Webpage" to see what is under the button, and also unlike the page.
+If likejacking is successful, clicking the button will like the Facebook Developer Plugin's page (I have successfully tested it myself). You can try it out and then click "Show Original page" to see what is under the button, and also unlike the page.
 
 ## Conclusion
 

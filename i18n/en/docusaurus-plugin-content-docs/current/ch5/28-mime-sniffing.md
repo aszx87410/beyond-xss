@@ -10,7 +10,7 @@ But what if there is no `Content-Type` header? The browser will try to determine
 
 This behavior of inferring the MIME type from the file content is called MIME sniffing. Let's explore this feature together!
 
-## First Encounter with MIME Sniffing
+## MIME Sniffing 101
 
 We can easily output a response without the `Content-Type` header using Express:
 
@@ -306,7 +306,7 @@ So, what happens if you continue to enable this feature? It introduces an additi
 
 Let's say you happen to find an XSS vulnerability on a website. However, the problem is that the website's CSP is `script-src 'self';`, which means it doesn't allow any external scripts to be loaded and inline scripts are also blocked. How can you bypass the CSP in this case?
 
-If the website provides a file upload feature that accepts files other than images, videos, and CSV files, and doesn't check the content, let's say it only accepts ZIP files, then you can upload a compressed file that actually contains JavaScript code.
+If the website provides a file upload feature that accepts files other than images, videos, and CSV files, and doesn't check the content, let's say it only accepts ZIP files, then you can upload a file that contains JavaScript code.
 
 In this way, you can use `<script src="/uploads/files/my.zip"></script>` to load the script and successfully bypass the CSP. The reason this works is because of the behavior mentioned earlier – as long as the MIME type is not one of those few types, it can be loaded as a script.
 
@@ -320,5 +320,5 @@ Finally, we introduced the purpose and function of the `X-Content-Type-Options: 
 
 References:
 
-1. [UIUCTF 2022 Write-up](https://blog.huli.tw/2022/08/01/uiuctf-2022-writeup/)
-2. [What do you know about `script type`?](https://blog.huli.tw/2022/04/24/script-type/)
+1. [UIUCTF 2022 Write-up](https://blog.huli.tw/2022/08/01/en/uiuctf-2022-writeup/)
+2. [What do you know about script type?](https://blog.huli.tw/2022/04/24/en/script-type/)

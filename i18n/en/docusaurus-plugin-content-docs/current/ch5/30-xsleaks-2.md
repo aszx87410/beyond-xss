@@ -70,7 +70,7 @@ This way, the sent image will have a referrer header containing `/etc/passwd`, c
 
 Expanding on this idea, suppose there is a website where we can report whether we have tested positive for a certain condition, and it also displays different images based on the result. We can use the same technique, relying on XSLeaks to detect whether the person opening the website has tested positive, thereby leaking their personal privacy.
 
-## Cache Probing with Error Events, Adding a New Flavor
+## Cache Probing with Error Events
 
 Although determining whether a resource is in the cache based on time is an effective method, it can sometimes be affected by network uncertainties. For example, if the network is extremely fast, it may be difficult to determine which resource is cached when every resource appears to have a response time of 1ms or 2ms.
 
@@ -81,13 +81,13 @@ Let's assume there is a page called `https://app.huli.tw/search?q=abc`, which di
 First, as in the previous step, we need to clear the cache. There are various methods to choose from, one of which is similar to the cookie bomb method mentioned earlier, where we force the server to return an error by sending a large request, thus clearing the cache in the browser:
 
 ``` js
-// 程式碼改寫自 https://github.com/xsleaks/xsleaks/wiki/Browser-Side-Channels#cache-and-error-events
+// code is modified from https://github.com/xsleaks/xsleaks/wiki/Browser-Side-Channels#cache-and-error-events
 let url = 'https://app.huli.tw/found.png';
 
-// 這行可以在 URL 後面加上一堆逗號，送出去的 request 的 referrer 就會太大
+// this adds a lot characters to the url to make request header huge
 history.replaceState(1,1,Array(16e3));
 
-// 發出 request
+// send request
 await fetch(url, {cache: 'reload', mode: 'no-cors'});
 ```
 
@@ -96,7 +96,7 @@ The second step is to load the target website `https://app.huli.tw/search?q=abc`
 The final step is to make the URL very long and then load the image again:
 
 ``` js
-// 程式碼改寫自 https://github.com/xsleaks/xsleaks/wiki/Browser-Side-Channels#cache-and-error-events
+// code is modified from https://github.com/xsleaks/xsleaks/wiki/Browser-Side-Channels#cache-and-error-events
 let url = 'https://app.huli.tw/found.png';
 
 history.replaceState(1,1,Array(16e3));
@@ -116,9 +116,9 @@ On the other hand, if the image is in the cache, the browser will directly use t
 
 In this way, we can eliminate the unstable factor of time and use cache plus error events to perform XSLeaks.
 
-## Real-life Example of Google XS-Search
+## Real-world Example of Google XS-Search
 
-Let's take a look at a real-life case where this technique was applied.
+Let's take a look at a real-world case where this technique was applied.
 
 In 2019, terjanq discovered an XS-Search vulnerability in various Google products and wrote an article titled [Massive XS-Search over multiple Google products](https://terjanq.medium.com/massive-xs-search-over-multiple-google-products-416e50dd2ec6). The technical details can be found in [Mass XS-Search using Cache Attack](https://terjanq.github.io/Bug-Bounty/Google/cache-attack-06jd2d2mz2r0/index.html). The affected products include:
 
@@ -165,9 +165,6 @@ By doing this, we can reveal the first character of the password. After leaking 
 3. Your password is 13
 4. ...
 
-Here is the translated Markdown content:
-
-```
 It can leak the second character, and by continuously trying, the complete password can be leaked.
 
 However, although it is technically feasible, executing this attack is more difficult. After all, leaking takes time and opens a suspicious new window. To prevent users from noticing, social engineering techniques are relied upon.
@@ -207,7 +204,11 @@ Because different caches are used, attackers cannot execute cache probing attack
 This implementation of cache partitioning also has some impact on normal websites. One example is the shared CDN. Some websites, such as [cdnjs](https://cdnjs.cloudflare.com/), host many JavaScript libraries for free, making it easy for websites to load them:
 
 ``` html
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+  integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+  crossorigin="anonymous"
+></script>
 ```
 
 One of its main selling points is faster loading speed, thanks to caching. Suppose many websites use the cdn.js service. If you have loaded this file on website A, it will not be loaded again on website B.
@@ -229,7 +230,6 @@ In addition, headless Chrome does not have cache partitioning enabled by default
 ## More XSLeaks
 
 Due to space limitations, I have only introduced a few methods of XSLeaks. In fact, there are many other techniques.
-```
 
 In addition to referring to the [XS-Leaks Wiki](https://xsleaks.dev/) knowledge base, there was a paper published in 2021 titled "XSinator.com: From a Formal Model to the Automatic Evaluation of Cross-Site Leaks in Web Browsers" that discovered many new XSLeaks methods using automated techniques.
 

@@ -4,17 +4,17 @@ sidebar_position: 29
 
 # The Most Interesting Frontend Side-Channel Attack: XSLeaks (Part 1)
 
-XSLeaks, short for Cross-site leaks, refers to the technique of using certain tricks to disclose information from other websites. Although by definition, this topic should be placed in the chapter on "Attacking Other Websites Across Boundaries," I decided to put it at the end to give it more emphasis.
+XSLeaks, short for Cross-site leaks, refers to the technique of using certain tricks to disclose information from other websites. Although by definition, this topic should be placed in the chapter on "Cross-site Attacks", I decided to put it at the end to give it more emphasis.
 
 This is the most interesting and favorite topic for me when learning about frontend security. If there were a "Frontend Security Department" in university, XSLeaks would probably be an elective course in the third or fourth year. This means that you need to have a lot of prerequisite knowledge before understanding this topic. It involves communication between the frontend and backend, browser operations, various frontend techniques, as well as imagination and creativity. These are the reasons why I find it fascinating.
 
 To understand what XSLeaks is, we need to start with what side-channel attacks are.
 
-## Side-Channel Attacks: Striking from the Side
+## Side-Channel Attacks 101
 
-Side-channel attacks, also known as side-channel attacks, were mentioned when discussing CPU vulnerabilities like Meltdown and Spectre.
+Side-channel attacks were mentioned when discussing CPU vulnerabilities like Meltdown and Spectre.
 
-One of my favorite examples of side-channel attacks is the classic "light bulb problem" (although it appeared in "The Boundary Breakers of the End of the World," I remember it existed even earlier).
+One of my favorite examples of side-channel attacks is the classic "light bulb problem" (although it appeared in "Alice in Borderland", I remember it existed even earlier).
 
 Imagine you have three switches in your room, each corresponding to a light bulb in another room. These two rooms are separated by a door, so you cannot see the other room. You can freely operate the switches, and then you have only one chance to enter the other room and come back. After returning, you need to answer which switch corresponds to each light bulb. How would you do it?
 
@@ -138,7 +138,10 @@ If I am logged in and the `USER_ID` is correct, user-related data will be return
 The exploitation works like this: Suppose I know someone's Twitter `USER_ID`, let's say it's 12345. I can write the following code on my own blog:
 
 ``` html
-<script src=https://developer.twitter.com/api/users/12345/client-applications.json onload="alert('Hi there, I know you are watching, little Ming!')">
+<script
+  src=https://developer.twitter.com/api/users/12345/client-applications.json
+  onload="alert('Hi there, I know you are watching, Bob!')"
+>
 </script>
 ```
 
@@ -221,7 +224,7 @@ However, even under these restrictions, there is still some information that can
 
 ``` js
 var win = window.open('http://localhost:5555')
-// 等 window 載入完成
+// wait for window loaded
 setTimeout(() => {
   alert(win.frames.length)
 }, 1000)
@@ -265,7 +268,7 @@ Another option is to modify the search results page. Whether there are search re
 
 ## Conclusion
 
-In this article, we learned what side-channel attacks are and understood the basic principles of XSLeaks. We also saw several real-life examples that demonstrate that this is indeed an exploitable vulnerability.
+In this article, we learned what side-channel attacks are and understood the basic principles of XSLeaks. We also saw several real-world examples that demonstrate that this is indeed an exploitable vulnerability.
 
 Of course, XSLeaks usually requires more prerequisites and conditions compared to other vulnerabilities, and the results that can be obtained are limited. However, I personally believe that this is still a very interesting vulnerability.
 

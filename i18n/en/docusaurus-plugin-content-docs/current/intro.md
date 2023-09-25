@@ -3,7 +3,7 @@ sidebar_position: 1
 slug: /
 ---
 
-# About This Book
+# About This Series
 
 As a software engineer, you must be familiar with information security. In your work projects, you may have gone through security audits, including static code scanning, vulnerability scanning, or penetration testing. You may have even done more comprehensive red team exercises. Apart from that, you may have heard of OWASP and have a general idea of what OWASP Top 10 includes and what common security vulnerabilities exist.
 
@@ -53,9 +53,9 @@ In the world of security, knowledge is crucial. There are things you don't know 
 
 Lastly, the field of information security is vast and deep. If there are any technical errors in my articles, I welcome readers to point them out. Thank you.
 
-## The Origin of This Book
+## The Origin of This Series
 
-I started writing this series because of an online event in Taiwan called [2023 iT Ironman Contest](https://ithelp.ithome.com.tw/2023ironman/event). It is a competition where you need to publish articles continuously for 30 days. That's why this book contains 30 articles. After completing the challenge, I extracted the content and built this website using Docusaurus for easier access to the full content.
+I started writing this series because of an online event in Taiwan called [2023 iT Ironman Contest](https://ithelp.ithome.com.tw/2023ironman/event). It is a competition where you need to publish articles continuously for 30 days. That's why this series contains 30 articles. After completing the challenge, I extracted the content and built this website using Docusaurus for easier access to the full content.
 
 All the articles are written in my mother tongue, traditional chinese, and the translation is done by ChatGPT.
 
