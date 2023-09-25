@@ -10,7 +10,7 @@ When we talk about DoS, we might think about sending a large number of packets t
 
 DoS and DDoS attacks actually operate at different layers. These layers correspond to the OSI model that you may have learned about. The attacks we usually think of are more like attacks at the L3 network layer and L4 transport layer. However, cookie bomb is a DoS attack that exists at the L7 application layer.
 
-For example, let's say a website has an API for querying data, and it has a default limit of 100. But when I change it to 10000, I notice that the server takes over a minute to respond. So, I start sending a request every two seconds. As I continue sending these requests, I observe that the website becomes slower and eventually crashes, returning a 500 Internal Server Error. This is an example of a DoS attack at the application layer.
+For example, let's say a website has an API for querying data, and it has a `_limit` parameter to specify how many records should be return, the default value is 100. But when I change it to 10000, I notice that the server takes over a minute to respond. So, I start sending a request every two seconds. As I continue sending these requests, I observe that the website becomes slower and eventually crashes, returning a 500 Internal Server Error. This is an example of a DoS attack at the application layer.
 
 Any method that prevents users from accessing a website can be considered a DoS attack. The method we have discovered is based on the L7 application layer, making it an L7 DoS attack.
 
@@ -63,7 +63,7 @@ To summarize, this attack can only target specific users and requires two prereq
 1. Finding a place where arbitrary cookies can be set.
 2. The target must click on the URL found in step one.
 
-Now let's look at a few real-life examples. The first one is a vulnerability reported by filedescriptor to Twitter in 2015: [DOM based cookie bomb](https://hackerone.com/reports/57356).
+Now let's look at a few real-world examples. The first one is a vulnerability reported by filedescriptor to Twitter in 2015: [DOM based cookie bomb](https://hackerone.com/reports/57356).
 
 He found the following code on the Twitter website:
 
@@ -105,9 +105,6 @@ In fact, there are many requirements like "not allowing the upper-level domain t
 
 Or consider the website of the Presidential Office, `https://www.president.gov.tw`. It should not be affected by the website of the Ministry of Finance, `https://www.mof.gov.tw`. Therefore, `.gov.tw` should also be a domain where cookies cannot be set.
 
-I have translated the Markdown content for you. Here is the English translation:
-
-```
 I don't know if you still remember, but we have actually mentioned this concept when talking about origin and site.
 
 When the browser determines whether it can set a cookie for a certain domain, it refers to a list called the [public suffix list](https://publicsuffix.org/list/). Domains that appear on this list cannot directly set cookies for their subdomains.
@@ -156,7 +153,7 @@ But I found one that is not on the list, and that is Azure CDN provided by Micro
 
 I don't know why, but this domain does not belong to the public suffix, so if I create my own CDN, I can execute a cookie bomb.
 
-## Practical Testing
+## Make a PoC
 
 The code I used for the demo is as follows, referenced and modified from [here](https://github.com/wrr/cookie-bomb/blob/master/bomb.html):
 
@@ -180,7 +177,7 @@ function setCookieBomb() {
 }
 ```
 
-Next, upload the file to Azure and set up the CDN. You will get a custom URL: https://hulitest2.azureedge.net/cookie.html
+Next, upload the file to Azure and set up the CDN.
 
 After clicking on it, a bunch of junk cookies will be set on `azureedge.net`:
 
@@ -196,9 +193,9 @@ So, any resources placed on `azureedge.net` will be affected.
 
 Actually, Azure CDN has the ability to use custom domains, so if you use a custom domain, you won't be affected. However, some websites do not use custom domains and directly use `azureedge.net` as the URL.
 
-## Defense Measures
+## Mitigation
 
-The best defense measure is to use a custom domain instead of the default `azureedge.net`. This way, you won't have the cookie bomb issue. But aside from custom domains, `azureedge.net` should be registered as a public suffix to truly solve the problem.
+The best mitigation is to use a custom domain instead of the default `azureedge.net`. This way, you won't have the cookie bomb issue. But aside from custom domains, `azureedge.net` should be registered as a public suffix to truly solve the problem.
 
 Apart from these two defense measures, there is another one you may not have thought of.
 
@@ -213,7 +210,6 @@ Just add the `crossorigin` attribute:
 ``` html
 <script src="htps://test.azureedge.net/bundle.js" crossorigin></script>
 ```
-```
 
 You can avoid cookie bomb attacks by using the `crossorigin` attribute when making requests. By default, when sending a request, cookies are included. However, if you use the `crossorigin` attribute and make the request in a cross-origin manner, cookies will not be included by default. This prevents the occurrence of the "header too large" issue.
 
@@ -221,7 +217,7 @@ Just remember to adjust the settings on the CDN side as well. Make sure the serv
 
 I used to be confused about when to use the `crossorigin` attribute, but now I know one of the use cases. If you don't want to include cookies in the request, you can add the `crossorigin` attribute.
 
-## Another Practical Example
+## Another Real-world Example
 
 Tumblr, which was originally focused on a specific niche but later acquired by Automattic, has a special feature that allows users to customize CSS and JavaScript on their personal pages. The domain of these personal pages is in the format of userA.tumblr.com. Since tumblr.com is not registered under a public suffix, it is also vulnerable to cookie bomb attacks.
 
@@ -314,8 +310,8 @@ Methods like this bypass CSP restrictions by combining DoS with iframes.
 
 In this article, we have seen another way to use cookies as a means of executing DoS attacks and preventing web pages from loading. Although this vulnerability itself does not have a significant impact, and many companies do not consider it a security vulnerability, when combined with other techniques, it can become a more impactful vulnerability.
 
-This concludes Chapter 4, "Attacking Other Websites Across Boundaries." In the recent articles, we first understood the difference between origin and site, then learned about CORS settings and the consequences of misconfigurations. We also explored CSRF and same-site cookies, and finally discussed the attacks that can be executed after gaining control over same-site.
+This concludes Chapter 4, "Cross-site Attacks". In the recent articles, we first understood the difference between origin and site, then learned about CORS settings and the consequences of misconfigurations. We also explored CSRF and same-site cookies, and finally discussed the attacks that can be executed after gaining control over same-site.
 
-Starting from the next article, we will enter Chapter 5: "Other Interesting Frontend Security Topics."
+Starting from the next article, we will enter Chapter 5: "Other Interesting Topics".
 
-This article is adapted from: [DoS Attack Using Cookie Features: Cookie Bomb](https://blog.huli.tw/2021/07/10/cookie-bomb/)
+This article is adapted from: [DoS Attack Using Cookie Features: Cookie Bomb](https://blog.huli.tw/2021/07/10/en/cookie-bomb/)

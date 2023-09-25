@@ -2,7 +2,7 @@
 sidebar_position: 25
 ---
 
-# From same-site websites to your home
+# From same-site to main site
 
 In the previous post about Grafana attack scenarios, it was mentioned that attackers must first gain control of a same-site website in order to execute subsequent attacks. In this post, let's consider a different perspective: "If you have control over a same-site website, what kind of attacks can you perform?" For example, CSRF is a possible attack method.
 
@@ -38,7 +38,7 @@ As a result, a situation arises where the DNS record still exists, but the desti
 
 In the case of S3, as long as the bucket name is not taken by someone else, you can claim that name. Now that the `xmas.huli.tw` bucket has been deleted, I can create a new one with the same name, `xmas.huli.tw`. This way, the domain `xmas.huli.tw` will point to the S3 bucket, and since the S3 bucket contains my content, I effectively control the content of `xmas.huli.tw`, achieving subdomain takeover.
 
-Apart from S3, there are many other services that provide similar functionality and have this issue. You can refer to the detailed list here: [Can I take over XYZ](https://github.com/EdOverflow/can-i-take-over-xyz). Azure has also created a page specifically explaining how to defend against this: [Prevent dangling DNS entries and subdomain takeover](https://learn.microsoft.com/zh-tw/azure/security/fundamentals/subdomain-takeover). In simple terms, just delete the DNS record, and there will be no problem.
+Apart from S3, there are many other services that provide similar functionality and have this issue. You can refer to the detailed list here: [Can I take over XYZ](https://github.com/EdOverflow/can-i-take-over-xyz). Azure has also created a page specifically explaining how to defend against this: [Prevent dangling DNS entries and avoid subdomain takeover](https://learn.microsoft.com/en-us/azure/security/fundamentals/subdomain-takeover). In simple terms, just delete the DNS record, and there will be no problem.
 
 ## Things You Can Do After Gaining Subdomain Control
 
@@ -50,7 +50,7 @@ Hacktus discovered that one of the subdomains, `test.example.com`, was pointing 
 
 The second case is an article published by a cybersecurity company called Shockwave: [Subdomain Takeover: How a Misconfigured DNS Record Could Lead to a Huge Supply Chain Attack](https://www.shockwave.cloud/blog/subdomain-takeover-how-a-misconfigured-dns-record-could-lead-to-a-huge-supply-chain-attack). The case mentioned in the article is similar to the S3 bucket issue we discussed earlier, but this time the domain taken over is `assets.npmjs.com`.
 
-NPM stands for Node Package Manager, a website used to manage JavaScript packages. If an attacker gains control of `assets.npmjs.com`, they can upload malicious packages and deceive developers into thinking they are safe. Since developers are familiar with this domain and it appears highly credible, the probability of successful phishing is also high.
+NPM stands for Node Package Manager, a service used to manage JavaScript packages. If an attacker gains control of `assets.npmjs.com`, they can upload malicious packages and deceive developers into thinking they are safe. Since developers are familiar with this domain and it appears highly credible, the probability of successful phishing is also high.
 
 The third case involves a vulnerability discovered by Smaran Chand towards the end of 2022: [Taking over the Medium subdomain using Medium](https://smaranchand.com.np/2022/10/taking-over-the-medium-subdomain-using-medium/). One of the subdomains of the blogging platform Medium, `platform.medium.engineering`, points to Medium but does not exist as a blog.
 
@@ -87,7 +87,7 @@ if (allowOrigins.includes(origin)) {
 }
 ```
 
-Prepare a whitelist, and only origins in the whitelist can pass the check. Although this may be more cumbersome because every new domain needs to be manually added, it also increases security by not blindly trusting any subdomain.
+Prepare a list, and only origins in the list can pass the check. Although this may be more cumbersome because every new domain needs to be manually added, it also increases security by not blindly trusting any subdomain.
 
 ## Cookie Tossing
 
@@ -111,7 +111,7 @@ For example, if the cookie on `api.huli.tw` does not have a `path` set, and the 
 
 Usually, when retrieving cookie values on the backend, only the first one is taken by default. Therefore, we will retrieve the cookie we wrote on `s3.huli.tw`.
 
-Through this behavior, an attacker can overwrite cookies from other same-site domains, as if they are "throwing" cookies from a subdomain to another domain. This is known as cookie tossing.
+Through this behavior, an attacker can overwrite cookies from other same-site domains, as if they are "tossing" cookies from a subdomain to another domain. This is known as cookie tossing.
 
 By overwriting the `csrf_token` cookie, we essentially know its value and can execute a CSRF attack. Therefore, in this situation, even with same-site cookie settings and CSRF token checks, we cannot escape the fate of being attacked.
 
