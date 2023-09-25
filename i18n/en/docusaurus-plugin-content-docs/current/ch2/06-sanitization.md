@@ -14,13 +14,13 @@ There are some subtle differences between this and the previously mentioned "enc
 
 Before getting into the main topic, let's take a look at the answer to the previous post. At the end of the previous post, I posted a piece of code and asked if anyone had any questions:
 
-``` js
+```js
 // This is a feature that users can embed their favorite YouTube videos in their profile page
-const url = 'value from user'
+const url = "value from user";
 
 // Make sure it's YouTube video URL
-if (url.startsWith('https://www.youtube.com/watch')) {
-  document.querySelector('iframe').src = url
+if (url.startsWith("https://www.youtube.com/watch")) {
+  document.querySelector("iframe").src = url;
 }
 ```
 
@@ -84,7 +84,7 @@ Even though it's not designed for sanitization, it is used for parsing web pages
 
 Let me demonstrate:
 
-``` python
+```python
 from bs4 import BeautifulSoup
 html = """
   <div>
@@ -112,7 +112,7 @@ attrs: {'src': 'x', 'onerror': 'alert(1)'}
 
 It seems fine, as it parses the tag names and attributes correctly. So, can't I just create an allow list or block list myself? It sounds reasonable, but actually...
 
-``` python
+```python
 from bs4 import BeautifulSoup
 html = """
   <div>
@@ -137,7 +137,7 @@ It seems normal, but if you open the above HTML in a browser, you will see our b
 
 The bypass is based on the difference in parsing between browsers and BeautifulSoup for the following HTML:
 
-``` html
+```html
 <!--><script>alert(1)</script>-->
 ```
 
@@ -161,7 +161,7 @@ So, are there any recommended libraries specifically designed for sanitization? 
 
 The basic usage of DOMPurify is as follows:
 
-``` js
+```js
 const clean = DOMPurify.sanitize(html);
 ```
 
@@ -173,18 +173,18 @@ But one thing to note is that the `<style>` tag is enabled by default, and we wi
 
 If you want to allow more tags or attributes, you can adjust the relevant settings:
 
-``` js
+```js
 const config = {
-  ADD_TAGS: ['iframe'],
-  ADD_ATTR: ['src'],
+  ADD_TAGS: ["iframe"],
+  ADD_ATTR: ["src"],
 };
 
-let html = '<div><iframe src=javascript:alert(1)></iframe></div>'
-console.log(DOMPurify.sanitize(html, config))
+let html = "<div><iframe src=javascript:alert(1)></iframe></div>";
+console.log(DOMPurify.sanitize(html, config));
 // <div><iframe></iframe></div>
 
-html = '<div><iframe src=https://example.com></iframe></div>'
-console.log(DOMPurify.sanitize(html, config))
+html = "<div><iframe src=https://example.com></iframe></div>";
+console.log(DOMPurify.sanitize(html, config));
 // <div><iframe src="https://example.com"></iframe></div>
 ```
 
@@ -192,14 +192,14 @@ From the example above, even if we allow the `src` attribute of the `iframe` tag
 
 However, if you want to allow some attributes or tags that can cause XSS, DOMPurify won't stop you:
 
-``` js
+```js
 const config = {
-  ADD_TAGS: ['script'],
-  ADD_ATTR: ['onclick'],
+  ADD_TAGS: ["script"],
+  ADD_ATTR: ["onclick"],
 };
 
-html = 'abc<script>alert(1)<\/script><button onclick=alert(2)>abc</button>'
-console.log(DOMPurify.sanitize(html, config))
+html = "abc<script>alert(1)</script><button onclick=alert(2)>abc</button>";
+console.log(DOMPurify.sanitize(html, config));
 // abc<script>alert(1)</script><button onclick="alert(2)">abc</button>
 ```
 
@@ -211,30 +211,34 @@ When using these libraries, it is important to learn how to use them through off
 
 The first classic case is a vulnerability discovered by the well-known Taiwanese hacker, orange, in 2019. When filtering content, HackMD used the following configuration (HackMD uses a different package called js-xss):
 
-``` js
+```js
 var filterXSSOptions = {
   allowCommentTag: true,
   whiteList: whiteList,
   escapeHtml: function (html) {
     // allow html comment in multiple lines
-    return html.replace(/<(?!!--)/g, '&lt;').replace(/-->/g, '-->').replace(/>/g, '&gt;').replace(/-->/g, '-->')
+    return html
+      .replace(/<(?!!--)/g, "&lt;")
+      .replace(/-->/g, "-->")
+      .replace(/>/g, "&gt;")
+      .replace(/-->/g, "-->");
   },
   onIgnoreTag: function (tag, html, options) {
     // allow comment tag
-    if (tag === '!--') {
-            // do not filter its attributes
-      return html
+    if (tag === "!--") {
+      // do not filter its attributes
+      return html;
     }
   },
   // ...
-}
+};
 ```
 
 If the tag is `!--`, it is directly ignored and not returned. The intention was to preserve comments, for example, `<!-- hello -->` would be treated as a tag named `!--`.
 
 However, orange bypassed it using the following method:
 
-``` html
+```html
 <!-- foo="bar--><s>Hi</s>" -->
 ```
 
@@ -248,10 +252,10 @@ I also discovered a different case in 2021, but it was still a misuse.
 
 A website sanitized `article.content` on the backend, and the frontend rendering was written as follows:
 
-``` jsx
+```jsx
 <>
   <div
-    className={classNames({ 'u-content': true, translating })}
+    className={classNames({ "u-content": true, translating })}
     dangerouslySetInnerHTML={{
       __html: optimizeEmbed(translation || article.content),
     }}
@@ -267,7 +271,7 @@ The already filtered content went through the `optimizeEmbed` processing, which 
 
 Let's see what this function does (some code is omitted):
 
-``` js
+```js
 export const optimizeEmbed = (content: string) => {
   return content
     .replace(/\<iframe /g, '<iframe loading="lazy"')
@@ -279,56 +283,52 @@ export const optimizeEmbed = (content: string) => {
         <source
           type="image/webp"
           media="(min-width: 768px)"
-          srcSet=${toSizedImageURL({ url: src, size: '1080w', ext: 'webp' })}
+          srcSet=${toSizedImageURL({ url: src, size: "1080w", ext: "webp" })}
           onerror="this.srcset='${src}'"
         />
         <img
           src=${src}
-          srcSet=${toSizedImageURL({ url: src, size: '540w' })}
+          srcSet=${toSizedImageURL({ url: src, size: "540w" })}
           loading="lazy"
         />
       </picture>
-    `
+    `;
       }
-    )
-}
+    );
+};
 ```
 
 Here, the image URL is directly concatenated as a string, and the attributes are not enclosed in single or double quotes! If we can control `toSizedImageURL`, we can create an XSS vulnerability. The implementation of this function is as follows:
 
-``` js
+```js
 export const toSizedImageURL = ({ url, size, ext }: ToSizedImageURLProps) => {
   const assetDomain = process.env.NEXT_PUBLIC_ASSET_DOMAIN
     ? `https://${process.env.NEXT_PUBLIC_ASSET_DOMAIN}`
-    : ''
-  const isOutsideLink = url.indexOf(assetDomain) < 0
-  const isGIF = /gif/i.test(url)
+    : "";
+  const isOutsideLink = url.indexOf(assetDomain) < 0;
+  const isGIF = /gif/i.test(url);
 
   if (!assetDomain || isOutsideLink || isGIF) {
-    return url
+    return url;
   }
 
-  const key = url.replace(assetDomain, ``)
-  const extedUrl = changeExt({ key, ext })
-  const prefix = size ? '/' + PROCESSED_PREFIX + '/' + size : ''
+  const key = url.replace(assetDomain, ``);
+  const extedUrl = changeExt({ key, ext });
+  const prefix = size ? "/" + PROCESSED_PREFIX + "/" + size : "";
 
-  return assetDomain + prefix + extedUrl
-}
+  return assetDomain + prefix + extedUrl;
+};
 ```
 
 If the URL does not meet the specified conditions, it is directly returned; otherwise, some string processing is performed before returning. In summary, we can indeed control the return value of this function.
 
 If the passed URL is `https://assets.matters.news/processed/1080w/embed/test style=animation-name:spinning onanimationstart=alert(1337)`, the final concatenated HTML will be:
 
-``` html
-<source
-  type="image/webp"
-  media="(min-width: 768px)"   
-  srcSet=https://assets.matters.news/processed/1080w/embed/test 
-  style=animation-name:spinning 
-  onanimationstart=console.log(1337)
-  onerror="this.srcset='${src}'"
-/>
+```html
+<source type="image/webp" media="(min-width: 768px)"
+srcSet=https://assets.matters.news/processed/1080w/embed/test
+style=animation-name:spinning onanimationstart=console.log(1337)
+onerror="this.srcset='${src}'" />
 ```
 
 By using `style=animation-name:spinning` along with the event handler `onanimationstart=console.log(1337)`, an XSS vulnerability is successfully created without requiring user interaction.
@@ -348,7 +348,7 @@ Therefore, even with the correct library, it is important to pay attention to th
 
 In this article, we introduced the first line of defense against XSS, which is encoding or sanitizing user input to remove dangerous content or render it safely on the screen.
 
-This sounds simple but is actually difficult, otherwise there wouldn't be so many XSS vulnerabilities. The article also introduces many real-life examples to help everyone avoid pitfalls, so that in similar situations in the future, we know what to pay attention to.
+This sounds simple but is actually difficult, otherwise there wouldn't be so many XSS vulnerabilities. The article also introduces many real-world examples to help everyone avoid pitfalls, so that in similar situations in the future, we know what to pay attention to.
 
 Since it is mentioned as the first line of defense, it means there is still a second line of defense. Before introducing the second line of defense in the next article, everyone can think about what the second line of defense might be. When the website forgets to handle user input, what other methods can be used to block XSS?
 

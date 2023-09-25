@@ -12,14 +12,14 @@ Let's start by understanding what CSRF is through a simple example!
 
 ## Introducing CSRF with a Delete Feature
 
-I once created a simple backend page, think of it as a blog. It had features to create, delete, and edit articles. 
+I once created a simple backend page, think of it as a blog. It had features to create, delete, and edit articles.
 
 There are many ways to implement the delete feature, such as making an API call or submitting a form. However, I chose a simpler approach to be lazy.
 
 For the sake of simplicity, I thought if I made this feature a GET request, I could simply use a link to accomplish the deletion without writing much code on the frontend:
 
-``` html
-<a href='/delete?id=3'>Delete</a>
+```html
+<a href="/delete?id=3">Delete</a>
 ```
 
 Convenient, right? Then, on the backend, I added some validation to check if the request included a session ID and if the article was written by the author of that ID. Only if both conditions were met, the article would be deleted.
@@ -34,8 +34,8 @@ Let's assume that Bob is an evil villain who wants to trick Peter into deleting 
 
 Knowing that Peter loves psychological tests, Bob creates a psychological test website and sends it to Peter. However, this test website has a button that looks like this:
 
-``` html
-<a href='https://small-min.blog.com/delete?id=3'>Start Test</a>
+```html
+<a href="https://small-min.blog.com/delete?id=3">Start Test</a>
 ```
 
 Excited, Peter clicks on the "Start Test" button. Upon clicking, the browser sends a GET request to `https://small-min.blog.com/delete?id=3` and, due to the browser's mechanism, also includes the cookies from `small-min.blog.com`.
@@ -52,9 +52,9 @@ Some observant individuals might say, "But doesn't Peter realize what happened? 
 
 These are minor issues. What if we change it like this:
 
-``` html
-<img src='https://small-min.blog.com/delete?id=3' width='0' height='0' />
-<a href='/test'>Start Test</a>
+```html
+<img src="https://small-min.blog.com/delete?id=3" width="0" height="0" />
+<a href="/test">Start Test</a>
 ```
 
 While opening the page, we secretly send a deletion request with an invisible image. This time, Peter truly has no idea about it. Now it fits the condition!
@@ -73,10 +73,10 @@ Absolutely right! Let's not be lazy and implement the delete feature properly us
 
 There is one, it's called `<form>`.
 
-``` html
+```html
 <form action="https://small-min.blog.com/delete" method="POST">
-  <input type="hidden" name="id" value="3"/>
-  <input type="submit" value="Start test"/>
+  <input type="hidden" name="id" value="3" />
+  <input type="submit" value="Start test" />
 </form>
 ```
 
@@ -86,13 +86,20 @@ You might wonder, but wouldn't Peter know about it? I was also skeptical, so I G
 
 The example provided in the article is as follows, the web world is truly vast and profound:
 
-``` html
+```html
 <iframe style="display:none" name="csrf-frame"></iframe>
-<form method='POST' action='https://small-min.blog.com/delete' target="csrf-frame" id="csrf-form">
-  <input type='hidden' name='id' value='3'>
-  <input type='submit' value='submit'>
+<form
+  method="POST"
+  action="https://small-min.blog.com/delete"
+  target="csrf-frame"
+  id="csrf-form"
+>
+  <input type="hidden" name="id" value="3" />
+  <input type="submit" value="submit" />
 </form>
-<script>document.getElementById("csrf-form").submit()</script>
+<script>
+  document.getElementById("csrf-form").submit();
+</script>
 ```
 
 Open an invisible iframe, so that the result after form submission appears inside the iframe, and this form can also be automatically submitted, without any action from Peter.
@@ -113,17 +120,20 @@ So, this statement is half correct. For some servers, if the request's content t
 
 The incorrect part is that for other servers, as long as the body content is in JSON format, it can be accepted even if the content type is `text/plain`. The JSON format body can be constructed using the form below:
 
-``` html
-<form action="https://small-min.blog.com/delete" method="post" enctype="text/plain">
-<input name='{"id":3, "ignore_me":"' value='test"}' type='hidden'>
-<input type="submit"
-  value="delete!"/>
+```html
+<form
+  action="https://small-min.blog.com/delete"
+  method="post"
+  enctype="text/plain"
+>
+  <input name='{"id":3, "ignore_me":"' value='test"}' type="hidden" />
+  <input type="submit" value="delete!" />
 </form>
 ```
 
 The `<form>` generates the request body according to the rule `name=value`, so the form above will generate the following request body:
 
-``` js
+```js
 {"id":3, "ignore_me":"=test"}
 ```
 
@@ -159,9 +169,9 @@ Second, some users may disable the referer feature, in which case your server wi
 
 Third, the code that determines whether it is a valid origin must ensure that there are no bugs, for example:
 
-``` js
+```js
 const referer = request.headers.referer;
-if (referer.indexOf('small-min.blog.com') > -1) {
+if (referer.indexOf("small-min.blog.com") > -1) {
   // pass
 }
 ```
@@ -186,11 +196,11 @@ To prevent CSRF attacks, we only need to ensure that certain information is "kno
 
 We add a hidden field called `csrf_token` inside the form. The value of this field is randomly generated by the server and should be unique for each form submission. The token is stored in the server's session data.
 
-``` html
+```html
 <form action="https://small-min.blog.com/delete" method="POST">
-  <input type="hidden" name="id" value="3"/>
-  <input type="hidden" name="csrf_token" value="fj1iro2jro12ijoi1"/>
-  <input type="submit" value="Delete"/>
+  <input type="hidden" name="id" value="3" />
+  <input type="hidden" name="csrf_token" value="fj1iro2jro12ijoi1" />
+  <input type="submit" value="Delete" />
 </form>
 ```
 
@@ -206,13 +216,13 @@ The previous solution required server-side state, meaning that the CSRF token ha
 
 The first half of this solution is similar to the previous one. The server generates a random token and adds it to the form. However, instead of storing this value in the session, a cookie named `csrf_token` is set with the same token value.
 
-``` html
+```html
 Set-Cookie: csrf_token=fj1iro2jro12ijoi1
 
 <form action="https://small-min.blog.com/delete" method="POST">
-  <input type="hidden" name="id" value="3"/>
-  <input type="hidden" name="csrf_token" value="fj1iro2jro12ijoi1"/>
-  <input type="submit" value="Delete"/>
+  <input type="hidden" name="id" value="3" />
+  <input type="hidden" name="csrf_token" value="fj1iro2jro12ijoi1" />
+  <input type="submit" value="Delete" />
 </form>
 ```
 
@@ -272,20 +282,20 @@ Although this may sound fine, we need to be cautious about CORS settings, as men
 
 In addition to forms and images, attackers can also use `fetch` to directly send cross-site requests with custom headers, like this:
 
-``` js
+```js
 fetch(target, {
-  method: 'POST',
+  method: "POST",
   headers: {
-    'X-Version': 'web'
-  }
-})
+    "X-Version": "web",
+  },
+});
 ```
 
 However, requests with custom headers are considered non-simple requests and require passing the preflight request check before they are actually sent. So, if your server-side CORS implementation is correct, this defense mechanism will work fine.
 
 But what if there are issues with the CORS configuration? Then it won't be able to defend against CSRF attacks.
 
-## Real-life Examples
+## Real-world Examples
 
 The first case to introduce is the CSRF vulnerability in Google Cloud Shell in 2022 found by Obmi. There was an API for file uploads without any CSRF protection, allowing attackers to exploit this vulnerability to upload files like `~/.bash_profile`, which would execute the uploaded commands every time the user runs bash.
 
@@ -323,7 +333,7 @@ As long as the target is logged in and clicks the link, they will be compromised
 
 They call this attack EmojiDeploy because part of the bypassed URL, `._.`, looks like an emoji and sounds cute.
 
-I have omitted some details here, and you can read the full article: [EmojiDeploy: Smile! Your Azure web service just got RCE’d ._.](https://ermetic.com/blog/azure/emojideploy-smile-your-azure-web-service-just-got-rced/)
+I have omitted some details here, and you can read the full article: [EmojiDeploy: Smile! Your Azure web service just got RCE’d .\_.](https://ermetic.com/blog/azure/emojideploy-smile-your-azure-web-service-just-got-rced/)
 
 ## Vulnerability Connection: CSRF and self-XSS
 
@@ -351,10 +361,9 @@ On the other hand, EmojiDeploy, mentioned earlier, is a counterexample. They onl
 
 References:
 
-1. [Cross-Site Request Forgery (CSRF)](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)#Prevention_measures_that_do_NOT_work)
-2. [Cross-Site Request Forgery (CSRF) Prevention Cheat Sheet](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)_Prevention_Cheat_Sheet)
-3. [一次较为深刻的CSRF认识](http://m.2cto.com/article/201505/400902.html)
+1. [Cross-Site Request Forgery (CSRF)](<https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)#Prevention_measures_that_do_NOT_work>)
+2. [Cross-Site Request Forgery (CSRF) Prevention Cheat Sheet](<https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)_Prevention_Cheat_Sheet>)
+3. [一次较为深刻的 CSRF 认识](http://m.2cto.com/article/201505/400902.html)
 4. [[技術分享] Cross-site Request Forgery (Part 2)](http://cyrilwang.pixnet.net/blog/post/31813672)
 5. [Spring Security Reference](http://docs.spring.io/spring-security/site/docs/3.2.5.RELEASE/reference/htmlsingle/#csrf)
 6. [CSRF 攻击的应对之道](https://www.ibm.com/developerworks/cn/web/1102_niugang_csrf/)
-

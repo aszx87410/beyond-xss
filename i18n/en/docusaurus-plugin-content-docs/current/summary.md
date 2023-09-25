@@ -20,13 +20,15 @@ But this does not affect my love for frontend security. I enjoy frontend securit
 
 In my opinion, many frontend engineers are not unwilling to understand or get familiar with frontend security; they simply do not know it exists or where to start. Just like I mentioned before, prototype pollution seems to be well-known in the security community, but why didn't anyone tell me about it when I was learning frontend? Therefore, besides summarizing my own understanding of frontend security over the past two years, I also hope this series of articles can bring security knowledge back to the frontend community and make more people aware of frontend security.
 
-If I have any expectations for this series of articles, it is that it becomes one of the must-read classics for frontend engineers (provided that the depth and breadth of the series reach a certain level and the content has a certain quality).
+If I have any expectations for this series of articles, it is that it becomes one of the must-read classics for frontend engineers.
 
 I have always believed that development and security go hand in hand. Development makes you familiar with the overall project structure and how engineers usually work. Security, on the other hand, provides you with knowledge of many details, giving you a deeper understanding of what each component does and how they integrate. This knowledge will further help you look at development from a different perspective and create more secure software.
 
 If you are interested in frontend security and want to get hands-on experience, I recommend PortSwigger's [Web Security Academy](https://portswigger.net/web-security). It provides many ready-to-use free labs, which are suitable for beginners to play around with.
 
 If you want to stay updated with the latest frontend security knowledge, I also recommend following these individuals on Twitter. Each of them is a frontend security expert in my eyes, and they specialize in different areas (the order is random).
+
+Apart from that, I've also learned a lot from them. The techniques discussed in this series of articles are not original; they all come from these experts and the vast online internet. I'm simply organizing and explaining them
 
 1. [@kinugawamasato](https://twitter.com/kinugawamasato): Very knowledgeable about frontend security and JavaScript operations. He discovered the Teams RCE vulnerability, showing his expertise in frontend security.
 2. [@terjanq](https://twitter.com/terjanq): A security researcher working at Google, well-versed in browser operations and frontend security. He maintains the XS-Leaks Wiki and has extensive experience with XS-Leaks.
@@ -40,4 +42,6 @@ There are other well-known experts in the front-end security community that were
 
 ## Conclusion
 
-Whether you like or dislike this series, feel free to leave a comment on the [GitHub Discussions](https://github.com/aszx87410/beyond-xss/discussions) and let me know. You can also leave comments to discuss any security issues you want to know or any doubts about the articles. Thank you.
+Whether you like or dislike this series, feel free to leave a comment on the [GitHub Discussions](https://github.com/aszx87410/beyond-xss/discussions) and let me know. You can also leave comments to discuss any security issues you want to know or any doubts about the articles.
+
+Thanks for exploring the universe of web frontend security with me. I hope we can meet again in other galaxies in the future!

