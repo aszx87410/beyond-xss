@@ -36,7 +36,7 @@ sidebar_position: 10
 6. [@filedescriptor](https://twitter.com/filedescriptor)，之前在講 cookie tossing 跟 cookie bomb 時有提過他的演講
 7. [@SecurityMB](https://twitter.com/SecurityMB)，經典的 Gmail DOM clobbering 以及利用 mutation XSS 繞過 DOMPurify 的漏洞都是他找的，現在似乎也在 Google 工作
 
-還有其他前面的文章中比較少提到，但也都是前端資安圈知名的專家（沒有提到的不代表不是專家，可能只是我一時忘記而已，追蹤這些人之後推特就會自動推薦你其他專家了）：[@lbherrera_](https://twitter.com/lbherrera_)、[@RenwaX23](https://twitter.com/RenwaX23)、[@po6ix](https://twitter.com/po6ix)、[@Black2Fan](https://twitter.com/black2fan)、[@shhnjk](https://twitter.com/shhnjk) 以及 [@S1r1u5_](https://twitter.com/S1r1u5_)。
+還有其他前面的文章中比較少提到，但也都是前端資安圈知名的專家（沒有提到的不代表不是專家，可能只是我一時忘記而已，追蹤這些人之後推特就會自動推薦你其他專家了）：[@lbherrera_](https://twitter.com/lbherrera_)、[@RenwaX23](https://twitter.com/RenwaX23)、[@po6ix](https://twitter.com/po6ix)、[@Black2Fan](https://twitter.com/black2fan)、[@shhnjk](https://twitter.com/shhnjk)、[@cgvwzq](https://twitter.com/cgvwzq) 以及 [@S1r1u5_](https://twitter.com/S1r1u5_)。
 
 ## 總結
 

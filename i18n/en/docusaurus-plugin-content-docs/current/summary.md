@@ -38,7 +38,7 @@ Apart from that, I've also learned a lot from them.
 6. [@filedescriptor](https://twitter.com/filedescriptor): Mentioned in the previous posts when discussing cookie tossing and cookie bomb.
 7. [@SecurityMB](https://twitter.com/SecurityMB): Known for discovering the classic Gmail DOM clobbering and bypassing DOMPurify using mutation XSS. He is also working at Google now.
 
-There are other well-known experts in the front-end security community that were mentioned less frequently in previous articles (not mentioning them doesn't mean they are not experts, it may just be that I forgot at the moment, and Twitter will automatically recommend other experts to you after following these people): [@lbherrera_](https://twitter.com/lbherrera_), [@RenwaX23](https://twitter.com/RenwaX23), [@po6ix](https://twitter.com/po6ix), [@Black2Fan](https://twitter.com/black2fan), [@shhnjk](https://twitter.com/shhnjk), and [@S1r1u5_](https://twitter.com/S1r1u5_).
+There are other well-known experts in the front-end security community that were mentioned less frequently in previous articles (not mentioning them doesn't mean they are not experts, it may just be that I forgot at the moment, and Twitter will automatically recommend other experts to you after following these people): [@lbherrera_](https://twitter.com/lbherrera_), [@RenwaX23](https://twitter.com/RenwaX23), [@po6ix](https://twitter.com/po6ix), [@Black2Fan](https://twitter.com/black2fan), [@shhnjk](https://twitter.com/shhnjk), [@cgvwzq](https://twitter.com/cgvwzq), and [@S1r1u5_](https://twitter.com/S1r1u5_).
 
 ## Conclusion
 
