@@ -28,7 +28,7 @@ If you are interested in frontend security and want to get hands-on experience, 
 
 If you want to stay updated with the latest frontend security knowledge, I also recommend following these individuals on Twitter. Each of them is a frontend security expert in my eyes, and they specialize in different areas (the order is random).
 
-Apart from that, I've also learned a lot from them. The techniques discussed in this series of articles are not original; they all come from these experts and the vast online internet. I'm simply organizing and explaining them
+Apart from that, I've also learned a lot from them. 
 
 1. [@kinugawamasato](https://twitter.com/kinugawamasato): Very knowledgeable about frontend security and JavaScript operations. He discovered the Teams RCE vulnerability, showing his expertise in frontend security.
 2. [@terjanq](https://twitter.com/terjanq): A security researcher working at Google, well-versed in browser operations and frontend security. He maintains the XS-Leaks Wiki and has extensive experience with XS-Leaks.
@@ -41,6 +41,10 @@ Apart from that, I've also learned a lot from them. The techniques discussed in 
 There are other well-known experts in the front-end security community that were mentioned less frequently in previous articles (not mentioning them doesn't mean they are not experts, it may just be that I forgot at the moment, and Twitter will automatically recommend other experts to you after following these people): [@lbherrera_](https://twitter.com/lbherrera_), [@RenwaX23](https://twitter.com/RenwaX23), [@po6ix](https://twitter.com/po6ix), [@Black2Fan](https://twitter.com/black2fan), [@shhnjk](https://twitter.com/shhnjk), and [@S1r1u5_](https://twitter.com/S1r1u5_).
 
 ## Conclusion
+
+The techniques discussed in this series of articles are not original; they all come from these experts and the vast online internet. I'm simply organizing and explaining them.
+
+In this series, I have included the source references for all the real-world examples and some lesser-known vulnerabilities or issues. I have credited the authors whenever possible as a gesture of gratitude. If there are any omissions, please do not hesitate to bring them to my attention.
 
 Whether you like or dislike this series, feel free to leave a comment on the [GitHub Discussions](https://github.com/aszx87410/beyond-xss/discussions) and let me know. You can also leave comments to discuss any security issues you want to know or any doubts about the articles.
 
