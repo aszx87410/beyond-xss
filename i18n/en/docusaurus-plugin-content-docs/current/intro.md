@@ -38,6 +38,7 @@ The topics covered in this series include:
 15. CSTI (Client-side template injection)
 16. Subdomain takeover
 17. Dangling markup injection
+18. Supply chain attack
 
 This series of articles can be roughly divided into the following five chapters:
 

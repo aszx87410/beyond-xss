@@ -1,5 +1,5 @@
 ---
-sidebar_position: 30
+sidebar_position: 32
 ---
 
 # The Most Interesting Frontend Side Channel Attack: XSLeaks (Part 2)
@@ -48,7 +48,7 @@ Based on this, the author detected the user's reported health condition by measu
 
 The loading time of each image can be obtained using `performance.getEntries()`, which allows us to determine which image loads the fastest.
 
-![](pics/30-01.png)
+![](pics/32-01.png)
 
 However, there is a small problem: this trick can only be used once. After opening the website once, all four images will be loaded, and the next time you test, all four will be in the cache and load quickly. Therefore, we need to find a way to clear the cache for the user.
 
@@ -147,7 +147,7 @@ If the search is successful, a specific icon will appear: `https://www.gstatic.c
 
 At this point, we can use the technique mentioned earlier to detect whether a specific keyword exists in a search (screenshot from the [PoC video](https://www.youtube.com/watch?v=H3JTx0JhAng&ab_channel=terjanq)):
 
-![](pics/30-02.png)
+![](pics/32-02.png)
 
 Since email is a place where a lot of sensitive information is stored, for example, some poorly implemented websites may directly send plaintext passwords to users. This technique can be used to gradually leak the password.
 

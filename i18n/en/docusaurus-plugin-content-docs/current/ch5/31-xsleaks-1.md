@@ -1,5 +1,5 @@
 ---
-sidebar_position: 29
+sidebar_position: 31
 ---
 
 # The Most Interesting Frontend Side-Channel Attack: XSLeaks (Part 1)
@@ -44,7 +44,7 @@ You can open this webpage in your browser: [https://browserleaks.com/social](htt
 
 This webpage is used to detect which websites you are logged into. For me, the result is as shown in the following image:
 
-![](pics/29-01.png)
+![](pics/31-01.png)
 
 How does it work?
 
