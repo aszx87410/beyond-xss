@@ -80,3 +80,5 @@ For example, both a DoS vulnerability can temporarily crash a webpage, which may
 In this article, we have seen that Web3 products still need to face the same security issues as traditional web pages and must be protected. If not properly protected, even if the intrusion is not into smart contracts, it can still cause certain damages.
 
 The attack surface of Web3 is not limited to smart contracts. Traditional web security, phishing attacks, and private key security are all areas that need to be defended against.
+
+Thanks to [@BrunoModificato](https://twitter.com/BrunoModificato) for providing the idea for this article.
