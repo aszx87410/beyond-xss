@@ -56,7 +56,7 @@ Lastly, the field of information security is vast and deep. If there are any tec
 
 ## The Origin of This Series
 
-I started writing this series because of an online event in Taiwan called [2023 iT Ironman Contest](https://ithelp.ithome.com.tw/2023ironman/event). It is a competition where you need to publish articles continuously for 30 days. That's why this series contains 30 articles. After completing the challenge, I extracted the content and built this website using Docusaurus for easier access to the full content.
+I started writing this series because of an online event in Taiwan called [2023 iT Ironman Contest](https://ithelp.ithome.com.tw/2023ironman/event). It is a competition where you need to publish articles continuously for 30 days. After completing the challenge, I extracted the content and built this website using Docusaurus for easier access to the full content.
 
 Every article was originally written in my native language, Traditional Chinese. After completing them, I used ChatGPT for translation, and then I manually corrected the translations. While I have tried my best to avoid errors, there may still be some areas that I didn't catch. I appreciate your understanding.
 
@@ -66,7 +66,7 @@ Every article was originally written in my native language, Traditional Chinese.
 
 I am Huli from Taiwan.
 
-As both a frontend engineer and a cybersecurity enthusiast, my background fuels a particular interest in web frontend security. I occasionally participate in CTF challenges and maintain a tech blog.
+As both a frontend engineer and a cybersecurity enthusiast, my background fuels a particular interest in web frontend security. I occasionally participate in CTF challenges with [Water Paddler](https://twitter.com/Water_Paddler) and maintain a tech blog.
 
 You can check my blog for more details: https://blog.huli.tw/en/about/
 

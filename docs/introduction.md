@@ -1,9 +1,12 @@
 ---
 sidebar_position: 1
 slug: /
+image: ./pics/cover.png
 ---
 
 # 關於本系列
+
+<div data-nosnippet>(This also has a <a href="/en">English version</a>)</div>
 
 身為一個軟體工程師，對資訊安全一定不陌生。在工作上的專案可能有經過資安的審核，包括靜態程式碼掃描、弱點掃描或是滲透測試等等，再更進階一點可能做過更全面的紅隊演練。除此之外，也可能聽過什麼是 OWASP，大概知道 OWASP top 10 包含了哪些東西，知道常見的資安漏洞有哪些。
 
@@ -56,7 +59,9 @@ slug: /
 
 ## 本系列的起源
 
-會開始寫這一個系列，是因為 [2023 iT 鐵人賽](https://ithelp.ithome.com.tw/2023ironman/event)，這是一個需要連續 30 天發文的比賽，這也是為什麼這本書裡面有 30 篇文章。在活動中完成挑戰後，我便把裡面的文章內容獨立出來用 Docusaurus 架了這個網站，方便觀看全文內容。
+會開始寫這一個系列，是因為 [2023 iT 鐵人賽](https://ithelp.ithome.com.tw/2023ironman/event)，這是一個需要連續 30 天發文的比賽。
+
+在活動中完成挑戰後，我便把裡面的文章內容獨立出來用 Docusaurus 架了這個網站，方便觀看全文內容，除此之外，也額外新增了兩篇鐵人賽沒有的文章，都放在第五章裡面。
 
 ## 關於我
 
@@ -64,7 +69,5 @@ slug: /
 
 可以直接參考我的部落格：https://blog.huli.tw/about/
 
-Twitter: https://twitter.com/aszx87410
-
-
+想追蹤關於我的最新消息，可以參考 Facebook 粉絲專頁： https://www.facebook.com/huli.blog/
 
