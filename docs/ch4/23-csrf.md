@@ -341,6 +341,14 @@ https://huli.scm.azurewebsites.net._.attacker.com
 
 原本的 self-XSS 漏洞沒什麼影響，很多 bug bounty 平台可能不收，但結合了 CSRF 以後就變成了一個真的有影響力的 XSS，提升了嚴重程度，平台就會收了。
 
+一個實際的案例是 2016 年時 @fin1te 向 Uber 回報的漏洞：[Uber Bug Bounty: Turning Self-XSS into Good-XSS](https://whitton.io/articles/uber-turning-self-xss-into-good-xss/)，雖然有點久了但是裡面的技巧依舊很實用。
+
+他在 `partners.uber.com` 找到了一個 self-XSS，接著結合了 logout CSRF，把現在的使用者在 `partners.uber.com` 網域登出，但是在 `login.uber.com` 網域依舊保持著登入狀態。
+
+然後利用 login CSRF 登入自己預先準備好的帳號，登入之後就可以觸發 XSS，此時再利用 iframe 把使用者再度登入回去，就能夠利用這個 XSS 去讀取現在的使用者資料，完美地把這幾個漏洞串起來，發揮了更大的影響力。
+
+流程比較複雜一點，但是這個漏洞的串連也相當有趣，利用 CSP 來阻擋頁面的跳轉也是一個很新穎的做法！
+
 ## 小結
 
 資安世界裡的漏洞環環相扣，在選擇修復方法時，同時也可以注意對於其他漏洞的影響。

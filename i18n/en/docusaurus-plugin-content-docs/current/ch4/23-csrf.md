@@ -335,7 +335,7 @@ They call this attack EmojiDeploy because part of the bypassed URL, `._.`, looks
 
 I have omitted some details here, and you can read the full article: [EmojiDeploy: Smile! Your Azure web service just got RCE’d .\_.](https://ermetic.com/blog/azure/emojideploy-smile-your-azure-web-service-just-got-rced/)
 
-## Vulnerability Connection: CSRF and self-XSS
+## Chaining Vulnerabilities: CSRF and self-XSS
 
 When I mentioned XSS earlier, I introduced a type called self-XSS, which refers to XSS that only affects oneself.
 
@@ -346,6 +346,14 @@ Don't you think this is a good opportunity to combine it with CSRF?
 Assuming there is a CSRF vulnerability in the personal settings page, an attacker can use CSRF to change the victim's phone number to an XSS payload, and then open the personal settings page. This transforms the self-XSS into a real XSS!
 
 The original self-XSS vulnerability has little impact, and many bug bounty platforms may not accept it. But when combined with CSRF, it becomes a truly impactful XSS, increasing its severity, and the platform will accept it.
+
+An actual case is the vulnerability reported to Uber by @fin1te in 2016: [Uber Bug Bounty: Turning Self-XSS into Good-XSS](https://whitton.io/articles/uber-turning-self-xss-into-good-xss/). Although it's been a while, the techniques discussed in it are still very practical.
+
+He found a self-XSS on `partners.uber.com`, and then combined it with logout CSRF, logging out the current user on the `partners.uber.com` domain while keeping them logged in on the `login.uber.com` domain.
+
+Then, he used login CSRF to log into a pre-prepared account, triggering an XSS after logging in. At this point, by using an iframe, the user could be logged back in, allowing the exploitation of this XSS to access the current user's data. This cleverly chained these vulnerabilities together, creating a more significant impact.
+
+The process is somewhat more complex, but the connection of these vulnerabilities is quite interesting, and the use of CSP to prevent page redirection is also a novel approach.
 
 ## Conclusion
 
