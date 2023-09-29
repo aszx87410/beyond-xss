@@ -1,5 +1,5 @@
 ---
-sidebar_position: 30
+sidebar_position: 32
 ---
 
 # 最有趣的前端旁路攻擊：XSLeaks（下）
@@ -48,7 +48,7 @@ sidebar_position: 30
 
 而每一張圖片載入的時間則是可以用 `performance.getEntries()` 取得，就能得知哪一張載入最快。
 
-![](pics/30-01.png)
+![](pics/32-01.png)
 
 不過有個小問題，那就是這招只能使用一次，因為你打開這網站一次之後，四張圖片都會載入了，下次再測的時候四張都在快取裡，速度都很快。所以，我們必須想個辦法使用者把快取清掉。
 
@@ -147,7 +147,7 @@ try {
 
 此時就可以利用剛剛提過的手法去偵測出某個搜尋的關鍵字是否存在（截圖自 [PoC 影片](https://www.youtube.com/watch?v=H3JTx0JhAng&ab_channel=terjanq)）：
 
-![](pics/30-02.png)
+![](pics/32-02.png)
 
 由於 email 本來就是一個有著一堆敏感資訊的地方，例如說有些資安做得不好的網站會直接寄送明文密碼給使用者，就可以利用這招慢慢去洩露出密碼。
 

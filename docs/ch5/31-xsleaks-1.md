@@ -1,5 +1,5 @@
 ---
-sidebar_position: 29
+sidebar_position: 31
 ---
 
 # 最有趣的前端旁路攻擊：XSLeaks（上）
@@ -44,7 +44,7 @@ XSLeaks，全名為 Cross-site leaks，意思就是可以利用一些技巧來�
 
 這是一個用來偵測你在哪些網站上面有登入的網頁，以我來說，結果如下圖：
 
-![](pics/29-01.png)
+![](pics/31-01.png)
 
 它是怎麼辦到的呢？
 

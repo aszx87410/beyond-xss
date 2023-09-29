@@ -38,6 +38,7 @@ slug: /
 15. CSTI (Client side template injection)
 16. Subdomain takeover
 17. Dangling markup injection
+18. Supply chain attack
 
 而這個系列文大致上可以分成底下五個章節：
 
