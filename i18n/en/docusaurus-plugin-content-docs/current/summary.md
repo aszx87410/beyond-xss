@@ -44,7 +44,7 @@ There are other well-known experts in the front-end security community that were
 
 The techniques discussed in this series of articles are not original; they all come from these experts and the vast online internet. I'm simply organizing and explaining them.
 
-In this series, I have included the source references for all the real-world examples and some lesser-known vulnerabilities or issues. I have credited the authors whenever possible as a gesture of gratitude. If there are any omissions, please do not hesitate to bring them to my attention.
+In this series, I have included the source references for all the real-world examples and some lesser-known vulnerabilities or issues. I have credited the authors whenever possible. If there are any omissions, please do not hesitate to bring them to my attention.
 
 Whether you like or dislike this series, feel free to leave a comment on the [GitHub Discussions](https://github.com/aszx87410/beyond-xss/discussions) and let me know. You can also leave comments to discuss any security issues you want to know or any doubts about the articles.
 

@@ -1,4 +1,9 @@
-# Website
+# Beyond XSS
+
+It's a series of articles all about web front-end security. Both Tranditional Chinese and English versions are available.
+
+* Tranditional Chinese: https://aszx87410.github.io/beyond-xss/
+* English: https://aszx87410.github.io/beyond-xss/en
 
 This website is built using [Docusaurus 2](https://docusaurus.io/), a modern static website generator.
 
@@ -31,16 +36,8 @@ This command generates static content into the `build` directory and can be serv
 
 ### Deployment
 
-Using SSH:
-
 ```
-$ USE_SSH=true yarn deploy
-```
-
-Not using SSH:
-
-```
-$ GIT_USER=<Your GitHub username> yarn deploy
+$ npm run deploy
 ```
 
 If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
