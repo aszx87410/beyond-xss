@@ -10,6 +10,8 @@ image: ./pics/cover.png
 
 但是當我們把範圍限縮，來談「網頁前端的資訊安全」時，應該不少人都只知道 XSS，然後就沒了。
 
+（This also has an <a href="/en">English version</a>）
+
 如果把網頁前端資安的領域比喻成一個宇宙的話，XSS 或許就是那顆最大最亮的星球，佔據了多數人的目光。但除了它以外，在宇宙中還有很多沒這麼大的行星與恆星，它一直都在那，你只是沒發現而已。
 
 除了 XSS 以外，還有很多值得學習的資安議題，例如說利用 JavaScript 特性的 prototype pollution、根本不需要 JavaScript 就能執行的 CSS injection 攻擊，或是網頁前端的旁路攻擊 XSLeaks 等等。
