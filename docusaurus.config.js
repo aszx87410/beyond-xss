@@ -77,6 +77,7 @@ const config = {
         style: 'dark',
         copyright: `Copyright © ${new Date().getFullYear()} Huli. All rights reserved. Built with Docusaurus.`,
       },
+      metadata: [{name: 'google-site-verification', content: 'O7SjDEO9AQXbxqBWhtUW0FVahHxSrnweMXJxLICpSz4'}],
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,

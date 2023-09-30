@@ -10,7 +10,7 @@ image: ./pics/cover.png
 
 但是當我們把範圍限縮，來談「網頁前端的資訊安全」時，應該不少人都只知道 XSS，然後就沒了。
 
-（This also has an <a href="/en/">English version</a>）
+（This also has an <a href="https://aszx87410.github.io/beyond-xss/en/" target="_self" noopener noreferrer>English version</a>）
 
 如果把網頁前端資安的領域比喻成一個宇宙的話，XSS 或許就是那顆最大最亮的星球，佔據了多數人的目光。但除了它以外，在宇宙中還有很多沒這麼大的行星與恆星，它一直都在那，你只是沒發現而已。
 
