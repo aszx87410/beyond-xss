@@ -260,7 +260,7 @@ However, for certain servers, when receiving the request, they will decode it, e
 
 By exploiting this inconsistency in URL interpretation between the browser and the server, the path rules can be bypassed.
 
-The solution is to not treat `%2f` as `.` on the server-side, ensuring consistent interpretation between the browser and the server to avoid this issue.
+The solution is to not treat `%2f` as `/` on the server-side, ensuring consistent interpretation between the browser and the server to avoid this issue.
 
 ## Other Bypass Techniques
 
