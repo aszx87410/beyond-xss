@@ -325,6 +325,23 @@ By using the same id, we allow `config` to access the HTMLCollection. Then, usin
 
 So, if the desired attribute is an HTML attribute, we can have four levels; otherwise, we can only have three levels.
 
+However, it's a bit different in Firefox. In Firefox, it doesn't return an `HTMLCollection`. For example, with the same code:
+
+``` html
+<!DOCTYPE html>
+<html>
+<body>
+  <a id="config"></a>
+  <a id="config"></a>
+  <script>
+    console.log(config) // <a id="config"></a>
+  </script>
+</body>
+</html>
+```
+
+In Firefox, it will only output the first `<a>` element, not an `HTMLCollection`. Therefore, in Firefox, we can only use `<form>` as well as the `<iframe>` mentioned later.
+
 ## More Nested
 
 The previous mention of three levels or conditionally four levels is already the limit. Is there a way to surpass this limitation?

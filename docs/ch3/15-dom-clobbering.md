@@ -325,6 +325,23 @@ console.log(window.TEST_MODE + '')
 
 所以如果最後要拿的屬性是 HTML 的屬性，就可以四層，否則的話就只能三層。
 
+不過在 Firefox 上就不太一樣了，在 Firefox 上面並不會回傳 `HTMLCollection`，舉例來說，同樣是這段程式碼：
+
+``` html
+<!DOCTYPE html>
+<html>
+<body>
+  <a id="config"></a>
+  <a id="config"></a>
+  <script>
+    console.log(config) // <a id="config"></a>
+  </script>
+</body>
+</html>
+```
+
+在 Firefox 只會輸出第一個 `<a>` 元素，而不是 `HTMLCollection`。因此 Firefox 並不能用 `HTMLCollection`，只能用 `<form>` 以及待會要提到的 `<iframe>`。
+
 ## 再更多層級的 DOM Clobbering
 
 前面提到三層或是有條件的四層已經是極限了，那有沒有辦法再突破限制呢？
