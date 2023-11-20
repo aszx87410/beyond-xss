@@ -41,6 +41,8 @@ const config = {
         docs: {
           routeBasePath: '/',
           sidebarPath: require.resolve('./sidebars.js'),
+          sidebarCollapsed: false,
+          sidebarCollapsible: false,
         },
         blog: false,
         theme: {
