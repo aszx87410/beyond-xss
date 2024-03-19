@@ -299,7 +299,7 @@ var pc = new RTCPeerConnection({
       "credential":"."
     }]
 });
-pc.createOffer().then((sdp)=>pc.setLocalDescription(sdp);
+pc.createOffer().then((sdp)=>pc.setLocalDescription(sdp));
 ```
 
 目前也沒有方式可以限制它來傳輸資料，但未來也可能會有 [webrtc](https://w3c.github.io/webappsec-csp/#directive-webrtc) 這個規則。
