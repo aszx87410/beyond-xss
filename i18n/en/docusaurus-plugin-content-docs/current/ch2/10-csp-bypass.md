@@ -299,7 +299,7 @@ var pc = new RTCPeerConnection({
       "credential":"."
     }]
 });
-pc.createOffer().then((sdp)=>pc.setLocalDescription(sdp);
+pc.createOffer().then((sdp)=>pc.setLocalDescription(sdp));
 ```
 
 Currently, there is no way to restrict it from transmitting data, but in the future, there may be a rule called [webrtc](https://w3c.github.io/webappsec-csp/#directive-webrtc).
