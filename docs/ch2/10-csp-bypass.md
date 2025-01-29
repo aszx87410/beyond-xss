@@ -226,8 +226,8 @@ SOME 的限制有點多，但如果真的找不到其他利用方式，也不失
 </head>
 <body>
   <div id=userContent>
-    <script src="https://https://www.google.com/test"></script>
-    <script src="https://https://www.google.com/a/test"></script>
+    <script src="https://www.google.com/test"></script>
+    <script src="https://www.google.com/a/test"></script>
     <script src="http://localhost:5555/301"></script>
   </div>
 </body>
