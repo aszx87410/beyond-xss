@@ -338,7 +338,7 @@ CSP 算是嚴格，只允許了 `https://cdnjs.cloudflare.com`，但這使得我
 
 雖然看起來簡單容易，但仔細想一下會發現其實很不容易。你想想看，CSP 裡面並沒有 `unsafe-eval`，因此所有的字串都不能被當作程式碼執行，但如果是這樣的話，`ng-focus` 那裡面一大堆的字串是怎麼被執行的？這不就是把字串當程式碼執行嗎？
 
-這就是 AngularJS 厲害的地方了，在預設的模式底下，AngularJS 會用 `eval` 之類的東西解析你傳進去的字串，但如果你加上了 [ng-csp](https://docs.angularjs.org/api/ng/directive/ngCsp)，就是告訴 AngularJS 切換道別的模式，它會用自己實作的直譯器（interpreter）去解析字串並執行相對應的動作。
+這就是 AngularJS 厲害的地方了，在預設的模式底下，AngularJS 會用 `eval` 之類的東西解析你傳進去的字串，但如果你加上了 [ng-csp](https://docs.angularjs.org/api/ng/directive/ngCsp)，就是告訴 AngularJS 切換到別的模式，它會用自己實作的直譯器（interpreter）去解析字串並執行相對應的動作。
 
 因此，你可以想成是 AngularJS 自己實作了一套 `eval`，才能在不使用這些預設函式的狀況下把字串當作程式碼來執行。
 
