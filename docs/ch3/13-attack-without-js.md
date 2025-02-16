@@ -61,7 +61,7 @@ SecRule REQUEST_COOKIES|!REQUEST_COOKIES:/__utm/|REQUEST_COOKIES_NAMES|REQUEST_F
 <details/open=/Open/href=/data=; ontoggle="(alert)(document.domain)
 ```
 
-其實這個 paylod 想執行的內容就是 `<details open ontoggle=alert(docuemnt.domain)>`，但是用了一堆其他關鍵字來混淆，有很多 WAF 是根據正則表達式來判斷，因此只要讓 WAF 不容易辨識出來，就能靠這樣的方法繞過 WAF。
+其實這個 paylod 想執行的內容就是 `<details open ontoggle=alert(document.domain)>`，但是用了一堆其他關鍵字來混淆，有很多 WAF 是根據正則表達式來判斷，因此只要讓 WAF 不容易辨識出來，就能靠這樣的方法繞過 WAF。
 
 那如果繞不過呢？
 
