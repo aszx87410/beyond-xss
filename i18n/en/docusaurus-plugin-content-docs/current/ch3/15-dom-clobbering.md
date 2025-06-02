@@ -409,13 +409,13 @@ Let's take a direct example to understand:
 <body>
   <img name=cookie>
   <form id=test>
-    <h1 name=lastElementChild>I am first child</h1>
+    <input name=lastElementChild>
     <div>I am last child</div>
   </form>
   <embed name=getElementById></embed>
   <script>
     console.log(document.cookie) // <img name="cookie">
-    console.log(document.querySelector('#test').lastElementChild) // <div>I am last child</div>
+    console.log(document.querySelector('#test').lastElementChild) // <input name=lastElementChild>
     console.log(document.getElementById) // <embed name=getElementById></embed>
   </script>
 </body>
