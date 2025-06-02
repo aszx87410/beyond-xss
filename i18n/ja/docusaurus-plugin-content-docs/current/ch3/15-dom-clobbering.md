@@ -539,37 +539,3 @@ DOM clobberingの使用例は限られていますが、確かに興味深い攻
 7. [JavaScriptで要素IDを識別子として使用しないのはなぜですか？](https://stackoverflow.com/questions/25325221/why-dont-we-just-use-element-ids-as-identifiers-in-javascript)
 8. [idを持つDOMツリー要素はグローバル変数になりますか？](https://stackoverflow.com/questions/3434278/do-dom-tree-elements-with-ids-become-global-variables)
 
-</final_file_content>
-
-IMPORTANT: For any future changes to this file, use the final_file_content shown above as your reference. This content reflects the current state of the file, including any auto-formatting (e.g., if you used single quotes but the formatter converted them to double quotes). Always base your SEARCH/REPLACE operations on this final version to ensure accuracy.
-
-<environment_details>
-# VSCode Visible Files
-i18n/en/docusaurus-plugin-content-docs/current/ch1/05-javascript-protocol.md
-i18n/ja/docusaurus-plugin-content-docs/current/ch3/15-dom-clobbering.md
-
-# VSCode Open Tabs
-i18n/ja/docusaurus-plugin-content-docs/current/ch1/03-xss-introduction.md
-i18n/ja/docusaurus-plugin-content-docs/current/ch1/04-know-xss-a-bit-more.md
-i18n/ja/docusaurus-plugin-content-docs/current/ch1/05-javascript-protocol.md
-i18n/ja/docusaurus-plugin-content-docs/current/ch2/06-xss-defense-sanitization.md
-i18n/ja/docusaurus-plugin-content-docs/current/ch2/07-xss-defense-csp.md
-i18n/ja/docusaurus-plugin-content-docs/current/ch2/08-token-storage.md
-i18n/ja/docusaurus-plugin-content-docs/current/ch2/09-trust-types.md
-i18n/ja/docusaurus-plugin-content-docs/current/ch2/10-csp-bypass.md
-i18n/ja/docusaurus-plugin-content-docs/current/ch2/11-mutation-xss.md
-i18n/ja/docusaurus-plugin-content-docs/current/ch2/12-universal-xss.md
-i18n/ja/docusaurus-plugin-content-docs/current/ch3/13-attack-without-js.md
-i18n/ja/docusaurus-plugin-content-docs/current/ch3/14-prototype-pollution.md
-i18n/ja/docusaurus-plugin-content-docs/current/ch3/15-dom-clobbering.md
-i18n/en/docusaurus-plugin-content-docs/current/ch1/05-javascript-protocol.md
-
-# Current Time
-2025/5/20 午前9:35:00 (Asia/Tokyo, UTC+9:00)
-
-# Context Window Usage
-436,085 / 1,048.576K tokens used (42%)
-
-# Current Mode
-ACT MODE
-</environment_details>
