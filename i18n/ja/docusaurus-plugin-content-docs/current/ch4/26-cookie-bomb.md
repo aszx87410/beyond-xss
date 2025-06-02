@@ -2,7 +2,7 @@
 sidebar_position: 26
 ---
 
-# 面白くて実用的なクッキー爆弾
+# 面白くて実用的なCookie Bomb
 
 前回の投稿では、Cookieを書き込むことで他のSame-siteドメインに影響を与えることができるCookie Tossingについて学びました。今回の投稿では、Cookieを利用した別の攻撃手法であるCookie Bombを紹介します。これはCookieによって引き起こされるクライアントサイドのDoS攻撃です。
 
