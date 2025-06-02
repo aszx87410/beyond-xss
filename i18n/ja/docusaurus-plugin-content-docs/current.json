@@ -1,0 +1,26 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.tutorialSidebar.category.第一章：從 XSS 開始談前端資安": {
+    "message": "第一章：XSSから見たフロントエンド・セキュリティ",
+    "description": "The label for category 第一章：從 XSS 開始談前端資安 in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.第二章：XSS 的防禦方式以及繞過手法": {
+    "message": "第二章：XSSの防御と回避",
+    "description": "The label for category 第二章：XSS 的防禦方式以及繞過手法 in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.第三章：不直接執行 JavaScript 的攻擊手法": {
+    "message": "第三章：JavaScriptを使わない攻撃",
+    "description": "The label for category 第三章：不直接執行 JavaScript 的攻擊手法 in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.第四章：跨越限制攻擊其他網站": {
+    "message": "第四章：クロスサイト攻撃",
+    "description": "The label for category 第四章：跨越限制攻擊其他網站 in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.第五章：其他有趣的前端資安主題": {
+    "message": "第五章：その他の興味深いフロントエンド・セキュリティのトピック",
+    "description": "The label for category 第五章：其他有趣的前端資安主題 in sidebar tutorialSidebar"
+  }
+}
