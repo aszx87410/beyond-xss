@@ -94,7 +94,7 @@ YouTubeのURLとして `javascript:alert(1)` を入力すると、XSS脆弱性�
 import React from "react";
 
 export function App(props) {
-  // Assume the following data comes from the user input
+  // ユーザーからの入力として以下のデータが想定されるとします
   const href = "javascript:alert(1)";
   return <a href={href}>click me</a>;
 }
@@ -156,9 +156,9 @@ window.location = "javascript:alert(document.domain)";
 
 ```js
 /**
- * Redirect to "?target=" or fallback URL with page reload.
+ * "?target="へのリダイレクト、またはページリロードによるフォールバックURLに誘導します。
  *
- * (works on CSR)
+ * (CSRでも動作する)
  */
 export const redirectToTarget = ({
   fallback = "current",
@@ -263,13 +263,11 @@ Safariでは、ホスト名とホストを正常に解析します。ちなみ�
 本当にRegExpを使用して `javascript:` 疑似スキームかどうかを確認したい場合は、Reactの[ソースコード](https://github.com/facebook/react/blob/v18.2.0/packages/react-dom/src/shared/sanitizeURL.js#L22)の実装を参照できます（多くのライブラリが同様のRegExpを使用しています）。
 
 ```js
-// A javascript: URL can contain leading C0 control or \u0020 SPACE,
-// and any newline or tab are filtered out as if they're not part of the URL.
+// javascript:URLには、先頭にC0制御文字または\u0020スペースを含めることができ、改行やタブはURLの一部として認識されません
 // https://url.spec.whatwg.org/#url-parsing
-// Tab or newline are defined as \r\n\t:
+// タブまたは改行は\r\n\tとして定義されます
 // https://infra.spec.whatwg.org/#ascii-tab-or-newline
-// A C0 control is a code point in the range \u0000 NULL to \u001F
-// INFORMATION SEPARATOR ONE, inclusive:
+// C0制御文字は、\u0000 NULLから\u001F INFORMATION SEPARATOR ONEまでのコードポイントのこと
 // https://infra.spec.whatwg.org/#c0-control-or-space
 
 /* eslint-disable max-len */
@@ -341,8 +339,8 @@ export function ensureProtocol(url?: string) {
     return undefined;
   }
 
-  // HTTP was chosen by default as a fix for https://bugs.telegram.org/c/10712.
-  // It is also the default protocol in the official TDesktop client.
+  // HTTPは、https://bugs.telegram.org/c/10712 のバグ修正としてデフォルトで選択されました
+  // 公式のTDesktopクライアントでもデフォルトプロトコルとなっています
   try {
     const parsedUrl = new URL(url);
     // eslint-disable-next-line no-script-url
