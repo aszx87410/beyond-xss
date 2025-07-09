@@ -49,7 +49,7 @@ Origin 的話就是：scheme + port + host，三者加起來就是 origin。
 
 ## 細究 same origin
 
-在 HTML 規範中的 [7.5 Origin](https://html.spec.whatwg.org/multipage/origin.html#origin) 章節裡面可以看到完整的定義，先來看一下規範裡面對 origin 的說明：
+在 HTML 規範中的 [Origin](https://html.spec.whatwg.org/multipage/browsers.html#origin) 章節裡面可以看到完整的定義，先來看一下規範裡面對 origin 的說明：
 
 > Origins are the fundamental currency of the web's security model. Two actors in the web platform that share an origin are assumed to trust each other and to have the same authority. Actors with differing origins are considered potentially hostile versus each other, and are isolated from each other to varying degrees.
 
