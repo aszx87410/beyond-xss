@@ -453,7 +453,7 @@ COEP（Cross-Origin-Embedder-Policy）這個 header 有兩個值：
 
 第一個是預設值，就是沒有任何限制，第二個則是跟我們前面提到的 CORP(Cross-Origin-Resource-Policy) 有關，如果用了這個 require-corp 的話，就代表告訴瀏覽器說：「頁面上所有我載入的資源，都必須有 CORP 這個 header 的存在（或是 CORS），而且是合法的」
 
-現在假設我們有個網站 `a.example.com`，我們想讓它變成 cross-rogin isolated state，因此幫他加上一個 header：`Cross-Origin-Embedder-Policy: require-corp`，然後網頁裡面引入一個資源：
+現在假設我們有個網站 `a.example.com`，我們想讓它變成 cross-origin isolated state，因此幫他加上一個 header：`Cross-Origin-Embedder-Policy: require-corp`，然後網頁裡面引入一個資源：
 
 ``` html
 <img src="http://b.example.com/logo.jpg">
