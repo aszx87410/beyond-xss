@@ -270,7 +270,7 @@ Authorization: Bearer {JWT_TOKEN}
 
 ### 加上 custom header
 
-當我們在講 CSRF 攻擊的時候，拿來使用的範例是表單跟圖片，而這些送出請求的方式不能帶上 HTTP header，因此前端在打 API 的時候，可以帶上一個 `X-Version: web` 之類的 heaedr，如此一來後端就可以根據有沒有這個 header，辨識出這個請求是不是合法的。
+當我們在講 CSRF 攻擊的時候，拿來使用的範例是表單跟圖片，而這些送出請求的方式不能帶上 HTTP header，因此前端在打 API 的時候，可以帶上一個 `X-Version: web` 之類的 header，如此一來後端就可以根據有沒有這個 header，辨識出這個請求是不是合法的。
 
 雖然乍聽之下沒問題，但要小心的是我們剛剛才提過的 CORS 設定。
 
