@@ -199,7 +199,7 @@ function setCookieBomb() {
 
 除了這兩種防禦方式之外，還有一種你可能沒想到的。
 
-身為前端工程師ㄝ我們平常在引入資源的時候都是這樣寫的：
+身為前端工程師，我們平常在引入資源的時候都是這樣寫的：
 
 ``` html
 <script src="htps://test.azureedge.net/bundle.js"></script>
