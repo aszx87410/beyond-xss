@@ -460,7 +460,7 @@ head, script {
     script {
       display: block;
       font-family:"hack";
-      white-space:n owrap;
+      white-space: nowrap;
       overflow-x: auto;
       width: 500px;
       background:lightblue;
