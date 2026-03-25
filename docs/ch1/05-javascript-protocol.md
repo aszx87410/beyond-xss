@@ -24,7 +24,7 @@ document.body.innerHTML = '<iframe srcdoc="&lt;script>alert(1)&lt;/script>"></if
 
 偽協議的英文原名是 pseudo protocol，就是虛擬碼 pseudo code 的那個 pseudo。
 
-比起 HTTP、HTTP 或是 FTP 這些「真協議」，偽協議的意思比較像是與網路無關的特殊協議，例如說 `mailto:` 或是 `tel:` 也都算是偽協議的一種。
+比起 HTTPS、HTTP 或是 FTP 這些「真協議」，偽協議的意思比較像是與網路無關的特殊協議，例如說 `mailto:` 或是 `tel:` 也都算是偽協議的一種。
 
 而 javascript: 偽協議之所以特殊，就是因為可以利用它來執行 JavaScript 程式碼。
 
